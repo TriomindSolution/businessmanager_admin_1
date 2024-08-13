@@ -281,7 +281,16 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                               className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${pathname === "/" && "text-white"
                                 }`}
                             >
-                              Expensecategory
+                              Expense category
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              href="/expense"
+                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${pathname === "/" && "text-white"
+                                }`}
+                            >
+                              Expense
                             </Link>
                           </li>
                         </ul>
