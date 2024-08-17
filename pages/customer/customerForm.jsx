@@ -152,7 +152,7 @@ const handleSubmit = async (e) => {
                       className="bg-gray border-stroke border-gray-300 text-black text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                       placeholder="Type Expense Category name"
                       required=""
-                      defaultValue={expenseCategory?.name}
+                      // defaultValue={expenseCategory?.name}
                       onChange={handleChange}
                     />
                     {error && (
@@ -172,7 +172,7 @@ const handleSubmit = async (e) => {
                       id="status"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500  dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                       onChange={handleChange}
-                      value={expenseCategory?.status}
+                      // value={expenseCategory?.status}
                     >
                       <option selected="">Select Status</option>
                       <option value="1" >Active</option>

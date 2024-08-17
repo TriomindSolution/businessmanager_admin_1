@@ -68,7 +68,7 @@ const DeleteModal = ({ isOpen, onClose, data, isParentRender }) => {
 };
 
 
-const category = () => {
+const Category = () => {
 /*** Storing data start */
 const { http } = Axios();
 const [categoryList, setCategoryList] = useState([]);
@@ -143,8 +143,7 @@ const fetchCategoryList = async () => {
 
 useEffect(() => {
     fetchCategoryList();
-    return () => {
-    };
+
 }, []);
 
 /***Fetching table Data end */
@@ -271,4 +270,4 @@ const actionButton = (row) => {
     )
 }
 
-export default withAuth(category)
+export default withAuth(Category)

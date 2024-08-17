@@ -10,6 +10,7 @@ import { EXPENSECATEGORY_END_POINT } from "@/constants/api_endpoints/expensecate
 import ToastMessage from "@/components/Toast";
 import CustomerForm from "./customerForm";
 import SellerForm from "../seller/sellerForm";
+import { CUSTOMER_END_POINT } from "@/constants/api_endpoints/customerEndPoints";
 
 
 
@@ -131,7 +132,7 @@ const reFetchHandler = (isRender) => {
 
 const fetchCustomerList = async () => {
     try {
-        const response = await http.get(SELLER_END_POINT.list());
+        const response = await http.get(CUSTOMER_END_POINT.list());
         setCustomerList(response.data?.data);
         setLoading(false);
     } catch (error) {
@@ -155,41 +156,43 @@ useEffect(() => {
 
 const columns = [
     {
-        name: "SL",
-        selector: (row, index) => index + 1,
-        sortable: true,
+        title: "SL",
+        fixed: 'left',
+        render: (text, record, index) => index + 1
     },
     {
-        name: "Name",
-        selector: (row) => row.name,
-        sortable: true,
-    },
-
-    {
-        name: "Phone",
-        selector: (row) => row.phone,
-        sortable: true,
-    },
-    {
-        name: "Address 1",
-        selector: (row) => row.address_1,
-        sortable: true,
+        title: "Name",
+        dataIndex: 'name',
     },
 
     {
-        name: "Address 2",
-        selector: (row) => row.address_2,
-        sortable: true,
+        title: "Phone",
+        dataIndex: 'phone',
+
+    },
+    {
+        title: "Address 1",
+        dataIndex: 'address_1',
+    },
+
+    {
+        title: "Address 2",
+
+        dataIndex: 'address_2',
     },
  
    
     {
-        name: "Created At",
-        selector: (row) => row.created_at,
-        sortable: true,
-    }, {
-        name: "Action",
-        selector: (row) => actionButton(row),
+        title: "Created At",
+        dataIndex: 'created_at',
+    }, 
+    
+    {
+        title: 'Action',
+        key: 'action',
+        fixed: 'right',
+        width: 100,
+        render: (row) => actionButton(row), // You need to define actionButton function
     },
 
 
@@ -269,7 +272,7 @@ const actionButton = (row) => {
                     <DebouncedSearchInput setSearch={setSearch} />
                 </div>
                 <DeleteModal isOpen={isDeleteModalOpen} onClose={closeDeleteModal} data={editData} isParentRender={reFetchHandler} />
-                <SellerForm isOpen={isModalOpen} onClose={closeModal} setEditData={editData} isParentRender={reFetchHandler} />
+                <CustomerForm isOpen={isModalOpen} onClose={closeModal} setEditData={editData} isParentRender={reFetchHandler} />
 
                 <Table
                     className="border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark text-black dark:text-white"
