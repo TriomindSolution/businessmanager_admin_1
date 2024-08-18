@@ -11,6 +11,7 @@ const SellerForm = ({ isOpen, onClose, setEditData, isParentRender }) => {
         ToastMessage({ type, message });
     }, []);
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
     const [seller, setSeller] = useState({
         name: "",
         address: "",
@@ -99,7 +100,7 @@ const SellerForm = ({ isOpen, onClose, setEditData, isParentRender }) => {
               {/* Modal content */}
               <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  {setEditData?._id ? "Update Expense Category" : "Create New Expense Category"}
+                  {setEditData?._id ? "Update Seller information" : "Create New Seller"}
                 </h3>
                 <button
                   onClick={() => {
@@ -128,7 +129,7 @@ const SellerForm = ({ isOpen, onClose, setEditData, isParentRender }) => {
                   <span className="sr-only">Close modal</span>
                 </button>
               </div>
-              {/* Your modal content goes here */}
+             
               <form onSubmit={handleSubmit} className="p-4 md:p-5">
                 <div className="grid gap-4 mb-4 grid-cols-2">
                   <div className="col-span-2">
@@ -143,7 +144,7 @@ const SellerForm = ({ isOpen, onClose, setEditData, isParentRender }) => {
                       name="name"
                       id="name"
                       className="bg-gray border-stroke border-gray-300 text-black text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                      placeholder="Type Expense Category name"
+                      placeholder="Type Seller Name"
                       required=""
                       defaultValue={seller?.name}
                       onChange={handleChange}
@@ -152,8 +153,111 @@ const SellerForm = ({ isOpen, onClose, setEditData, isParentRender }) => {
                       <p className="text-red-500 text-xs mt-1"> {error} </p>
                     )}
                   </div>
+ <div className="col-span-2">
+                    <label
+                      htmlFor="name"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                     Address
+                    </label>
+                    <input
+                      type="text"
+                      name="address"
+                      id="name"
+                      className="bg-gray border-stroke border-gray-300 text-black text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      placeholder="Type Seller Address"
+                      required=""
+                      defaultValue={seller?.address}
+                      onChange={handleChange}
+                    />
+                    {error && (
+                      <p className="text-red-500 text-xs mt-1"> {error} </p>
+                    )}
+                  </div>
 
-                 
+
+                  <div className="col-span-2">
+                    <label
+                      htmlFor="name"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Phone
+                    </label>
+                    <input
+                      type="text"
+                      name="phone"
+                      id="name"
+                      className="bg-gray border-stroke border-gray-300 text-black text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      placeholder="Type Seller Phone"
+                      required=""
+                      defaultValue={seller?.phone}
+                      onChange={handleChange}
+                    />
+                    {error && (
+                      <p className="text-red-500 text-xs mt-1"> {error} </p>
+                    )}
+                  </div>
+
+
+                  <div className="col-span-2">
+                    <label
+                      htmlFor="name"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                     Email
+                    </label>
+                    <input
+                      type="text"
+                      name="email"
+                      id="name"
+                      className="bg-gray border-stroke border-gray-300 text-black text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      placeholder="Type Seller Email"
+                      required=""
+                      defaultValue={seller?.email}
+                      onChange={handleChange}
+                    />
+                    {error && (
+                      <p className="text-red-500 text-xs mt-1"> {error} </p>
+                    )}
+                  </div>
+
+
+                  <div className="col-span-2">
+                    <label
+                      htmlFor="name"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Description
+                    </label>
+                    <input
+                      type="text"
+                      name="description"
+                      id="name"
+                      className="bg-gray border-stroke border-gray-300 text-black text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      placeholder="Type Seller Description"
+                      required=""
+                      defaultValue={seller?.description}
+                      onChange={handleChange}
+                    />
+                    {error && (
+                      <p className="text-red-500 text-xs mt-1"> {error} </p>
+                    )}
+                  </div>
+
+
+                
+                  <select
+                      name='status'
+                      id="status"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500  dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      onChange={handleChange}
+                      defaultValue={seller?.status}
+                    >
+                      <option selected="">Select Status</option>
+                      <option value="1" >Active</option>
+                      <option value="2" >Inactive</option>
+
+                    </select>
 
                 </div>
                 <div className="ml-auto">

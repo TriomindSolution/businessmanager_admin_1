@@ -5,46 +5,42 @@ import { post, put } from '@/helpers/api_helper';
 import Axios from '@/utils/axios';
 import React, { useCallback, useEffect, useState } from 'react'
 
-const categoryForm = ({ isOpen, onClose, setEditData, isParentRender }) => {
-    const { http } = Axios();
+const CategoryForm = ({ isOpen, onClose, setEditData, isParentRender }) => {
+  const { http } = Axios(); // Ensure Axios is configured correctly
 
-    const [category, setCategory] = useState({
-        name: "",
-        status: "",
-    });
+  const [category, setCategory] = useState({
+    category_name: "",
+    status: "",
+});
+
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(""); 
 
   const notify = useCallback((type, message) => {
-    ToastMessage({ type, message });
+      ToastMessage({ type, message });
   }, []);
 
-
   useEffect(() => {
-    if (setEditData === null) {
-        setCategory({ name: "", status: null });
-    } else {
-        setCategory({
-            id: setEditData.id || "",
-            name: setEditData.name || "",
-            status: setEditData.status || "",
-        });
-    }
-}, [setEditData?._id, setEditData]);
+      if (!setEditData) {
+          setCategory({   category_name: "", status: "" });
+      } else {
+          setCategory({
+              id: setEditData.id || "",
+              category_name: setEditData.category_name || "",
+              status: setEditData.status || "",
+          });
+      }
+  }, [setEditData]);
 
-
-  const [error, setError] = useState('');
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+ const handleChange = (e) => {
+    const { category_name, value } = e.target;
     setCategory((prev) => ({
         ...prev,
-        [name]: value,
+        [category_name]: value,
     }));
 };
 
-
-
-const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
@@ -70,7 +66,7 @@ const handleSubmit = async (e) => {
                 if (isParentRender) {
                     isParentRender(true);
                 }
-                setExpenseCategory({});
+                setCategory({});
                 onClose();
             } else {
                 notify('error', response.data.message);
@@ -86,6 +82,8 @@ const handleSubmit = async (e) => {
 
 
 
+
+
   return (
 
     <>
@@ -97,12 +95,12 @@ const handleSubmit = async (e) => {
               {/* Modal content */}
               <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  {setEditData?._id ? "Update Expense Category" : "Create New Expense Category"}
+                  {setEditData?._id ? "Update Expense Category" : "Create New Product Category"}
                 </h3>
                 <button
                   onClick={() => {
                     onClose();
-                    setExpenseCategory({});
+                    setCategory({});
                   }}
                   type="button"
                   className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -138,12 +136,12 @@ const handleSubmit = async (e) => {
                     </label>
                     <input
                       type="text"
-                      name="name"
-                      id="name"
+                      name="category_name"
+                      id="category_name"
                       className="bg-gray border-stroke border-gray-300 text-black text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                      placeholder="Type Expense Category name"
+                      placeholder="Type Product Category name"
                       required=""
-                      defaultValue={category?.name}
+                      defaultValue={category?.category_name}
                       onChange={handleChange}
                     />
                     {error && (
@@ -207,4 +205,4 @@ const handleSubmit = async (e) => {
   )
 }
 
-export default withAuth(categoryForm)
+export default withAuth(CategoryForm)
