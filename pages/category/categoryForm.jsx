@@ -32,13 +32,14 @@ const CategoryForm = ({ isOpen, onClose, setEditData, isParentRender }) => {
       }
   }, [setEditData]);
 
- const handleChange = (e) => {
-    const { category_name, value } = e.target;
+  const handleChange = (e) => {
+    const { name, value } = e.target;
     setCategory((prev) => ({
         ...prev,
-        [category_name]: value,
+        [name]: value,
     }));
-};
+  };
+    
 
   const handleSubmit = async (e) => {
     e.preventDefault();
