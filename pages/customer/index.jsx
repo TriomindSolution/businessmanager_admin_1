@@ -22,7 +22,7 @@ const DeleteModal = ({ isOpen, onClose, data, isParentRender }) => {
     }, []);
     const deleteData = async () => {
         try {
-            const response = await http.delete(SELLER_END_POINT.delete(data?.id));
+            const response = await http.delete(CUSTOMER_END_POINT.delete(data?.id));
             
             if (response.data.status === true) {
                 notify('success', response.data.message);

@@ -8,7 +8,7 @@ import withAuth from '@/components/withAuth';
 import Axios from '@/utils/axios';
 import { CATEGORY_END_POINT } from "@/constants/api_endpoints/categoryEndPoints";
 import ToastMessage from "@/components/Toast";
-import categoryForm from "./categoryForm";
+import CategoryForm from "./categoryForm";
 
 
 
@@ -161,7 +161,7 @@ const columns = [
     },
     {
         title: 'Name',
-        dataIndex: 'name',
+        dataIndex: 'category_name',
         // fixed: 'left',
     },
     {
@@ -251,7 +251,7 @@ const actionButton = (row) => {
                     <DebouncedSearchInput setSearch={setSearch} />
                 </div>
                 <DeleteModal isOpen={isDeleteModalOpen} onClose={closeDeleteModal} data={editData} isParentRender={reFetchHandler} />
-                <categoryForm isOpen={isModalOpen} onClose={closeModal} setEditData={editData} isParentRender={reFetchHandler} />
+                <CategoryForm isOpen={isModalOpen} onClose={closeModal} setEditData={editData} isParentRender={reFetchHandler} />
 
                 <Table
                     className="border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark text-black dark:text-white"
