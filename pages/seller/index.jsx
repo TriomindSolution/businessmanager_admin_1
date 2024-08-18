@@ -8,7 +8,7 @@ import withAuth from '@/components/withAuth';
 import Axios from '@/utils/axios';
 import { SELLER_END_POINT } from "@/constants/api_endpoints/sellerEndPoints";
 import ToastMessage from "@/components/Toast";
-import sellerForm from "./sellerForm";
+import SellerForm from "./sellerForm";
 
 
 
@@ -68,10 +68,10 @@ const DeleteModal = ({ isOpen, onClose, data, isParentRender }) => {
 };
 
 
-const seller = () => {
+const   Seller = () => {
 /*** Storing data start */
 const { http } = Axios();
-const [sellerList, SetSellerList] = useState([]);
+const [sellerList, setSellerList] = useState([]);
 const [loading, setLoading] = useState(true);
 const [page, setPage] = useState(1);
 const [perPage, setPerPage] = useState(10);
@@ -154,29 +154,47 @@ useEffect(() => {
 
 const columns = [
     {
-        name: "SL",
-        selector: (row, index) => index + 1,
-        sortable: true,
+        title: "SL",
+        fixed: 'left',
+        render: (text, record, index) => index + 1
     },
     {
-        name: "Name",
-        selector: (row) => row.name,
-        sortable: true,
+        title: "Name",
+        dataIndex: 'name',
+    },
+
+    {
+        title: "Address",
+        dataIndex: 'address',
+
     },
     {
-        name: "Phone",
-        selector: (row) => row.phone,
-        sortable: true,
+        title: "Phone",
+        dataIndex:'phone',
+    },
+
+    {
+        title: "Email",
+
+        dataIndex: 'email',
     },
     {
-        name: "Email",
-        selector: (row) => row.email,
-        sortable: true,
-    },
+        title: "Description",
+        dataIndex: 'description',
+    }, 
+   
     {
-        name: "Action",
-        selector: (row) => actionButton(row),
-    }
+        title: "Created At",
+        dataIndex: 'created_at',
+    }, 
+    
+    {
+        title: 'Action',
+        key: 'action',
+        fixed: 'right',
+        width: 100,
+        render: (row) => actionButton(row), // You need to define actionButton function
+    },
 
 
 ];
@@ -255,7 +273,7 @@ const actionButton = (row) => {
                     <DebouncedSearchInput setSearch={setSearch} />
                 </div>
                 <DeleteModal isOpen={isDeleteModalOpen} onClose={closeDeleteModal} data={editData} isParentRender={reFetchHandler} />
-                <sellerForm isOpen={isModalOpen} onClose={closeModal} setEditData={editData} isParentRender={reFetchHandler} />
+                <SellerForm isOpen={isModalOpen} onClose={closeModal} setEditData={editData} isParentRender={reFetchHandler} />
 
                 <Table
                     className="border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark text-black dark:text-white"
@@ -274,4 +292,4 @@ const actionButton = (row) => {
     )
 }
 
-export default withAuth(seller)
+export default withAuth(Seller)
