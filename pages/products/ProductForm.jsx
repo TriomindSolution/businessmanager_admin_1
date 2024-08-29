@@ -54,6 +54,43 @@ const ProductForm = () => {
         { size: '', color: '', quantity: '' }
     ]);
 
+
+    useEffect(() => {
+        if (data === null) {
+            setEditData(false);
+        } else {
+            try {
+                setEditData(true);
+                setProduct({
+                    id: parsedData?.id,
+                    name: parsedData?.name,
+                    per_unit_product_price: parsedData?.per_unit_product_price,
+                    product_unit: parsedData?.product_unit,
+                    stock_alert: parsedData?.stock_alert,
+                    category_id: parsedData?.category_id,
+                    seller_id: parsedData?.seller_id,
+                    product_quantity: parsedData?.product_quantity,
+                    total_price: parsedData?.total_price,
+                    product_details: parsedData?.product_details,
+                    product_sku_code: parsedData?.product_sku_code,
+                    date: parsedData?.date,
+                    status: parsedData?.status,
+                });
+
+                // Set variants state
+                const formattedVariants = parsedData?.product_variants.map(variant => ({
+                    id:variant.id,
+                    size: variant.size,
+                    color: variant.color,
+                    quantity: variant.quantity
+                }));
+                setVariants(formattedVariants);
+            } catch (error) {
+                console.error("Error parsing JSON data:", error);
+            }
+        }
+    }, [data]);
+
     /***Fetching ExpenseCategory Data Start */
 
     const fetchExpenseCategoryList = async () => {
@@ -620,7 +657,7 @@ const ProductForm = () => {
                         </div>
                         <div className="p-7">
 
-                            {variants.map((variant, index) => (
+                            {variants?.map((variant, index) => (
 
                                 <div key={index} className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
                                     {/* Size Input */}

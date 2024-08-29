@@ -29,25 +29,36 @@ const ProdctList = () => {
     const [search, setSearch] = useState('');
 
 
-        /** Add start */
-        const handleAdd = () => {
+    /** Add start */
+    const handleAdd = () => {
 
-            setEditData(null);
+        setEditData(null);
+
+        router.push({
+            pathname: "../products/ProductForm",
+            query: { data: null },
+        });
+    };
+
+    /** Add end */
+
+        /**Job edit start */
+        const handleEdit = (data) => {
+            setEditData(data);
     
             router.push({
                 pathname: "../products/ProductForm",
-                query: { data: null },
+                // query: { data: data },
+                query: { data: JSON.stringify(data) },
             });
         };
-    
-        /** Add end */
+        /**Job edit end */
 
     /***Fetching table Data Start */
 
     const fetchProductList = async () => {
         try {
             const response = await http.get(PRODUCT_END_POINT.list());
-            console.log(response.data?.data?.data)
             setProductList(response.data?.data?.data);
             setLoading(false);
         } catch (error) {
@@ -105,27 +116,27 @@ const ProdctList = () => {
         );
     };
 
-        /*** Pagination Start  */
-        const pagination = {
-            total: productList?.length,
-            current: page,
-            pageSize: perPage,
-            defaultPageSize: 10,
-            showSizeChanger: true,
-            pageSizeOptions: ['2', '5', '10', '20', '30']
-        };
-    
-        const onChange = (
-            pagination,
-            filters,
-            sorter,
-            extra
-        ) => {
-            setPage(pagination.current);
-            setLimit(pagination.pageSize);
-        };
-    
-        /*** Pagination End  */
+    /*** Pagination Start  */
+    const pagination = {
+        total: productList?.length,
+        current: page,
+        pageSize: perPage,
+        defaultPageSize: 10,
+        showSizeChanger: true,
+        pageSizeOptions: ['2', '5', '10', '20', '30']
+    };
+
+    const onChange = (
+        pagination,
+        filters,
+        sorter,
+        extra
+    ) => {
+        setPage(pagination.current);
+        setLimit(pagination.pageSize);
+    };
+
+    /*** Pagination End  */
     /***Fetching table Data end */
     return (
         <div className="flex flex-col gap-10">
@@ -163,7 +174,7 @@ const ProdctList = () => {
                     onChange={onChange}
                 />
 
-               
+
             </div>
         </div>
     )
