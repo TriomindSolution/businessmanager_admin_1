@@ -16,7 +16,9 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
 
     const { http } = Axios();
 
-    
+    const notify = useCallback((type, message) => {
+        ToastMessage({ type, message });
+    }, []);
     const [itemList, setItemList] = useState([]);
     const [searchResults, setSearchResults] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
@@ -166,6 +168,7 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
             : prevOrder.total_amount,
       }));
     };
+    console.log(order);
     
     const handleSubmit = async (event) => {
       event.preventDefault();
