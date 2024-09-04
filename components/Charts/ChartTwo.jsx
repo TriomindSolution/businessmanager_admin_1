@@ -1,5 +1,8 @@
 import React, { useState } from "react";
-import ReactApexChart from "react-apexcharts";
+import dynamic from "next/dynamic";
+
+// import ReactApexChart from "react-apexcharts";
+const ReactApexChart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 const options = {
   colors: ["#3C50E0", "#80CAEE"],

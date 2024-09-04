@@ -10,27 +10,28 @@ const Dashbord = () => {
   const { http } = Axios();
   const [dashbord, setDashbordData] = useState();
   const [loading, setLoading] = useState(true);
-  console.log("dashbord", dashbord?.orderStatistics)
 
-  /***Fetching table Data Start */
-
+  /*** Fetching dashboard data ***/
   const fetchDashbord = async () => {
     try {
       const response = await http.get(DASHBORD_END_POINT.get());
-      console.log(response)
+      console.log(response);
       setDashbordData(response.data?.data);
       setLoading(false);
     } catch (error) {
-      console.error('Error fetching seller list:', error);
+      console.error('Error fetching dashboard data:', error);
       setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchDashbord();
-
   }, []);
 
+  /*** Render loading state ***/
+  if (loading) {
+    return <div>Loading...</div>;
+  }
   /***Fetching table Data end */
   return (
     <>
