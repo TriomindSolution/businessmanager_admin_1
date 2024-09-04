@@ -26,7 +26,7 @@ const Expense = () => {
     
     /*** Storing data end */
     
-    console.log('expenseList ',expenseList)
+    
     /**Add function  start */
     const handleAdd = () => {
         setIsModalOpen(true);
