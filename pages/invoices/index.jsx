@@ -21,6 +21,7 @@ const DeleteModal = ({ isOpen, onClose, data, isParentRender }) => {
     const deleteData = async () => {
         try {
             const response = await http.delete(ORDER_END_POINT.delete(data?.id));
+
             
             if (response.data.status === true) {
                 notify('success', response.data.message);
@@ -71,7 +72,8 @@ const DeleteModal = ({ isOpen, onClose, data, isParentRender }) => {
 const Order = () => {
 /*** Storing data start */
 const { http } = Axios();
-const [orderList, setOrderList] = useState([]);
+const [orderList, setOrderList] = useState([]); 
+console.log('orderList',orderList)
 const [loading, setLoading] = useState(true);
 const [page, setPage] = useState(1);
 const [perPage, setPerPage] = useState(10);
@@ -127,12 +129,16 @@ const closeDeleteModal = () => {
 const fetchOderList = async () => {
     try {
         const response = await http.get(ORDER_END_POINT.list());
+
         if (response.data.data) {
             setOrderList(response.data.data.data);
             console.log(response.data.data.data);
         } else {
             setOrderList([]);
         }
+
+        // setOrderList(response.data?.data)
+     
         setLoading(false);
     } catch (error) {
         console.error('Error fetching order list:', error);
@@ -146,8 +152,6 @@ const fetchOderList = async () => {
 
 useEffect(() => {
     fetchOderList();
-    return () => {
-    };
 }, []);
 
 /***Fetching table Data end */
