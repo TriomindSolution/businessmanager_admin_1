@@ -187,9 +187,14 @@ const ProductForm = () => {
         setVariants(updatedVariants);
     };
 
+    // const addVariant = () => {
+    //     setVariants([...variants, { size: '', color: '', quantity: '' }]);
+    // };
+
     const addVariant = () => {
-        setVariants([...variants, { size: '', color: '', quantity: '' }]);
+        setVariants((prevVariants) => [...(prevVariants || []), { size: '', color: '', quantity: '' }]);
     };
+    
 
     const removeVariant = async (index, variant) => {
         // const updatedVariants = [...variants];
@@ -204,9 +209,9 @@ const ProductForm = () => {
 
             if (response.data.status === true) {
                 notify('success', response.data.message);
-                //         const updatedVariants = [...variants];
-                // updatedVariants.splice(index, 1);
-                // setVariants(updatedVariants);
+                        const updatedVariants = [...variants];
+                updatedVariants.splice(index, 1);
+                setVariants(updatedVariants);
                 // onClose();
             } else {
                 notify('error', response.data.message);
@@ -720,11 +725,18 @@ const ProductForm = () => {
                                                 value={variant.quantity}
                                                 onChange={e => handleChangeVariants(index, e)}
                                             />
-                                            {index !== 0 && (
-                                                <button onClick={() => removeVariant(index, variant)} className="flex items-center text-red-500">
+                                            {/* {index !== 0 && (
+                                                <button onClick={() => removeVariant(index, variant)} className="flex items-center text-danger">
                                                     <FontAwesomeIcon icon={faTrashAlt} className="mr-2" />
                                                 </button>
-                                            )}
+                                            )} */}
+
+
+<button onClick={() => removeVariant(index, variant)} className="flex items-center text-danger">
+    <FontAwesomeIcon icon={faTrashAlt} className="mr-2 text-xl" />
+</button>
+
+
                                         </div>
                                     </div>
                                 </div>
