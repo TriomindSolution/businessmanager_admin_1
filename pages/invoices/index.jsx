@@ -8,8 +8,8 @@ import withAuth from '@/components/withAuth';
 import Axios from '@/utils/axios';
 import { ORDER_END_POINT } from "@/constants/api_endpoints/orderEndPoints";
 import ToastMessage from "@/components/Toast";
-import AddInvoice from "./addInvoice";
-
+import AddInvoice from "./AddInvoice";
+import { useRouter } from "next/router";
 
 
 const DeleteModal = ({ isOpen, onClose, data, isParentRender }) => {
@@ -83,22 +83,29 @@ const [isModalOpen, setIsModalOpen] = useState(false);
 const [isViewModalOpen, setViewIsModalOpen] = useState(false);
 const [isDeleteModalOpen, setDeleteIsModalOpen] = useState(false);
 const [search, setSearch] = useState('');
-
+const router = useRouter();
 /*** Storing data end */
 
 
 /**Add function  start */
 const handleAdd = () => {
-    setIsModalOpen(true);
+
     setEditData(null);
+
+    router.push({
+        pathname: "../invoices/AddInvoice",
+        query: { data: null },
+    });
 };
 /**Add function end */
 
 
 /** edit function start */
 const handleEdit = (data) => {
-    setEditData(data);
-    setIsModalOpen(true);
+    router.push({
+        pathname: "../invoices/AddInvoice",
+        query: { data: JSON.stringify(data) },
+    });
 };
 /** edit function  end */
 
@@ -275,7 +282,7 @@ const actionButton = (row) => {
                     <DebouncedSearchInput setSearch={setSearch} />
                 </div>
                 <DeleteModal isOpen={isDeleteModalOpen} onClose={closeDeleteModal} data={editData} isParentRender={reFetchHandler} />
-                <AddInvoice isOpen={isModalOpen} onClose={closeModal} setEditData={editData} isParentRender={reFetchHandler} />
+                {/* <AddInvoice isOpen={isModalOpen} onClose={closeModal} setEditData={editData} isParentRender={reFetchHandler} /> */}
 
                 <Table
                     className="border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark text-black dark:text-white"
