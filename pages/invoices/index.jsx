@@ -104,10 +104,29 @@ const handleAdd = () => {
 const handleEdit = (data) => {
     router.push({
         pathname: "../invoices/AddInvoice",
-        query: { data: JSON.stringify(data) },
+     
     });
 };
 /** edit function  end */
+
+
+/**Invoice details view*/
+
+const handleViewOpen=(data)=>{
+
+router.push(
+{
+
+    pathname:"../invoices/viewInvoice",
+    query: { data: JSON.stringify(data) },
+
+}
+);
+};
+
+
+/**Invoice details view end*/
+
 
 const closeModal = () => {
     setIsModalOpen(false);
