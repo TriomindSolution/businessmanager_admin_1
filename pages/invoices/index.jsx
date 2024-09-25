@@ -8,7 +8,7 @@ import withAuth from '@/components/withAuth';
 import Axios from '@/utils/axios';
 import { ORDER_END_POINT } from "@/constants/api_endpoints/orderEndPoints";
 import ToastMessage from "@/components/Toast";
-
+import AddInvoice from "./addInvoice";
 
 
 
@@ -129,14 +129,16 @@ const closeDeleteModal = () => {
 const fetchOderList = async () => {
     try {
         const response = await http.get(ORDER_END_POINT.list());
+
+        if (response.data.data) {
+            setOrderList(response.data.data.data);
+            console.log(response.data.data.data);
+        } else {
+            setOrderList([]);
+        }
+
         // setOrderList(response.data?.data)
-        console.log(response.data?.data?.data)
-        setOrderList(response.data?.data?.data)
-        // if (Array.isArray(response.data?.data)) {
-        //     // setOrderList(response.data.data);
-        // } else {
-        //     setOrderList([]);
-        // }
+     
         setLoading(false);
     } catch (error) {
         console.error('Error fetching order list:', error);
@@ -170,13 +172,25 @@ const columns = [
         render: (text, record, index) => index + 1
     },
     {
-        title: 'Name',
-        dataIndex: 'name',
+        title: 'Invoice No.',
+        dataIndex: 'invoice_no',
         // fixed: 'left',
     },
     {
-        title: 'Created By',
-        dataIndex: 'created_by',
+        title: 'Order No.',
+        dataIndex: 'order_code',
+        // fixed: 'left',
+    }
+    ,{
+        title: 'Customer Name',
+        dataIndex: 'order_customer.name', // Access nested object directly
+        render: (_, record) => record.order_customer?.name || 'N/A', // Fallback in case order_customer is undefined
+    },
+
+    ,{
+        title: 'Order Status',
+        dataIndex: 'status',
+      
     },
     {
         title: 'Action',
@@ -241,7 +255,7 @@ const actionButton = (row) => {
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                 <div className="py-6 px-4 md:px-6 xl:px-7.5 flex justify-between items-center border-b border-stroke dark:border-strokedark">
                     <h4 className="text-xl font-semibold text-black dark:text-white">
-                        All Expensecategory
+                        All Order
                     </h4>
                     <button
                         href="#"
@@ -261,7 +275,7 @@ const actionButton = (row) => {
                     <DebouncedSearchInput setSearch={setSearch} />
                 </div>
                 <DeleteModal isOpen={isDeleteModalOpen} onClose={closeDeleteModal} data={editData} isParentRender={reFetchHandler} />
-                {/* <ExpensecategoryForm isOpen={isModalOpen} onClose={closeModal} setEditData={editData} isParentRender={reFetchHandler} /> */}
+                <AddInvoice isOpen={isModalOpen} onClose={closeModal} setEditData={editData} isParentRender={reFetchHandler} />
 
                 <Table
                     className="border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark text-black dark:text-white"

@@ -86,7 +86,7 @@ const ViewInvoice = () => {
                                 </div>
                             </div>
                         </div>
-
+                        
 
                         <div className="p-6 bg-white rounded shadow-sm my-6" id="invoice">
                             <div className="grid grid-cols-2 items-center">
@@ -228,22 +228,22 @@ const ViewInvoice = () => {
                                 </table>
                             </div>
                             <div className="my-5">
-                                <p className="mb-2 text-sm uppercase text-gray-500 ">
-                                    Payments Details
-                                </p>
-                                <p className="mb-1 text-gray-500 ">
-                                    Payment Method: Credit Card
-                                </p>
-                                <p className="mb-1 text-gray-500 ">
-                                    Card Holder: Paula Keenan
-                                </p>
-                                <p className="mb-1 text-gray-500 ">
-                                    Card Number: xxxx xxxx xxxx 1402
-                                </p>
-                                <p className="mb-0 text-gray-500 ">
-                                    Total Amount: <b>$755.96</b>
-                                </p>
-                            </div>
+                            <p className="mb-2 text-sm uppercase text-gray-500 ">
+                                Payments Details
+                            </p>
+                            <p className="mb-1 text-gray-500 ">
+                                Payment Method: Credit Card
+                            </p>
+                            <p className="mb-1 text-gray-500 ">
+                                Card Holder: Paula Keenan
+                            </p>
+                            <p className="mb-1 text-gray-500 ">
+                                Card Number: xxxx xxxx xxxx 1402
+                            </p>
+                            <p className="mb-0 text-gray-500 ">
+                                Total Amount: <b>$755.96</b>
+                            </p>
+                        </div>
                             <div className="flex  mt-16 gap-1 px-4 py-3 text-sm border rounded-md md:items-center border-sky-200 text-sky-500 bg-secondary dark:bg-sky-400/20 dark:border-sky-500/50">
                                 <p>
                                     <span className="font-bold">NOTES:</span> All accounts are to be paid within 7 days from receipt of invoice. To be paid by cheque or credit card or direct payment online. If the account is not paid within 7 days, the credit details supplied as confirmation of work undertaken will be charged the agreed quoted fee noted above.
