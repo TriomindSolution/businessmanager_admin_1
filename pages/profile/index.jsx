@@ -142,12 +142,6 @@ const Profile = () => {
           </div>
         </div>
 
-
-
-
-
-
-
         <div className="my-6.5 ">
           <h4 className="mb-3.5 font-medium text-black dark:text-white text-center">
             Follow me on
@@ -302,9 +296,6 @@ const Profile = () => {
         </div>
 
       </div>
-
-
-
 
     </>
   )
