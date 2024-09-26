@@ -334,26 +334,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                             </Link>
                           </li>
 
-                          <li>
-                            <Link
-                              href="/invoices/addInvoice"
-                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${pathname === "/" && "text-white"
-                                }`}
-                            >
-                              Invoice
-                            </Link>
-                          </li>
-
-
-                          <li>
-                            <Link
-                              href="/invoices"
-                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${pathname === "/" && "text-white"
-                                }`}
-                            >
-                              All Invoice
-                            </Link>
-                          </li>
+                   
 
 
                         
@@ -442,11 +423,21 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                         <ul className="mb-5.5 mt-4 flex flex-col gap-2.5 pl-6">
                           <li>
                             <Link
-                              href="/invoices/addInvoice"
+                              href="/invoices/AddInvoice"
                               className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${pathname === "/" && "text-white"
                                 }`}
                             >
                               Add Invoice
+                            </Link>
+                          </li>
+
+                          <li>
+                            <Link
+                              href="/invoices"
+                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${pathname === "/" && "text-white"
+                                }`}
+                            >
+                              ALL Invoice
                             </Link>
                           </li>
                           <li>

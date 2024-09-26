@@ -10,12 +10,32 @@ import Axios from '@/utils/axios';
 import ToastMessage from "@/components/Toast";
 import { ORDER_END_POINT } from "@/constants/api_endpoints/orderEndPoints";
 import { PRODUCT_END_POINT } from "@/constants/api_endpoints/productEndPoints";
-
+import { useRouter } from "next/router";
 
 
 const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
-
+    const router = useRouter();
     const { http } = Axios();
+
+    const { data } = router.query;
+    console.log(data);
+    let parsedData;
+
+    if (data) {
+        try {
+            parsedData = JSON.parse(data);
+            console.log( parsedData);
+        } catch (error) {
+            console.error('Failed to parse JSON:', error);
+            parsedData = null;
+        }
+    } else {
+        parsedData = null;
+    }
+
+
+
+
 
     const notify = useCallback((type, message) => {
         ToastMessage({ type, message });
@@ -65,6 +85,7 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
     useEffect(() => {
       fetchItemList();
     }, []);
+    console.log(order);
   
     console.log(itemList);
     /***Fetching ExpenseCategory Data end */
@@ -89,77 +110,67 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
 
 
     useEffect(() => {
-      if (!setEditData) {
-          // Reset all fields if setEditData is null or undefined
-          setOrder({
-              invoice_no: "",
-              delivery_date: "",
-              notes: "",
-              payment: "",
-              payment_method: "",
-              payment_from: "",
-              shipping_charge: 0,
-              total_amount: 0,
-              name: "",
-              phone: "",
-              address_1: "",
-              sub_total: 0,
-          });
-          setItems([
-              {
-                  id: "",
-                  quantity: 0,
-                  price: 0,
-                  discount: 0,
-                  tax: 0,
-                  total: 0,
-                  size: "",
-                  color: "",
-                  product_total: 0,
-              },
-          ]);
-      } else {
-          // Safely populate form fields with existing data
-          setOrder({
-              invoice_no: setEditData?.invoice_no || "",
-              delivery_date: setEditData?.delivery_date || "",
-              notes: setEditData?.notes || "",
-              payment: setEditData?.payment || "",
-              payment_method: setEditData?.payment_method || "",
-              payment_from: setEditData?.payment_from || "",
-              shipping_charge: setEditData?.shipping_charge || 0,
-              total_amount: setEditData?.total_amount || 0,
-              name: setEditData?.name || "",
-              phone: setEditData?.phone || "",
-              address_1: setEditData?.address_1 || "",
-              sub_total: setEditData?.sub_total || 0,
-          });
-  
-          // Safely populate items (productVariants)
-          setItems(setEditData?.productVariants?.map((item) => ({
-              id: item?.id || "",
-              quantity: item?.quantity || 0,
-              price: item?.price || 0,
-              discount: item?.discount || 0,
-              tax: item?.tax || 0,
-              size: item?.size || "",
-              color: item?.color || "",
-              product_total: item?.product_total || 0,
-          })) || [
-              {
-                  id: "",
-                  quantity: 0,
-                  price: 0,
-                  discount: 0,
-                  tax: 0,
-                  total: 0,
-                  size: "",
-                  color: "",
-                  product_total: 0,
-              },
-          ]);
-      }
-  }, [setEditData]);
+        if (!parsedData) {
+            // Handle case where no data is available
+        } else {
+            try {
+                // Set Order Details
+                setOrder({
+                    invoice_no: parsedData?.invoice_no || "",
+                    delivery_date: parsedData?.delivery_date || "",
+                    notes: parsedData?.notes || "",
+                    payment: parsedData?.payment || "",
+                    payment_method: parsedData?.payment_method || "",
+                    payment_from: parsedData?.payment_from || "",
+                    shipping_charge: parsedData?.shipping_charge || 0,
+                    total_amount: parsedData?.total_amount || 0,
+                    name: parsedData?.order_customer?.name || "",
+                    phone: parsedData?.order_customer?.phone || "",
+                    address_1: parsedData?.order_customer?.address_1 || "",
+                    sub_total: parsedData?.sub_total || 0,
+                });
+    
+                // Set Product Variants
+                setItems(
+                    parsedData?.order_variants?.map((variant) => ({
+                        id: variant?.id || "",
+                        product_id: variant?.product_id || "",
+                        quantity: variant?.quantity || 0,
+                        price: variant?.price || 0,
+                        discount: variant?.discount || 0,
+                        tax: variant?.tax || 0,
+                        product_total: parseFloat(variant?.quantity || 0) * parseFloat(variant?.price || 0),
+                    })) || [
+                        {
+                            id: "",
+                            product_id: "",
+                            quantity: 0,
+                            price: 0,
+                            discount: 0,
+                            tax: 0,
+                            product_total: 0,
+                        },
+                    ]
+                );
+            } catch (error) {
+                console.error("Error parsing data for editing:", error);
+            }
+        }
+    }, [parsedData]);
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
   
   
   

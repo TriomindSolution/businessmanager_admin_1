@@ -8,7 +8,17 @@ import withAuth from '@/components/withAuth';
 import Axios from '@/utils/axios';
 import { ORDER_END_POINT } from "@/constants/api_endpoints/orderEndPoints";
 import ToastMessage from "@/components/Toast";
-import AddInvoice from "./addInvoice";
+import AddInvoice from "./AddInvoice";
+import { useRouter } from "next/router";
+
+
+
+
+
+
+
+
+
 
 
 
@@ -20,6 +30,7 @@ const DeleteModal = ({ isOpen, onClose, data, isParentRender }) => {
     }, []);
     const deleteData = async () => {
         try {
+            console.log("HIIIIIIIIIIIIIIII");
             const response = await http.delete(ORDER_END_POINT.delete(data?.id));
 
             
@@ -83,24 +94,51 @@ const [isModalOpen, setIsModalOpen] = useState(false);
 const [isViewModalOpen, setViewIsModalOpen] = useState(false);
 const [isDeleteModalOpen, setDeleteIsModalOpen] = useState(false);
 const [search, setSearch] = useState('');
-
+const router = useRouter();
 /*** Storing data end */
 
 
 /**Add function  start */
 const handleAdd = () => {
-    setIsModalOpen(true);
+
     setEditData(null);
+
+    router.push({
+        pathname: "../invoices/AddInvoice",
+        query: { data: null },
+    });
 };
 /**Add function end */
 
 
 /** edit function start */
 const handleEdit = (data) => {
-    setEditData(data);
-    setIsModalOpen(true);
+    router.push({
+        pathname: "../invoices/AddInvoice",
+        query: { data: JSON.stringify(data) },
+     
+    });
 };
 /** edit function  end */
+
+
+/**Invoice details view*/
+
+const handleViewOpen=(data)=>{
+
+router.push(
+{
+
+    pathname:"../invoices/viewInvoice",
+    query: { data: JSON.stringify(data) },
+
+}
+);
+};
+
+
+/**Invoice details view end*/
+
 
 const closeModal = () => {
     setIsModalOpen(false);
@@ -110,10 +148,15 @@ const closeModal = () => {
 
 /** Delete function start */
 const handleDelete = (data) => {
-    console.log("clcik")
+    console.log("click me done ")
     setEditData(data);
     setDeleteIsModalOpen(true);
 };
+
+
+
+
+
 const closeDeleteModal = () => {
     setDeleteIsModalOpen(false);
 };
@@ -275,7 +318,7 @@ const actionButton = (row) => {
                     <DebouncedSearchInput setSearch={setSearch} />
                 </div>
                 <DeleteModal isOpen={isDeleteModalOpen} onClose={closeDeleteModal} data={editData} isParentRender={reFetchHandler} />
-                <AddInvoice isOpen={isModalOpen} onClose={closeModal} setEditData={editData} isParentRender={reFetchHandler} />
+                {/* <AddInvoice isOpen={isModalOpen} onClose={closeModal} setEditData={editData} isParentRender={reFetchHandler} /> */}
 
                 <Table
                     className="border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark text-black dark:text-white"
