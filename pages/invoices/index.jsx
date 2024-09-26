@@ -12,6 +12,16 @@ import AddInvoice from "./AddInvoice";
 import { useRouter } from "next/router";
 
 
+
+
+
+
+
+
+
+
+
+
 const DeleteModal = ({ isOpen, onClose, data, isParentRender }) => {
     const [loading, setLoading] = useState(false);
     const { http } = Axios();
@@ -20,6 +30,7 @@ const DeleteModal = ({ isOpen, onClose, data, isParentRender }) => {
     }, []);
     const deleteData = async () => {
         try {
+            console.log("HIIIIIIIIIIIIIIII");
             const response = await http.delete(ORDER_END_POINT.delete(data?.id));
 
             
@@ -104,6 +115,7 @@ const handleAdd = () => {
 const handleEdit = (data) => {
     router.push({
         pathname: "../invoices/AddInvoice",
+        query: { data: JSON.stringify(data) },
      
     });
 };
@@ -136,10 +148,15 @@ const closeModal = () => {
 
 /** Delete function start */
 const handleDelete = (data) => {
-    console.log("clcik")
+    console.log("click me done ")
     setEditData(data);
     setDeleteIsModalOpen(true);
 };
+
+
+
+
+
 const closeDeleteModal = () => {
     setDeleteIsModalOpen(false);
 };

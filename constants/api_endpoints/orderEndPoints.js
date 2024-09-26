@@ -4,5 +4,5 @@ export const ORDER_END_POINT = {
     // list: (page, limit) => `${process.env.NEXT_PUBLIC_API_URL}expense-list?limit=${page, limit}`,
     list: () => `${process.env.NEXT_PUBLIC_API_URL}order-list`,
     info: (id) => `${process.env.NEXT_PUBLIC_API_URL}order-retrieve/${id}`,
-    delete: (id) => `${process.env.NEXT_PUBLIC_API_URL}order/delete/${id}`,
+    delete: (id) => `${process.env.NEXT_PUBLIC_API_URL}order/order_variant/${id}/delete`,
 }
