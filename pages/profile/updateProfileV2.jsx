@@ -14,7 +14,6 @@ const UpdateProfileV2 = () => {
     }, []);
     const [loading, setLoading] = useState(true);
     const [profile, setProfile] = useState({});
-    console.log("profile", profile)
     const [changePassword, setChangePassword] = useState({});
     const [tokenValues, setTokenValues] = useState({});
     const [city, setCity] = useState([]);
@@ -128,10 +127,10 @@ const UpdateProfileV2 = () => {
                                             <input
                                                 className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                                                 type="text"
-                                                name="fullName"
+                                                name="name"
                                                 id="fullName"
                                                 placeholder="Devid Jhon"
-                                                
+                                                onChange={handleChange}
                                             />
                                         </div>
                                     </div>
@@ -176,7 +175,7 @@ const UpdateProfileV2 = () => {
                                                     name="email"
                                                     id="emailAddress"
                                                     placeholder="devidjond45@gmail.com"
-                                                    
+                                                    onChange={handleChange}
                                                 />
                                             </div>
                                         </div>
@@ -190,96 +189,15 @@ const UpdateProfileV2 = () => {
                                             <input
                                                 className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                                                 type="text"
-                                                name="mobile_number"
+                                                name="phone"
                                                 id="phoneNumber"
                                                 placeholder="+990 3343 7865"
-                                               
+                                                onChange={handleChange}
                                             />
                                         </div>
                                     </div>
 
-                                    <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
-                                        <div className="w-full sm:w-1/2">
-                                            <label
-                                                className="mb-3 block text-sm font-medium text-black dark:text-white"
-                                                htmlFor="nationality"
-                                            >
-                                                Id Card Number
-                                            </label>
-                                            <input
-                                                className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                                                type="text"
-                                                name="nidNumber"
-                                                id="nationality"
-                                               
-                                            />
-                                        </div>
 
-                                        <div className="w-full sm:w-1/2">
-                                            <label
-                                                className="mb-3 block text-sm font-medium text-black dark:text-white"
-                                                htmlFor="nationality"
-                                            >
-                                                Nid Number
-                                            </label>
-                                            <input
-                                                className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                                                type="text"
-                                                name="idCardNumber"
-                                                id="nationality"
-                                                placeholder="+990 3343 7865"
-                                                
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
-                                        <div className="w-full sm:w-1/2">
-                                            <label
-                                                className="mb-3 block text-sm font-medium text-black dark:text-white"
-                                                htmlFor="fullName"
-                                            >
-                                                City
-                                            </label>
-                                            <div className="relative">
-                                                <select
-                                                    name="city"
-                                                    id="countries"
-                                                    className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                                                   
-                                                >
-
-                                                    <option value="" >
-                                                        Choose a City{" "}
-                                                    </option>
-
-
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div className="w-full sm:w-1/2">
-                                            <label
-                                                className="mb-3 block text-sm font-medium text-black dark:text-white"
-                                                htmlFor="fullName"
-                                            >
-                                                Location
-                                            </label>
-                                            <div className="relative">
-                                                <select
-                                                    name="location"
-                                                    id="countries"
-                                                    className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                                                    
-                                                >
-
-                                                    <option value="" >
-                                                        Choose a location
-                                                    </option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
 
                                     <div className="mb-5.5">
                                         <label
@@ -326,6 +244,8 @@ const UpdateProfileV2 = () => {
                                                 id="bio"
                                                 rows={3}
                                                 placeholder="Write your bio here"
+                                                onChange={handleChange}
+                                                defaultValue={profile?.address}
                                             ></textarea>
                                         </div>
                                     </div>
@@ -334,6 +254,7 @@ const UpdateProfileV2 = () => {
                                         <button
                                             className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-95"
                                             type="submit"
+                                            onClick={handleSubmit}
                                         >
                                             Update
                                         </button>
@@ -350,23 +271,7 @@ const UpdateProfileV2 = () => {
                                 </h3>
                             </div>
                             <div className="p-7 mt-3">
-                                <div className="mb-5.5">
-                                    <label
-                                        className="mb-3 block text-sm font-medium text-black dark:text-white"
-                                        htmlFor="full_name"
-                                    >
-                                        Old Password
-                                    </label>
-                                    <div className="relative">
-                                        <input
-                                            className="w-full rounded border border-stroke bg-gray py-3 pl-5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                                            type="text"
-                                            name="oldPassword"
-                                            id="fullName"
-                                            placeholder="Old Password"
-                                        />
-                                    </div>
-                                </div>
+                            
 
                                 <div className="mb-5.5">
                                     <label

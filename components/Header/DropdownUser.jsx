@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
+import Axios from "@/utils/axios"
 
 
 const DropdownUser = () => {
@@ -8,7 +9,7 @@ const DropdownUser = () => {
 
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const [loading, setLoading] = useState(true);
-
+  const { token, logout } = Axios();
 
 
 
@@ -53,7 +54,11 @@ const DropdownUser = () => {
 
 
 
-
+  const logoutHandle = () => {
+    if (token != undefined) {
+      logout();
+    }
+  };
 
 
 
@@ -187,7 +192,7 @@ const DropdownUser = () => {
             </Link>
           </li>
         </ul>
-        <button className="flex items-center gap-3.5 py-4 px-6 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base" >
+        <button className="flex items-center gap-3.5 py-4 px-6 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base" onClick={logoutHandle}>
           <svg
             className="fill-current"
             width="22"

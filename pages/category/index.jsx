@@ -21,7 +21,7 @@ const DeleteModal = ({ isOpen, onClose, data, isParentRender }) => {
     const deleteData = async () => {
         try {
             const response = await http.delete(CATEGORY_END_POINT.delete(data?.id));
-            
+
             if (response.data.status === true) {
                 notify('success', response.data.message);
                 if (isParentRender) {
@@ -69,135 +69,136 @@ const DeleteModal = ({ isOpen, onClose, data, isParentRender }) => {
 
 
 const Category = () => {
-/*** Storing data start */
-const { http } = Axios();
-const [categoryList, setCategoryList] = useState([]);
-const [loading, setLoading] = useState(true);
-const [page, setPage] = useState(1);
-const [perPage, setPerPage] = useState(10);
-const [limit, setLimit] = useState(10);
-const [editData, setEditData] = useState({});
-const [isModalOpen, setIsModalOpen] = useState(false);
-const [isViewModalOpen, setViewIsModalOpen] = useState(false);
-const [isDeleteModalOpen, setDeleteIsModalOpen] = useState(false);
-const [search, setSearch] = useState('');
+    /*** Storing data start */
+    const { http } = Axios();
+    const [categoryList, setCategoryList] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [page, setPage] = useState(1);
+    const [perPage, setPerPage] = useState(10);
+    const [limit, setLimit] = useState(10);
+    const [editData, setEditData] = useState({});
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isViewModalOpen, setViewIsModalOpen] = useState(false);
+    const [isDeleteModalOpen, setDeleteIsModalOpen] = useState(false);
+    const [search, setSearch] = useState('');
+    const [filteredData, setFilteredData] = useState([]);
+    /*** Storing data end */
 
-/*** Storing data end */
+    console.log("categoryList",categoryList)
 
-
-/**Add function  start */
-const handleAdd = () => {
-    setIsModalOpen(true);
-    setEditData(null);
-};
-/**Add function end */
-
-
-/** edit function start */
-const handleEdit = (data) => {
-    setEditData(data);
-    setIsModalOpen(true);
-};
-/** edit function  end */
-
-const closeModal = () => {
-    setIsModalOpen(false);
-};
+    /**Add function  start */
+    const handleAdd = () => {
+        setIsModalOpen(true);
+        setEditData(null);
+    };
+    /**Add function end */
 
 
+    /** edit function start */
+    const handleEdit = (data) => {
+        setEditData(data);
+        setIsModalOpen(true);
+    };
+    /** edit function  end */
 
-/** Delete function start */
-const handleDelete = (data) => {
-    console.log("clcik")
-    setEditData(data);
-    setDeleteIsModalOpen(true);
-};
-const closeDeleteModal = () => {
-    setDeleteIsModalOpen(false);
-};
-/** Delete function end */
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
 
 
 
-/**Render Function Start */
-const reFetchHandler = (isRender) => {
-    if (isRender) fetchCategoryList();
-};
-/**Render Function end */
-
-
-/***Fetching table Data Start */
-
-const fetchCategoryList = async () => {
-    try {
-        const response = await http.get(CATEGORY_END_POINT.list());
-        setCategoryList(response.data?.data);
-        setLoading(false);
-        console.log(response.data);
-    } catch (error) {
-        console.error('Error fetching category list:', error);
-        setLoading(false);
-    
-    }
-};
-
-useEffect(() => {
-    fetchCategoryList();
-
-}, []);
-
-/***Fetching table Data end */
+    /** Delete function start */
+    const handleDelete = (data) => {
+        setEditData(data);
+        setDeleteIsModalOpen(true);
+    };
+    const closeDeleteModal = () => {
+        setDeleteIsModalOpen(false);
+    };
+    /** Delete function end */
 
 
 
+    /**Render Function Start */
+    const reFetchHandler = (isRender) => {
+        if (isRender) fetchCategoryList();
+    };
+    /**Render Function end */
+
+
+    /***Fetching table Data Start */
+    const data = filteredData?.data;
+    const fetchCategoryList = async () => {
+        try {
+            const response = await http.get(CATEGORY_END_POINT.list());
+            setCategoryList(response.data?.data);
+            setFilteredData(response?.data)
+            setLoading(false);
+            console.log(response.data);
+        } catch (error) {
+            console.error('Error fetching category list:', error);
+            setLoading(false);
+
+        }
+    };
+
+    useEffect(() => {
+        fetchCategoryList();
+
+    }, []);
+
+    /***Fetching table Data end */
 
 
 
-const columns = [
-    {
-        title: 'SL',
-        fixed: 'left',
-        render: (text, record, index) => index + 1
-    },
-    {
-        title: 'Name',
-        dataIndex: 'category_name',
-        // fixed: 'left',
-    },
-    {
-        title: 'Created By',
-        dataIndex: 'created_by',
-    },
-    {
-        title: 'Action',
-        key: 'action',
-        fixed: 'right',
-        width: 100,
-        render: (row) => actionButton(row), // You need to define actionButton function
-    },
-];
 
 
 
-const actionButton = (row) => {
-    return (
-        <>
-            <Row justify="space-between" style={{ display: 'flex', alignItems: 'center' }}>
-                <a onClick={() => handleViewOpen(row)} style={{ color: 'green' }}>
-                    <EyeOutlined style={{ fontSize: '22px' }} />
-                </a>
+    const columns = [
+        {
+            title: 'SL',
+            fixed: 'left',
+            render: (text, record, index) => index + 1
+        },
+        {
+            title: 'Name',
+            dataIndex: 'name',
+            // fixed: 'left',
+        },
+        {
+            title: 'Created By',
+            dataIndex: 'created_by',
+        },
+        {
+            title: 'Action',
+            key: 'action',
+            fixed: 'right',
+            width: 100,
+            render: (row) => actionButton(row), // You need to define actionButton function
+        },
+    ];
 
-                <a onClick={() => handleEdit(row)} className="text-primary" >
-                    <EditOutlined style={{ fontSize: '22px' }} />
-                </a>
 
-                <a onClick={() => handleDelete(row)} className="text-danger" >
-                    <DeleteOutlined style={{ fontSize: '22px' }} />
-                </a>
-            </Row>
-        </>
-    );
-};
+
+    const actionButton = (row) => {
+        return (
+            <>
+                <Row justify="space-between" style={{ display: 'flex', alignItems: 'center' }}>
+                    <a onClick={() => handleViewOpen(row)} style={{ color: 'green' }}>
+                        <EyeOutlined style={{ fontSize: '22px' }} />
+                    </a>
+
+                    <a onClick={() => handleEdit(row)} className="text-primary" >
+                        <EditOutlined style={{ fontSize: '22px' }} />
+                    </a>
+
+                    <a onClick={() => handleDelete(row)} className="text-danger" >
+                        <DeleteOutlined style={{ fontSize: '22px' }} />
+                    </a>
+                </Row>
+            </>
+        );
+    };
 
     /*** Pagination Start  */
     const pagination = {
@@ -222,9 +223,25 @@ const actionButton = (row) => {
     /*** Pagination End  */
 
     const toggleModal = () => {
-        console.log("clicked");
         setIsModalOpen(!isModalOpen);
     };
+
+        //----------------- search operation-----------------
+
+        useEffect(() => {
+            let controller = new AbortController();
+            const result = data?.filter((item) => {
+                return item.category_name.toLowerCase()
+                    .match(search.toLocaleLowerCase());
+            });
+    
+            setCategoryList(result);
+            return () => controller.abort();
+        }, [search]);
+    
+    
+    
+        //-----------------End search operation-----------------
 
     return (
         <div className="flex flex-col gap-10">
@@ -262,7 +279,7 @@ const actionButton = (row) => {
                     onChange={onChange}
                 />
 
-               
+
             </div>
         </div>
 
