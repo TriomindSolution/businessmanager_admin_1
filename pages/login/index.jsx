@@ -1,5 +1,5 @@
 'use clie'
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState ,useContext} from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { useRouter } from "next/router";
@@ -8,6 +8,7 @@ import Axios from "@/utils/axios";
 import ToastMessage from "@/components/Toast";
 import { SECURITY_END_POINT } from "@/constants";
 import { post } from "@/helpers/api_helper";
+import themeContext from "@/components/context/themeContext";
 
 
 const LogIn = () => {
@@ -15,6 +16,7 @@ const LogIn = () => {
     ToastMessage({ type, message });
   }, []);
   const { http, setToken, token } = Axios();
+
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -25,10 +27,16 @@ const LogIn = () => {
     // console.log("click",email,password)
     event.preventDefault();
     try {
-      const login = await post(SECURITY_END_POINT.login(), {  email: email,password: password });
-      // console.log(login);
+      const login = await post(SECURITY_END_POINT.login(), { email: email, password: password });
+      const user={
+        id:login?.data?.user?.id,
+        name:login?.data?.user?.name,
+        email:login?.data?.user?.email,
+        phone: login?.data?.user?.phone
+      }
+      console.log(login?.data?.user);
       // return; 
-      setToken(login.data.access_token);
+      setToken(user,login.data.access_token);
       notify("success", "successfully Login!");
 
     } catch (error) {
@@ -229,23 +237,23 @@ const LogIn = () => {
           <div className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
             <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
 
-            
 
-                    <SignInComponent
-                      submitForm={submitForm}
-                      setEmail={setEmail}
-                      setPassword={setPassword}
-                      setLoading={setLoading}
-                      loading={loading}
-                    />
+
+              <SignInComponent
+                submitForm={submitForm}
+                setEmail={setEmail}
+                setPassword={setPassword}
+                setLoading={setLoading}
+                loading={loading}
+              />
 
               <div className="mt-6 text-center">
                 <p>
-                  
+
 
                   <dev className="text-primary" >
-                   Sign Up
-                    
+                    Sign Up
+
 
                   </dev>
                 </p>

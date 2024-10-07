@@ -6,14 +6,26 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import toast from "../../components/Toast";
+import { USER_END_POINT } from "@/constants/api_endpoints/userEndpoints";
 
 const UpdateProfileV2 = () => {
-    const { http, setToken, token } = Axios();
+    const { http, setToken, token, user } = Axios();
+    console.log("user", user)
     const notify = React.useCallback((type, message) => {
         toast({ type, message });
     }, []);
     const [loading, setLoading] = useState(true);
-    const [profile, setProfile] = useState({});
+    const [profile, setProfile] = useState({
+        name: "",
+        phone: "",
+        email: "",
+        address: "",
+    });
+    const [password, setPassword] = useState({
+        id: user?.id,
+        password: '',
+        confirm_password: ''
+    });
     const [changePassword, setChangePassword] = useState({});
     const [tokenValues, setTokenValues] = useState({});
     const [city, setCity] = useState([]);
@@ -25,6 +37,18 @@ const UpdateProfileV2 = () => {
     const [attach, setAttach] = useState(profile?.attachment || []);
 
     const router = useRouter();
+
+    useEffect(() => {
+        if (user) {
+            setProfile({
+
+                name: user?.name,
+                phone: user?.phone,
+                phone: user?.phone,
+                address: user?.address,
+            })
+        }
+    }, [user]);
 
 
     const user_Info = async () => {
@@ -40,7 +64,16 @@ const UpdateProfileV2 = () => {
             ...prev,
             [name]: value,
         }));
+
+        // setPassword((prev) => ({
+        //     ...prev,
+        //     [name]: value,
+        // }));
     };
+
+    // const handleChangePassword = (e) => {
+
+    // }
 
     const handleChangePassword = (e) => {
         const { name, value } = e.target;
@@ -55,28 +88,49 @@ const UpdateProfileV2 = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setLoading(true);
+        
+        try {
+            console.log("profile", profile);
+            localStorage.removeItem('user');
+
+            const response = await http.put(USER_END_POINT.profileUpdate(), profile);
+    
+            if (response.data.status === true) {
+                notify('success', response.data.message);
+                setToken(user,token);
+            } else {
+                notify('error', response.data.message);
+            }
+        } catch (error) {
+            // Handle any errors that occur during the HTTP request
+            console.error("An error occurred:", error);
+            
+            // Display a general error notification if request fails
+            notify('error', 'An error occurred while updating the profile. Please try again.');
+        }
     };
+    
 
     const handlePasswordUpdate = async (e) => {
         e.preventDefault();
 
         let body = {
             ...changePassword,
-            phone: tokenValues.phone,
-            role: tokenValues.role,
+            id: user.id,
         };
 
+        const response = await http.post(USER_END_POINT.changePassword(), body);
+        if (response.data.status === true) {
+            notify('success', response.data.message);
+
+        } else {
+            notify('error', response.data.message);
+        }
     };
 
     const [prevImg, setPrevImg] = useState();
     const presetKey = "gbaauwdv";
     const cloudName = "di4gfzmis";
-
-
-
-
-
 
     return (
         <>
@@ -131,6 +185,7 @@ const UpdateProfileV2 = () => {
                                                 id="fullName"
                                                 placeholder="Devid Jhon"
                                                 onChange={handleChange}
+                                                defaultValue={profile?.name}
                                             />
                                         </div>
                                     </div>
@@ -176,6 +231,7 @@ const UpdateProfileV2 = () => {
                                                     id="emailAddress"
                                                     placeholder="devidjond45@gmail.com"
                                                     onChange={handleChange}
+                                                    defaultValue={profile?.email}
                                                 />
                                             </div>
                                         </div>
@@ -193,6 +249,7 @@ const UpdateProfileV2 = () => {
                                                 id="phoneNumber"
                                                 placeholder="+990 3343 7865"
                                                 onChange={handleChange}
+                                                defaultValue={profile?.phone}
                                             />
                                         </div>
                                     </div>
@@ -271,7 +328,7 @@ const UpdateProfileV2 = () => {
                                 </h3>
                             </div>
                             <div className="p-7 mt-3">
-                            
+
 
                                 <div className="mb-5.5">
                                     <label
@@ -284,9 +341,10 @@ const UpdateProfileV2 = () => {
                                         <input
                                             className="w-full rounded border border-stroke bg-gray py-3 pl-5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                                             type="password"
-                                            name="newPassword"
+                                            name="password"
                                             id="newPassword"
                                             placeholder="New Password"
+                                            onChange={handleChangePassword}
                                         />
                                     </div>
                                 </div>
@@ -300,18 +358,13 @@ const UpdateProfileV2 = () => {
                                     </label>
                                     <div className="relative">
                                         <input
-                                            className={`w-full rounded border border-stroke bg-gray py-3 pl-5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary ${passwordMatchError ? "border-red-500" : ""
-                                                }`}
+                                            className="w-full rounded border border-stroke bg-gray py-3 pl-5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                                             type="password"
-                                            name="confirmPassword"
-                                            id="confirmPassword"
-                                            placeholder="Confirm Password"
+                                            name="confirm_password"
+                                            id="newPassword"
+                                            placeholder="New Password"
+                                            onChange={handleChangePassword}
                                         />
-                                        {passwordMatchError && (
-                                            <p className="text-red-500 text-sm mt-1">
-                                                Passwords do not match.
-                                            </p>
-                                        )}
                                     </div>
                                 </div>
 

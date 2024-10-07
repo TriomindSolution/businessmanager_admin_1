@@ -1,4 +1,4 @@
-'use client'
+// 'use client'
 import { useEffect, useState } from 'react';
 import { Slide, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
@@ -7,9 +7,11 @@ import Loader from '../components/common/Loader';
 import '../styles/globals.css';
 import Axios from '../utils/axios';
 import LogIn from './login';
+import ThemeContext from "../components/context/themeContext";
 
 const MyApp = ({ Component, pageProps }) => {
   const [loading, setLoading] = useState(true);
+  const [user,setUser] = useState();
 
   useEffect(() => {
     setTimeout(() => setLoading(false), 1000);
@@ -46,6 +48,9 @@ const MyApp = ({ Component, pageProps }) => {
       );
     }
   }
+  const providerValues = {
+   
+  }
 
   return (
     <>
@@ -55,6 +60,8 @@ const MyApp = ({ Component, pageProps }) => {
         <Loader />
       ) : (
         <>
+        <ThemeContext.Provider value={providerValues}>
+
           <Layout>
             <Component {...pageProps} />
             <ToastContainer
@@ -70,6 +77,7 @@ const MyApp = ({ Component, pageProps }) => {
 
 
           </Layout>
+        </ThemeContext.Provider>
 
         </>
       )}
