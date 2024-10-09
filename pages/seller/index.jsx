@@ -82,6 +82,7 @@ const [isViewModalOpen, setViewIsModalOpen] = useState(false);
 const [isDeleteModalOpen, setDeleteIsModalOpen] = useState(false);
 const [search, setSearch] = useState('');
 
+const [filteredData, setFilteredData] = useState([]);
 /*** Storing data end */
 
 
@@ -127,11 +128,12 @@ const reFetchHandler = (isRender) => {
 
 
 /***Fetching table Data Start */
-
+const data = filteredData?.data;
 const fetchSellerList = async () => {
     try {
         const response = await http.get(SELLER_END_POINT.list());
         setSellerList(response.data?.data);
+        setFilteredData(response?.data);
         setLoading(false);
     } catch (error) {
         console.error('Error fetching seller list:', error);
@@ -146,6 +148,24 @@ useEffect(() => {
 }, []);
 
 /***Fetching table Data end */
+
+       //----------------- search operation-----------------
+
+       useEffect(() => {
+        let controller = new AbortController();
+        const result = data?.filter((item) => {
+            return item.name.toLowerCase()
+                .match(search.toLocaleLowerCase());
+        });
+
+        setSellerList(result);
+        return () => controller.abort();
+    }, [search]);
+
+
+
+    //-----------------End search operation-----------------
+
 
 
 
@@ -183,10 +203,6 @@ const columns = [
         dataIndex: 'description',
     }, 
    
-    {
-        title: "Created At",
-        dataIndex: 'created_at',
-    }, 
     
     {
         title: 'Action',
@@ -205,9 +221,7 @@ const actionButton = (row) => {
     return (
         <>
             <Row justify="space-between" style={{ display: 'flex', alignItems: 'center' }}>
-                <a onClick={() => handleViewOpen(row)} style={{ color: 'green' }}>
-                    <EyeOutlined style={{ fontSize: '22px' }} />
-                </a>
+                
 
                 <a onClick={() => handleEdit(row)} className="text-primary" >
                     <EditOutlined style={{ fontSize: '22px' }} />

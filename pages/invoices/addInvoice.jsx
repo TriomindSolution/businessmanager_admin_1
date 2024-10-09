@@ -24,7 +24,7 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
     if (data) {
         try {
             parsedData = JSON.parse(data);
-            console.log( parsedData);
+            console.log(parsedData);
         } catch (error) {
             console.error('Failed to parse JSON:', error);
             parsedData = null;
@@ -43,53 +43,54 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
     const [itemList, setItemList] = useState([]);
     const [searchResults, setSearchResults] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
+    const [filteredItemList, setFilteredItemList] = useState([]);
     const [itemOption, setItemOption] = useState([]);
     const [loading, setLoading] = useState(false);
     const [order, setOrder] = useState({
-      invoice_no: "",
-      delivery_date: "",
-      notes: "",
-      payment: "",
-      payment_method: "",
-      payment_from: "",
-      shipping_charge: 0,
-      total_amount: 0,
-      name: "",
-      phone: "",
-      address_1: "",
-      product_id: "",
-      quantity: 0,
-      price: 0,
-      discount: 0,
-      tax: 0,
-      product_total: 0,
-      size: "",
-      color: "",
-      sub_total: 0,
+        invoice_no: "",
+        delivery_date: "",
+        notes: "",
+        payment: "",
+        payment_method: "",
+        payment_from: "",
+        shipping_charge: 0,
+        total_amount: 0,
+        name: "",
+        phone: "",
+        address_1: "",
+        product_id: "",
+        quantity: 0,
+        price: 0,
+        discount: 0,
+        tax: 0,
+        product_total: 0,
+        size: "",
+        color: "",
+        sub_total: 0,
     });
-  
+
     /***Fetching Item Data Start */
-  
+
     const fetchItemList = async () => {
-      try {
-        const response = await http.get(PRODUCT_END_POINT.list());
-  
-        setItemList(response.data?.data?.data);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching item list:", error);
-        setLoading(false);
-      }
+        try {
+            const response = await http.get(PRODUCT_END_POINT.list());
+
+            setItemList(response.data?.data?.data);
+            setLoading(false);
+        } catch (error) {
+            console.error("Error fetching item list:", error);
+            setLoading(false);
+        }
     };
-  
+
     useEffect(() => {
-      fetchItemList();
+        fetchItemList();
     }, []);
     console.log(order);
-  
+
     console.log(itemList);
     /***Fetching ExpenseCategory Data end */
-  
+
     //  /**Items dropdown */
     //  useEffect(() => {
     //     const ITEMDROPDOWN = mapArrayToDropdown(
@@ -97,14 +98,14 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
     //         'name',
     //         'id'
     //     );
-  
+
     //     const allItem = ITEMDROPDOWN?.map((item) => ({
     //         id: item?.id,
     //         value: item?.name,
     //     }));
     //     setItemOption(allItem);
     // }, [itemList]);
-  
+
     // /**fetch Items dropdown list  End */
 
 
@@ -129,7 +130,7 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
                     address_1: parsedData?.order_customer?.address_1 || "",
                     sub_total: parsedData?.sub_total || 0,
                 });
-    
+
                 // Set Product Variants
                 setItems(
                     parsedData?.order_variants?.map((variant) => ({
@@ -157,8 +158,6 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
             }
         }
     }, [parsedData]);
-    
-    
 
 
 
@@ -171,157 +170,204 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
 
 
 
-  
-  
-  
+
+
+
+
+
     const [items, setItems] = useState([
-      {
-        id: "",
-        quantity: 0,
-        price: 0,
-        discount: 0,
-        tax: 0,
-        total: 0,
-        size: "",
-        color: "",
-        product_total: 0,
-      },
-    ]);
-  
-    const calculateSubTotal = (items) => {
-      return items.reduce((total, item) => total + item.product_total, 0);
-    };
-    
-    const calculateTotalAmount = (subTotal, shippingCharge) => {
-      return subTotal + parseFloat(shippingCharge || 0);
-    };
-    
-    const handleAddItem = () => {
-      setItems([
-        ...items,
         {
-          id: "",
-          quantity: 0,
-          price: 0,
-          discount: 0,
-          tax: 0,
-          total: 0,
-          size: "",
-          color: "",
-          product_total: 0,
+            id: "",
+            quantity: 0,
+            price: 0,
+            discount: 0,
+            tax: 0,
+            total: 0,
+            size: "",
+            color: "",
+            product_total: 0,
         },
-      ]);
+    ]);
+
+    const calculateSubTotal = (items) => {
+        return items.reduce((total, item) => total + item.product_total, 0);
     };
-    
+
+    const calculateTotalAmount = (subTotal, shippingCharge) => {
+        return subTotal + parseFloat(shippingCharge || 0);
+    };
+
+    const handleAddItem = () => {
+        setItems([
+            ...items,
+            {
+                id: "",
+                quantity: 0,
+                price: 0,
+                discount: 0,
+                tax: 0,
+                total: 0,
+                size: "",
+                color: "",
+                product_total: 0,
+            },
+        ]);
+    };
+
     const handleRemoveItem = (index) => {
-      const newItems = items.filter((_, i) => i !== index);
-      setItems(newItems);
-      const newSubTotal = calculateSubTotal(newItems);
-      setOrder((prevOrder) => ({
-        ...prevOrder,
-        sub_total: newSubTotal,
-        total_amount: calculateTotalAmount(newSubTotal, prevOrder.shipping_charge),
-      }));
+        const newItems = items.filter((_, i) => i !== index);
+        setItems(newItems);
+        const newSubTotal = calculateSubTotal(newItems);
+        setOrder((prevOrder) => ({
+            ...prevOrder,
+            sub_total: newSubTotal,
+            total_amount: calculateTotalAmount(newSubTotal, prevOrder.shipping_charge),
+        }));
     };
-    
+
+
     const handleChange = (index, field, value) => {
-      const newItems = [...items];
-      newItems[index][field] = value || 0;
-  
-      const { quantity, price, discount, tax } = newItems[index];
-      const discountAmount =
-        (parseFloat(price || 0) * parseFloat(discount || 0)) / 100;
-      const productTotal =
-        parseFloat(quantity || 0) * parseFloat(price || 0) -
-        discountAmount +
-        parseFloat(tax || 0);
-  
-      newItems[index].product_total = productTotal;
-      setItems(newItems);
-    
-      const newSubTotal = calculateSubTotal(newItems);
-      setOrder((prevOrder) => ({
-        ...prevOrder,
-        sub_total: newSubTotal,
-        total_amount: calculateTotalAmount(newSubTotal, prevOrder.shipping_charge),
-      }));
+        const newItems = [...items]; // Copy current items array
+
+        // If the field is 'id', find the selected product from itemList and set its price
+        if (field === "id") {
+            const selectedItem = itemList.find(item => item.id === String(value)); // Ensure correct type comparison
+            console.log('Selected item:', selectedItem); // Debug to ensure correct item is selected
+
+            if (selectedItem) {
+                newItems[index].price = selectedItem.price; // Set the price from the selected item
+            } else {
+                newItems[index].price = 0; // Reset price if no item is found
+            }
+        }
+
+     
+
+
+
+        // Update the specific field (e.g., id, quantity, discount, etc.) in the item
+        newItems[index][field] = value || 0; // Ensure default value is set to 0 if undefined
+
+        // Extract current values of quantity, price, discount, and tax from the item for calculations
+        const { quantity, price, discount, tax } = newItems[index];
+
+        // Calculate discount amount based on price and discount percentage
+        const discountAmount = (parseFloat(price || 0) * parseFloat(discount || 0)) / 100;
+
+        // Calculate product total (quantity * price - discount + tax)
+        const productTotal =
+            (parseFloat(quantity || 0) * parseFloat(price || 0)) - discountAmount + parseFloat(tax || 0);
+
+        // Update the product's total in the state
+        newItems[index].product_total = productTotal;
+
+        // Update the items array in the state to reflect changes
+        setItems(newItems);
+
+        // Recalculate and update the subtotal and total amounts for the order
+        const newSubTotal = calculateSubTotal(newItems); // Recalculate subtotal based on updated items list
+        setOrder((prevOrder) => ({
+            ...prevOrder,
+            sub_total: newSubTotal, // Update the order's subtotal
+            total_amount: calculateTotalAmount(newSubTotal, prevOrder.shipping_charge), // Update the total order amount
+        }));
     };
-    
+
+
+
+
+
     const handleOrderChange = (field, value) => {
-      setOrder((prevOrder) => ({
-        ...prevOrder,
-        [field]: value,
-        total_amount:
-          field === "shipping_charge"
-            ? calculateTotalAmount(prevOrder.sub_total, value)
-            : prevOrder.total_amount,
-      }));
+        setOrder((prevOrder) => ({
+            ...prevOrder,
+            [field]: value,
+            total_amount:
+                field === "shipping_charge"
+                    ? calculateTotalAmount(prevOrder.sub_total, value)
+                    : prevOrder.total_amount,
+        }));
     };
     console.log(order);
-    
+
     const handleSubmit = async (event) => {
-      event.preventDefault();
-    
-      const orderPayload = {
-        ...order,
-        productVariants: items.map((item) => ({
-          product_id: item.id,
-          quantity: item.quantity,
-          price: item.price,
-          discount: item.discount,
-          tax: item.tax,
-          product_total: item.product_total,
-          size: item.size,
-          color: item.color,
-          sub_total: 0,
-        })),
-      };
+        event.preventDefault();
 
-      if (setEditData?.id) {
-        const response = await http.put(ORDER_END_POINT.update(setEditData.id), order);
-        if (response.data.status === true) {
-            notify('success', response.data.message);
-            if (isParentRender) {
-                isParentRender(true);
+        const orderPayload = {
+            ...order,
+            productVariants: items.map((item) => ({
+                product_id: item.id,
+                quantity: item.quantity,
+                price: item.price,
+                discount: item.discount,
+                tax: item.tax,
+                product_total: item.product_total,
+                size: item.size,
+                color: item.color,
+                sub_total: 0,
+            })),
+        };
+
+        if (setEditData?.id) {
+            const response = await http.put(ORDER_END_POINT.update(setEditData.id), order);
+            if (response.data.status === true) {
+                notify('success', response.data.message);
+                if (isParentRender) {
+                    isParentRender(true);
+                }
+                setCustomer({});
+                onClose();
+            } else {
+                notify('error', response.data.message);
             }
-            setCustomer({});
-            onClose();
-        } else {
-            notify('error', response.data.message);
         }
-    }
 
-      else{
-      const response = await http.post(ORDER_END_POINT.create(), orderPayload);
-    
-         if (response.data.status === true) {
-        notify("success", response.data.message);
-      }
-      
-      else {
-        notify("error", response.data.message);
-      }
-    }
+        else {
+            const response = await http.post(ORDER_END_POINT.create(), orderPayload);
+
+            if (response.data.status === true) {
+                notify("success", response.data.message);
+            }
+
+            else {
+                notify("error", response.data.message);
+            }
+        }
 
 
     };
-  
+
     const handleSearchChange = async (e) => {
-      setSearchQuery(e.target.value);
-      if (e.target.value.length > 0) {
-        try {
-          const response = await http.get(
-            `${PRODUCT_END_POINT.search()}?query=${e.target.value}`
-          );
-          setSearchResults(response.data?.data);
-        } catch (error) {
-          console.error("Error fetching search results:", error);
+        setSearchQuery(e.target.value);
+        if (e.target.value.length > 0) {
+            try {
+                const response = await http.get(
+                    `${PRODUCT_END_POINT.search()}?query=${e.target.value}`
+                );
+                setSearchResults(response.data?.data);
+            } catch (error) {
+                console.error("Error fetching search results:", error);
+            }
+        } else {
+            setSearchResults([]);
         }
-      } else {
-        setSearchResults([]);
-      }
     };
 
+
+    const handleSearchItem = async (e) => {
+        setSearchQuery(e.target.value);
+        if (e.target.value.length > 0) {
+            try {
+                const response = await http.get(
+                    `${PRODUCT_END_POINT.search()}?query=${e.target.value}`
+                );
+                setSearchResults(response.data?.data);
+            } catch (error) {
+                console.error("Error fetching search results:", error);
+            }
+        } else {
+            setSearchResults([]);
+        }
+    };
 
 
     return (
@@ -334,7 +380,7 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
                 </div> */}
 
                 <div className="p-2 md:p-6 xl:p-7.5 flex flex-col ">
-                <h6 className="my-5 underline text-16"> General Info:</h6>
+                    <h6 className="my-5 underline text-16"> General Info:</h6>
 
                     {/* Invoice Number Inputs */}
                     <div className="mb-3 flex flex-col gap-5 sm:flex-row">
@@ -355,7 +401,7 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
                                     placeholder="Invoice No"
                                     value={order.invoice_no}
                                     onChange={(e) =>
-                                      handleOrderChange("invoice_no", e.target.value)
+                                        handleOrderChange("invoice_no", e.target.value)
                                     }
                                 />
                             </div>
@@ -372,12 +418,12 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
                                 <input
                                     className="w-full rounded border border-black bg-gray-100 py-2 pl-5 pr-2 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                                     type="date"
-                                    
+
                                     name='delivery_date'
                                     placeholder="Delivery Date"
                                     value={order.delivery_date}
                                     onChange={(e) =>
-                                      handleOrderChange("delivery_date", e.target.value)
+                                        handleOrderChange("delivery_date", e.target.value)
                                     }
                                 />
                             </div>
@@ -389,7 +435,7 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
                                 className="mb-3 block text-sm font-medium text-black dark:text-white"
                                 htmlFor='invoice_no'
                             >
-                               Customer Name
+                                Customer Name
                             </label>
                             <div className="relative">
                                 <input
@@ -398,7 +444,7 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
                                     placeholder="Name"
                                     value={order.name}
                                     onChange={(e) =>
-                                      handleOrderChange("name", e.target.value)
+                                        handleOrderChange("name", e.target.value)
                                     }
                                 />
                             </div>
@@ -409,7 +455,7 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
                                 className="mb-3 block text-sm font-medium text-black dark:text-white"
                                 htmlFor='invoice_no'
                             >
-                               Customer Phone Number
+                                Customer Phone Number
                             </label>
                             <div className="relative">
                                 <input
@@ -419,7 +465,7 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
                                     placeholder="Phone"
                                     value={order.phone}
                                     onChange={(e) =>
-                                      handleOrderChange("phone", e.target.value)
+                                        handleOrderChange("phone", e.target.value)
                                     }
                                 />
                             </div>
@@ -445,7 +491,7 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
                                     placeholder="Address"
                                     value={order.address_1}
                                     onChange={(e) =>
-                                      handleOrderChange("address_1", e.target.value)
+                                        handleOrderChange("address_1", e.target.value)
                                     }
                                 />
                             </div>
@@ -456,7 +502,7 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
                                 className="mb-2 block text-sm font-medium text-black dark:text-white"
                                 htmlFor='invoice_no'
                             >
-                               Payment Status
+                                Payment Status
 
                             </label>
                             <div className="relative">
@@ -470,23 +516,23 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
                                 <select
                                     className="w-full rounded border border-black bg-gray-100 py-2 pl-5 pr-2 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                                     data-choices=""
-                            data-choices-search-false=""
-                            name="paymentStatus"
-                            id="paymentStatus"
-                            value={order.payment}
-                            onChange={(e) =>
-                              handleOrderChange("payment", e.target.value)
-                            }
-                           
-                          >
-                            <option value="" disabled>
-                              Select Status
-                            </option>
-                            <option value="0">Paid</option>
-                            <option value="1">Unpaid</option>
-                            <option value="2">Cancel</option>
-                            <option value="3">Refund</option>
-                          </select>
+                                    data-choices-search-false=""
+                                    name="paymentStatus"
+                                    id="paymentStatus"
+                                    value={order.payment}
+                                    onChange={(e) =>
+                                        handleOrderChange("payment", e.target.value)
+                                    }
+
+                                >
+                                    <option value="" disabled>
+                                        Select Status
+                                    </option>
+                                    <option value="0">Paid</option>
+                                    <option value="1">Unpaid</option>
+                                    <option value="2">Cancel</option>
+                                    <option value="3">Refund</option>
+                                </select>
                             </div>
                         </div>
 
@@ -524,119 +570,106 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
                             </thead>
                             <tbody id="itemBody">
 
-                            {items.map((item, index) => (
-                                <tr className="item" key={index}>
-                                    <td className="border border-slate-200 dark:border-zinc-500">
-                                        <select
-                                            id={`itemName-${index}`}
-                                            name="name"
-                                            className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                                            value={item.id}
-                                            onChange={(e) => handleChange(index, "id", e.target.value)}
-                                        >
-                                            <option value="" disabled>
-                                                Choose an Item
-                                            </option>
-                                            {itemList.map((item) => (
-      <option key={item.id} value={item.id}>
-        {item.name}
-      </option>
-    ))}
-                                        </select>
-                                        {/* <div className="flex gap-2 mt-2">
-                                            <input
-                                                type="text"
-                                                placeholder="Enter Size"
-                                                className="w-1/2 p-2 border rounded"
-                                            />
-                                            <input
-                                                type="text"
-                                                placeholder="Enter Color"
-                                                className="w-1/2 p-2 border rounded"
-                                            />
-                                        </div> */}
-                                    </td>
-                                    <td className="w-40 border border-slate-200 dark:border-zinc-500">
-                                        <div className="flex justify-center text-center input-step">
+                                {items.map((item, index) => (
+                                    <tr className="item" key={index}>
+                                        <td className="border border-slate-200 dark:border-zinc-500">
+                                            <select
+                                                id={`itemName-${index}`}
+                                                name="name"
+                                                className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                                                value={item.id}
+                                                onChange={(e) => handleChange(index, "id", e.target.value)}
+                                            >
+                                                <option value="" disabled>
+                                                    Choose an Item
+                                                </option>
+                                                {itemList.map((item) => (
+                                                    <option key={item.id} value={item.id}>
+                                                        {item.name}
+                                                    </option>
+                                                ))}
+                                            </select>
+
+                                        </td>
+                                        <td className="w-40 border border-slate-200 dark:border-zinc-500">
+                                            <div className="flex justify-center text-center input-step">
+                                                <input
+                                                    type="number"
+                                                    className="item-quantity w-full text-center p-2"
+                                                    min={0}
+                                                    max={100}
+                                                    value={item.quantity}
+                                                    onChange={(e) =>
+                                                        handleChange(
+                                                            index,
+                                                            "quantity",
+                                                            parseInt(e.target.value)
+                                                        )
+                                                    }
+                                                />
+                                            </div>
+                                        </td>
+                                        <td className="w-40 border border-slate-200 dark:border-zinc-500">
                                             <input
                                                 type="number"
-                                                className="item-quantity w-full text-center p-2"
-                                                min={0}
-                                                max={100}
-                                                value={item.quantity}
+                                                className="item-price w-full p-2 text-center"
+                                                placeholder="$00.00"
+                                                value={item.price} // Dynamically set the price from item.price
                                                 onChange={(e) =>
-                                                  handleChange(
-                                                    index,
-                                                    "quantity",
-                                                    parseInt(e.target.value)
-                                                  )
+                                                    handleChange(index, "price", parseFloat(e.target.value))
                                                 }
                                             />
-                                        </div>
-                                    </td>
-                                    <td className="w-40 border border-slate-200 dark:border-zinc-500">
-                                        <input
-                                            type="number"
-                                            className="item-price w-full p-2 text-center"
-                                            placeholder="$00.00"
-                                    value={item.price}
-                                    onChange={(e) =>
-                                      handleChange(
-                                        index,
-                                        "price",
-                                        parseFloat(e.target.value)
-                                      )
-                                    }
-                                        />
-                                    </td>
-                                    <td className="w-40 border border-slate-200 dark:border-zinc-500">
-                                        <input
-                                            type="number"
-                                            className="item-discount w-full p-2 text-center"
-                                            placeholder="0%"
-                                    value={item.discount}
-                                    onChange={(e) =>
-                                      handleChange(
-                                        index,
-                                        "discount",
-                                        parseFloat(e.target.value)
-                                      )
-                                    }
-                                        />
-                                    </td>
-                                    <td className="w-40 border border-slate-200 dark:border-zinc-500">
-                                        <input
-                                            type="number"
-                                            className="item-tax w-full p-2 text-center"
-                                            placeholder="0%"
-                                            value={item.tax}
-                                            onChange={(e) =>
-                                              handleChange(
-                                                index,
-                                                "tax",
-                                                parseFloat(e.target.value)
-                                              )
-                                            }
-                                        />
-                                    </td>
-                                    <td className="border border-slate-200 dark:border-zinc-500">
-                                        <input
-                                            type="text"
-                                            className="cart-total w-full p-2 text-center"
-                                            value={item.product_total}
-                                        />
-                                    </td>
-                                    <td className="border border-slate-200 dark:border-zinc-500 px-6 py-1.5">
-                                        <button
-                                            type="button"
-                                            className="product-removal text-red-500"
-                                            onClick={() => handleRemoveItem(index)}
-                                        >
-                                            Delete
-                                        </button>
-                                    </td>
-                                </tr>
-                                   ))}
+                                        </td>
+
+
+                                        <td className="w-40 border border-slate-200 dark:border-zinc-500">
+                                            <input
+                                                type="number"
+                                                className="item-discount w-full p-2 text-center"
+                                                placeholder="0%"
+                                                value={item.discount}
+                                                onChange={(e) =>
+                                                    handleChange(
+                                                        index,
+                                                        "discount",
+                                                        parseFloat(e.target.value)
+                                                    )
+                                                }
+                                            />
+                                        </td>
+                                        <td className="w-40 border border-slate-200 dark:border-zinc-500">
+                                            <input
+                                                type="number"
+                                                className="item-tax w-full p-2 text-center"
+                                                placeholder="0%"
+                                                value={item.tax}
+                                                onChange={(e) =>
+                                                    handleChange(
+                                                        index,
+                                                        "tax",
+                                                        parseFloat(e.target.value)
+                                                    )
+                                                }
+                                            />
+                                        </td>
+                                        <td className="border border-slate-200 dark:border-zinc-500">
+                                            <input
+                                                type="text"
+                                                className="cart-total w-full p-2 text-center"
+                                                value={item.product_total}
+                                            />
+                                        </td>
+                                        <td className="border border-slate-200 dark:border-zinc-500 px-6 py-1.5">
+                                            <button
+                                                type="button"
+                                                className="product-removal text-red-500"
+                                                onClick={() => handleRemoveItem(index)}
+                                            >
+                                                Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
                             </tbody>
                             <tbody>
                                 <tr>
@@ -704,7 +737,7 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
                                     placeholder="Payment From"
                                     value={order.payment_from}
                                     onChange={(e) =>
-                                      handleOrderChange("payment_from", e.target.value)
+                                        handleOrderChange("payment_from", e.target.value)
                                     }
                                 />
                             </div>
@@ -715,7 +748,7 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
                                 className="mb-3 block text-sm font-medium text-black dark:text-white"
                                 htmlFor='invoice_no'
                             >
-                               Payment Method
+                                Payment Method
                             </label>
                             <div className="relative">
                                 <input
@@ -725,10 +758,10 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
                                     id='invoice_no'
                                     value={order.payment_method}
                                     onChange={(e) =>
-                                      handleOrderChange(
-                                        "payment_method",
-                                        e.target.value
-                                      )
+                                        handleOrderChange(
+                                            "payment_method",
+                                            e.target.value
+                                        )
                                     }
                                 />
                             </div>
@@ -753,9 +786,9 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
 
                                 name="notes"
                                 value={order.notes}
-                            onChange={(e) =>
-                              handleOrderChange("notes", e.target.value)
-                            }
+                                onChange={(e) =>
+                                    handleOrderChange("notes", e.target.value)
+                                }
                             />
 
                             <p

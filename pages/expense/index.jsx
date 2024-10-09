@@ -8,7 +8,7 @@ import withAuth from '@/components/withAuth';
 import Axios from '@/utils/axios';
 import { EXPENSE_END_POINT } from "@/constants/api_endpoints/expenseEndPoints";
 import ToastMessage from "@/components/Toast";
-
+import ExpensForm from "./ExpenseForm";
 
 const Expense = () => {
     /*** Storing data start */
@@ -23,7 +23,7 @@ const Expense = () => {
     const [isViewModalOpen, setViewIsModalOpen] = useState(false);
     const [isDeleteModalOpen, setDeleteIsModalOpen] = useState(false);
     const [search, setSearch] = useState('');
-    
+    const [filteredData, setFilteredData] = useState([]);
     /*** Storing data end */
     
     
@@ -74,6 +74,7 @@ const Expense = () => {
         try {
             const response = await http.get(EXPENSE_END_POINT.list());
             setExpenseList(response.data?.data);
+          
             setLoading(false);
         } catch (error) {
             console.error('Error fetching seller list:', error);
@@ -91,7 +92,7 @@ const Expense = () => {
     
     
     
-    
+console.log(expenseList);
     
     
     const columns = [
@@ -101,8 +102,8 @@ const Expense = () => {
             render: (text, record, index) => index + 1
         },
         {
-            title: 'Name',
-            dataIndex: 'name',
+            title: 'Expense Details',
+            dataIndex: 'details',
             // fixed: 'left',
         },
         
@@ -116,10 +117,7 @@ const Expense = () => {
             dataIndex: 'amount',
             // fixed: 'left',
         },
-        {
-            title: 'Created At',
-            dataIndex: 'created_at',
-        },
+       
         {
             title: 'Action',
             key: 'action',
@@ -129,15 +127,28 @@ const Expense = () => {
         },
     ];
     
-    
+       //----------------- search operation-----------------
+
+       useEffect(() => {
+        let controller = new AbortController();
+        const result = data?.filter((item) => {
+            return item.details.toLowerCase()
+                .match(search.toLocaleLowerCase());
+        });
+
+        setExpenseList(result);
+        return () => controller.abort();
+    }, [search]);
+
+
+
+    //-----------------End search operation-----------------
     
     const actionButton = (row) => {
         return (
             <>
                 <Row justify="space-between" style={{ display: 'flex', alignItems: 'center' }}>
-                    <a onClick={() => handleViewOpen(row)} style={{ color: 'green' }}>
-                        <EyeOutlined style={{ fontSize: '22px' }} />
-                    </a>
+                   
     
                     <a onClick={() => handleEdit(row)} className="text-primary" >
                         <EditOutlined style={{ fontSize: '22px' }} />
@@ -177,6 +188,29 @@ const Expense = () => {
             console.log("clicked");
             setIsModalOpen(!isModalOpen);
         };
+
+
+          /***Fetching table Data Start */
+    const data = filteredData?.data;
+    const fetchExpenseCategoryList = async () => {
+        try {
+            const response = await http.get(EXPENSE_END_POINT.list());
+            setExpenseList(response.data?.data);
+            setFilteredData(response?.data)
+            setLoading(false);
+        } catch (error) {
+            console.error('Error fetching seller list:', error);
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchExpenseCategoryList();
+        return () => {
+        };
+    }, []);
+
+    /***Fetching table Data end */
     
         return (
             <div className="flex flex-col gap-10">
