@@ -10,16 +10,7 @@ import { ORDER_END_POINT } from "@/constants/api_endpoints/orderEndPoints";
 import ToastMessage from "@/components/Toast";
 import AddInvoice from "./AddInvoice";
 import { useRouter } from "next/router";
-
-
-
-
-
-
-
-
-
-
+import Link from "next/link";
 
 
 const DeleteModal = ({ isOpen, onClose, data, isParentRender }) => {
@@ -30,10 +21,9 @@ const DeleteModal = ({ isOpen, onClose, data, isParentRender }) => {
     }, []);
     const deleteData = async () => {
         try {
-            console.log("HIIIIIIIIIIIIIIII");
             const response = await http.delete(ORDER_END_POINT.delete(data?.id));
 
-            
+
             if (response.data.status === true) {
                 notify('success', response.data.message);
                 if (isParentRender) {
@@ -81,190 +71,194 @@ const DeleteModal = ({ isOpen, onClose, data, isParentRender }) => {
 
 
 const Order = () => {
-/*** Storing data start */
-const { http } = Axios();
-const [orderList, setOrderList] = useState([]); 
-console.log('orderList',orderList)
-const [loading, setLoading] = useState(true);
-const [page, setPage] = useState(1);
-const [perPage, setPerPage] = useState(10);
-const [limit, setLimit] = useState(10);
-const [editData, setEditData] = useState({});
-const [isModalOpen, setIsModalOpen] = useState(false);
-const [isViewModalOpen, setViewIsModalOpen] = useState(false);
-const [isDeleteModalOpen, setDeleteIsModalOpen] = useState(false);
-const [search, setSearch] = useState('');
-const router = useRouter();
-/*** Storing data end */
+    /*** Storing data start */
+    const { http } = Axios();
+    const [orderList, setOrderList] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [page, setPage] = useState(1);
+    const [perPage, setPerPage] = useState(10);
+    const [limit, setLimit] = useState(10);
+    const [editData, setEditData] = useState({});
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isViewModalOpen, setViewIsModalOpen] = useState(false);
+    const [isDeleteModalOpen, setDeleteIsModalOpen] = useState(false);
+    const [search, setSearch] = useState('');
+    const router = useRouter();
+    /*** Storing data end */
 
 
-/**Add function  start */
-const handleAdd = () => {
+    /**Add function  start */
+    const handleAdd = () => {
 
-    setEditData(null);
+        setEditData(null);
 
-    router.push({
-        pathname: "../invoices/AddInvoice",
-        query: { data: null },
-    });
-};
-/**Add function end */
-
-
-/** edit function start */
-const handleEdit = (data) => {
-    router.push({
-        pathname: "../invoices/AddInvoice",
-        query: { data: JSON.stringify(data) },
-     
-    });
-};
-/** edit function  end */
+        router.push({
+            pathname: "../invoices/addInvoice",
+            query: { data: null },
+        });
+    };
+    /**Add function end */
 
 
-/**Invoice details view*/
+    /** edit function start */
+    const handleEdit = (data) => {
+        router.push({
+            pathname: "../invoices/addInvoice",
+            query: { data: JSON.stringify(data) },
 
-const handleViewOpen=(data)=>{
-
-router.push(
-{
-
-    pathname:"../invoices/viewInvoice",
-    query: { data: JSON.stringify(data) },
-
-}
-);
-};
+        });
+    };
+    /** edit function  end */
 
 
-/**Invoice details view end*/
+    /**Invoice details view*/
+
+    const handleViewOpen = (data) => {
+
+        router.push(
+            {
+
+                pathname: "../invoices/viewInvoice",
+                query: { data: JSON.stringify(data) },
+
+            }
+        );
+    };
 
 
-const closeModal = () => {
-    setIsModalOpen(false);
-};
+    /**Invoice details view end*/
+
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
 
 
 
-/** Delete function start */
-const handleDelete = (data) => {
-    console.log("click me done ")
-    setEditData(data);
-    setDeleteIsModalOpen(true);
-};
+    /** Delete function start */
+    const handleDelete = (data) => {
+        setEditData(data);
+        setDeleteIsModalOpen(true);
+    };
 
 
 
 
 
-const closeDeleteModal = () => {
-    setDeleteIsModalOpen(false);
-};
-/** Delete function end */
+    const closeDeleteModal = () => {
+        setDeleteIsModalOpen(false);
+    };
+    /** Delete function end */
 
 
 
 
 
 
-/***Fetching table Data Start */
+    /***Fetching table Data Start */
 
-const fetchOderList = async () => {
-    try {
-        const response = await http.get(ORDER_END_POINT.list());
+    const fetchOderList = async () => {
+        try {
+            const response = await http.get(ORDER_END_POINT.list());
 
-        if (response.data.data) {
-            setOrderList(response.data.data.data);
-            console.log(response.data.data.data);
-        } else {
-            setOrderList([]);
+            if (response.data.data) {
+                setOrderList(response.data.data.data);
+                console.log(response.data.data.data);
+            } else {
+                setOrderList([]);
+            }
+
+            // setOrderList(response.data?.data)
+
+            setLoading(false);
+        } catch (error) {
+            console.error('Error fetching order list:', error);
+            setLoading(false);
+            setOrderList([]); // Set to empty array in case of error
         }
-
-        // setOrderList(response.data?.data)
-     
-        setLoading(false);
-    } catch (error) {
-        console.error('Error fetching order list:', error);
-        setLoading(false);
-        setOrderList([]); // Set to empty array in case of error
-    }
-};
+    };
 
 
 
 
-useEffect(() => {
-    fetchOderList();
-}, []);
+    useEffect(() => {
+        fetchOderList();
+    }, []);
 
-/***Fetching table Data end */
+    /***Fetching table Data end */
 
-/**Render Function Start */
-const reFetchHandler = (isRender) => {
-    if (isRender) fetchOderList();
-};
-/**Render Function end */
-console.log(orderList);
-
-
-
-const columns = [
-    {
-        title: 'SL',
-        fixed: 'left',
-        render: (text, record, index) => index + 1
-    },
-    {
-        title: 'Invoice No.',
-        dataIndex: 'invoice_no',
-        // fixed: 'left',
-    },
-    {
-        title: 'Order No.',
-        dataIndex: 'order_code',
-        // fixed: 'left',
-    }
-    ,{
-        title: 'Customer Name',
-        dataIndex: 'order_customer.name', // Access nested object directly
-        render: (_, record) => record.order_customer?.name || 'N/A', // Fallback in case order_customer is undefined
-    },
-
-    ,{
-        title: 'Order Status',
-        dataIndex: 'status',
-      
-    },
-    {
-        title: 'Action',
-        key: 'action',
-        fixed: 'right',
-        width: 100,
-        render: (row) => actionButton(row), // You need to define actionButton function
-    },
-];
+    /**Render Function Start */
+    const reFetchHandler = (isRender) => {
+        if (isRender) fetchOderList();
+    };
+    /**Render Function end */
+    console.log(orderList);
 
 
 
-const actionButton = (row) => {
-    return (
-        <>
+    const columns = [
+        {
+            title: 'SL',
+            fixed: 'left',
+            render: (text, record, index) => index + 1
+        },
+        {
+            title: 'Invoice No.',
+            dataIndex: 'invoice_no',
+            // fixed: 'left',
+        },
+        {
+            title: 'Order No.',
+            dataIndex: 'order_code',
+            // fixed: 'left',
+        }
+        , {
+            title: 'Customer Name',
+            dataIndex: 'order_customer.name', // Access nested object directly
+            render: (_, record) => record.order_customer?.name || 'N/A', // Fallback in case order_customer is undefined
+        },
+
+        , {
+            title: 'Order Status',
+            dataIndex: 'status',
+
+        },
+        {
+            title: 'Action',
+            key: 'action',
+            fixed: 'right',
+            width: 100,
+            render: (row) => actionButton(row), // You need to define actionButton function
+        },
+    ];
+
+
+
+    const actionButton = (row) => {
+        return (
             <Row justify="space-between" style={{ display: 'flex', alignItems: 'center' }}>
-                <a onClick={() => handleViewOpen(row)} style={{ color: 'green' }}>
+                <a 
+                    onClick={(e) => { e.preventDefault(); handleViewOpen(row); }} 
+                    style={{ color: 'green' }} 
+                    aria-label="View"
+                >
                     <EyeOutlined style={{ fontSize: '22px' }} />
                 </a>
-
-                <a onClick={() => handleEdit(row)} className="text-primary" >
-                    <EditOutlined style={{ fontSize: '22px' }} />
-                </a>
-
-                <a onClick={() => handleDelete(row)} className="text-danger" >
+                <Link href={`/invoices/update/${row?.id}`} aria-label="Edit">
+                    <EditOutlined style={{ fontSize: '22px', color: 'blue' }} />
+                </Link>
+                <a 
+                    onClick={(e) => { e.preventDefault(); handleDelete(row); }} 
+                    className="text-danger" 
+                    aria-label="Delete"
+                >
                     <DeleteOutlined style={{ fontSize: '22px' }} />
                 </a>
             </Row>
-        </>
-    );
-};
+        );
+    };
+    
+    
 
     /*** Pagination Start  */
     const pagination = {
@@ -329,7 +323,7 @@ const actionButton = (row) => {
                     onChange={onChange}
                 />
 
-               
+
             </div>
         </div>
 
