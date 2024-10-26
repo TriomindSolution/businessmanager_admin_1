@@ -718,4 +718,4 @@ console.log("itemList",itemList)
     );
 };
 
-export default AddInvoice;
+export default withAuth(AddInvoice);

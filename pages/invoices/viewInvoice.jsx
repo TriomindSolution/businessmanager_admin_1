@@ -4,6 +4,7 @@ import React, { useEffect, useState, useCallback,useRef } from "react";
 import { ORDER_END_POINT } from "@/constants/api_endpoints/orderEndPoints";
 import { useParams } from 'react-router-dom';
 import { useRouter } from "next/router";
+import withAuth from '@/components/withAuth';
 const ViewInvoice = () => {
     const invoiceRef = useRef();
 
@@ -189,4 +190,4 @@ const ViewInvoice = () => {
 };
 
 
-export default ViewInvoice;
+export default withAuth(ViewInvoice);

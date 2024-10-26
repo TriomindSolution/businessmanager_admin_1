@@ -8,6 +8,7 @@ import '../styles/globals.css';
 import Axios from '../utils/axios';
 import LogIn from './login';
 import ThemeContext from "../components/context/themeContext";
+// import '@/styles/globals.css'
 
 const MyApp = ({ Component, pageProps }) => {
   const [loading, setLoading] = useState(true);

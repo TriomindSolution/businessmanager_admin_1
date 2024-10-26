@@ -263,7 +263,7 @@ const Expense = () => {
                     <ExpenseForm isOpen={isModalOpen} onClose={closeModal} setEditData={editData} isParentRender={reFetchHandler} />
    
                     <Table
-                        className="border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark text-black dark:text-white"
+                        className="ant-table-wrapper border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark text-black dark:text-white"
                         columns={columns}
                         dataSource={expenseList}
                         scroll={{ x: 'max-content' }}
