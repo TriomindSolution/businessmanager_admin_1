@@ -294,4 +294,4 @@ const SellerForm = ({ isOpen, onClose, setEditData, isParentRender }) => {
   )
 }
 
-export default withAuth(SellerForm)
+export default withAuth(SellerForm) 
