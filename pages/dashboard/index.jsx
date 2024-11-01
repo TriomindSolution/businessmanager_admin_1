@@ -38,7 +38,7 @@ const Dashbord = () => {
   return (
     <>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
-        <CardDataStats title="TOTAL ORDER" total={dashbord?.firstLayer[0]?.totalOrder} rate="0.43%" levelUp>
+        <CardDataStats title="TOTAL ORDER" total={dashbord?.firstLayer[0]?.totalOrder} rate="" >
           <svg
             className="fill-primary dark:fill-white"
             width="22"
@@ -57,7 +57,7 @@ const Dashbord = () => {
             />
           </svg>
         </CardDataStats>
-        <CardDataStats title="TOTAL CANCEL ORDER" total={dashbord?.firstLayer[1]?.cancelOrder} rate="4.35%" levelUp>
+        <CardDataStats title="TOTAL CANCEL ORDER" total={dashbord?.firstLayer[1]?.cancelOrder} rate="" >
           <svg
             className="fill-primary dark:fill-white"
             width="20"
@@ -80,7 +80,7 @@ const Dashbord = () => {
             />
           </svg>
         </CardDataStats>
-        <CardDataStats title="TOTAL PAID ORDER" total={dashbord?.firstLayer[2]?.paidOrder} rate="2.59%" levelUp>
+        <CardDataStats title="TOTAL PAID ORDER" total={dashbord?.firstLayer[2]?.paidOrder} rate="" >
           <svg
             className="fill-primary dark:fill-white"
             width="22"
@@ -99,7 +99,7 @@ const Dashbord = () => {
             />
           </svg>
         </CardDataStats>
-        <CardDataStats title="TOTAL REVENUE" total={dashbord?.firstLayer[3]?.totalRevenue} rate="0.95%" levelDown>
+        <CardDataStats title="TOTAL REVENUE" total={dashbord?.firstLayer[3]?.totalRevenue} rate="" >
           <svg
             className="fill-primary dark:fill-white"
             width="22"
