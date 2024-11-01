@@ -4,6 +4,8 @@ import ChartOne from '@/components/Charts/ChartOne'
 // import ChartTwo from '@/components/Charts/ChartTwo'
 import { DASHBORD_END_POINT } from '@/constants/api_endpoints/dashbordEndPoints'
 import Axios from '@/utils/axios';
+import Loader from "@/components/common/Loader";
+import withAuth from "@/components/withAuth";
 
 
 const Dashbord = () => {
@@ -15,7 +17,6 @@ const Dashbord = () => {
   const fetchDashbord = async () => {
     try {
       const response = await http.get(DASHBORD_END_POINT.get());
-      console.log(response);
       setDashbordData(response.data?.data);
       setLoading(false);
     } catch (error) {
@@ -30,7 +31,8 @@ const Dashbord = () => {
 
   /*** Render loading state ***/
   if (loading) {
-    return <div>Loading...</div>;
+    // return <div>Loading...</div>;
+    return <Loader />
   }
   /***Fetching table Data end */
   return (
@@ -133,4 +135,4 @@ const Dashbord = () => {
   )
 }
 
-export default Dashbord
+export default withAuth(Dashbord)

@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/router";
-import html2pdf from "html2pdf.js"; // Import html2pdf.js
+import withAuth from '@/components/withAuth';
+
 
 const ViewInvoice = () => {
     const router = useRouter();
@@ -169,4 +170,5 @@ const ViewInvoice = () => {
     );
 };
 
-export default ViewInvoice;
+
+export default withAuth(ViewInvoice);

@@ -17,21 +17,21 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
     const router = useRouter();
     const { http } = Axios();
 
-    const { data } = router.query;
-    console.log(data);
+    // const { data } = router.query;
+    // console.log(data);
     let parsedData;
 
-    if (data) {
-        try {
-            parsedData = JSON.parse(data);
-            console.log(parsedData);
-        } catch (error) {
-            console.error('Failed to parse JSON:', error);
-            parsedData = null;
-        }
-    } else {
-        parsedData = null;
-    }
+    // if (data) {
+    //     try {
+    //         parsedData = JSON.parse(data);
+    //         console.log( parsedData);
+    //     } catch (error) {
+    //         console.error('Failed to parse JSON:', error);
+    //         parsedData = null;
+    //     }
+    // } else {
+    //     parsedData = null;
+    // }
 
 
 
@@ -86,89 +86,6 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
     useEffect(() => {
         fetchItemList();
     }, []);
-    console.log(order);
-
-    console.log(itemList);
-    /***Fetching ExpenseCategory Data end */
-
-    //  /**Items dropdown */
-    //  useEffect(() => {
-    //     const ITEMDROPDOWN = mapArrayToDropdown(
-    //         itemList,
-    //         'name',
-    //         'id'
-    //     );
-
-    //     const allItem = ITEMDROPDOWN?.map((item) => ({
-    //         id: item?.id,
-    //         value: item?.name,
-    //     }));
-    //     setItemOption(allItem);
-    // }, [itemList]);
-
-    // /**fetch Items dropdown list  End */
-
-
-
-    useEffect(() => {
-        if (!parsedData) {
-            // Handle case where no data is available
-        } else {
-            try {
-                // Set Order Details
-                setOrder({
-                    invoice_no: parsedData?.invoice_no || "",
-                    delivery_date: parsedData?.delivery_date || "",
-                    notes: parsedData?.notes || "",
-                    payment: parsedData?.payment || "",
-                    payment_method: parsedData?.payment_method || "",
-                    payment_from: parsedData?.payment_from || "",
-                    shipping_charge: parsedData?.shipping_charge || 0,
-                    total_amount: parsedData?.total_amount || 0,
-                    name: parsedData?.order_customer?.name || "",
-                    phone: parsedData?.order_customer?.phone || "",
-                    address_1: parsedData?.order_customer?.address_1 || "",
-                    sub_total: parsedData?.sub_total || 0,
-                });
-
-                // Set Product Variants
-                setItems(
-                    parsedData?.order_variants?.map((variant) => ({
-                        id: variant?.id || "",
-                        product_id: variant?.product_id || "",
-                        quantity: variant?.quantity || 0,
-                        price: variant?.price || 0,
-                        discount: variant?.discount || 0,
-                        tax: variant?.tax || 0,
-                        product_total: parseFloat(variant?.quantity || 0) * parseFloat(variant?.price || 0),
-                    })) || [
-                        {
-                            id: "",
-                            product_id: "",
-                            quantity: 0,
-                            price: 0,
-                            discount: 0,
-                            tax: 0,
-                            product_total: 0,
-                        },
-                    ]
-                );
-            } catch (error) {
-                console.error("Error parsing data for editing:", error);
-            }
-        }
-    }, [parsedData]);
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -188,7 +105,8 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
             product_total: 0,
         },
     ]);
-
+    console.log('items',items)
+console.log("itemList",itemList)
     const calculateSubTotal = (items) => {
         return items.reduce((total, item) => total + item.product_total, 0);
     };
@@ -225,57 +143,28 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
         }));
     };
 
-
     const handleChange = (index, field, value) => {
-        const newItems = [...items]; // Copy current items array
+        const newItems = [...items];
+        newItems[index][field] = value || 0;
 
-        // If the field is 'id', find the selected product from itemList and set its price
-        if (field === "id") {
-            const selectedItem = itemList.find(item => item.id === String(value)); // Ensure correct type comparison
-            console.log('Selected item:', selectedItem); // Debug to ensure correct item is selected
-
-            if (selectedItem) {
-                newItems[index].price = selectedItem.price; // Set the price from the selected item
-            } else {
-                newItems[index].price = 0; // Reset price if no item is found
-            }
-        }
-
-     
-
-
-
-        // Update the specific field (e.g., id, quantity, discount, etc.) in the item
-        newItems[index][field] = value || 0; // Ensure default value is set to 0 if undefined
-
-        // Extract current values of quantity, price, discount, and tax from the item for calculations
         const { quantity, price, discount, tax } = newItems[index];
-
-        // Calculate discount amount based on price and discount percentage
-        const discountAmount = (parseFloat(price || 0) * parseFloat(discount || 0)) / 100;
-
-        // Calculate product total (quantity * price - discount + tax)
+        const discountAmount =
+            (parseFloat(price || 0) * parseFloat(discount || 0)) / 100;
         const productTotal =
-            (parseFloat(quantity || 0) * parseFloat(price || 0)) - discountAmount + parseFloat(tax || 0);
+            parseFloat(quantity || 0) * parseFloat(price || 0) -
+            discountAmount +
+            parseFloat(tax || 0);
 
-        // Update the product's total in the state
         newItems[index].product_total = productTotal;
-
-        // Update the items array in the state to reflect changes
         setItems(newItems);
 
-        // Recalculate and update the subtotal and total amounts for the order
-        const newSubTotal = calculateSubTotal(newItems); // Recalculate subtotal based on updated items list
+        const newSubTotal = calculateSubTotal(newItems);
         setOrder((prevOrder) => ({
             ...prevOrder,
-            sub_total: newSubTotal, // Update the order's subtotal
-            total_amount: calculateTotalAmount(newSubTotal, prevOrder.shipping_charge), // Update the total order amount
+            sub_total: newSubTotal,
+            total_amount: calculateTotalAmount(newSubTotal, prevOrder.shipping_charge),
         }));
     };
-
-
-
-
 
     const handleOrderChange = (field, value) => {
         setOrder((prevOrder) => ({
@@ -589,7 +478,18 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
                                                     </option>
                                                 ))}
                                             </select>
-
+                                            {/* <div className="flex gap-2 mt-2">
+                                            <input
+                                                type="text"
+                                                placeholder="Enter Size"
+                                                className="w-1/2 p-2 border rounded"
+                                            />
+                                            <input
+                                                type="text"
+                                                placeholder="Enter Color"
+                                                className="w-1/2 p-2 border rounded"
+                                            />
+                                        </div> */}
                                         </td>
                                         <td className="w-40 border border-slate-200 dark:border-zinc-500">
                                             <div className="flex justify-center text-center input-step">
@@ -614,14 +514,16 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
                                                 type="number"
                                                 className="item-price w-full p-2 text-center"
                                                 placeholder="$00.00"
-                                                value={item.price} // Dynamically set the price from item.price
+                                                value={item.price}
                                                 onChange={(e) =>
-                                                    handleChange(index, "price", parseFloat(e.target.value))
+                                                    handleChange(
+                                                        index,
+                                                        "price",
+                                                        parseFloat(e.target.value)
+                                                    )
                                                 }
                                             />
                                         </td>
-
-
                                         <td className="w-40 border border-slate-200 dark:border-zinc-500">
                                             <input
                                                 type="number"
@@ -833,4 +735,4 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
     );
 };
 
-export default AddInvoice;
+export default withAuth(AddInvoice);

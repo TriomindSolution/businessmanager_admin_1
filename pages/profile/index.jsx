@@ -1,6 +1,7 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react"
 import Link from 'next/link';
+import withAuth from "@/components/withAuth";
 
 const Profile = () => {
   const [loading, setLoading] = useState(true);
@@ -29,7 +30,7 @@ const Profile = () => {
               className="flex cursor-pointer items-center justify-center gap-2 rounded bg-primary py-1 px-2 text-sm font-medium text-white hover:bg-opacity-80 xsm:px-4"
             >
               <input type="file" name="cover" className="sr-only" />
-              
+
               <Link href="/profile/updateProfileV2">
                 <span >Edit Me</span>
               </Link>
@@ -43,14 +44,14 @@ const Profile = () => {
             <div className="relative drop-shadow-2">
 
 
-        
-                  <Image
-                    style={{ borderRadius: '50%' }}
-                    width={160}
-                    height={160}
-                    src={"/upload/avater.jpg"}
-                    alt="User"
-                  /> 
+
+              <Image
+                style={{ borderRadius: '50%' }}
+                width={160}
+                height={160}
+                src={"/upload/avater.jpg"}
+                alt="User"
+              />
             </div>
           </div>
           <div className="mt-4">
@@ -67,80 +68,78 @@ const Profile = () => {
           </div>
         </div>
 
-        <div className="w-8/12 m-auto text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-          <div className="grid grid-cols-2 gap-10 ">
-
-            <div className="" >
-              <div className="w-full justify-start items-center flex  border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark dark:bg-gray-800 border-b border-b-gray border-b-1">
-                <div className="capitalize py-2 w-32 font-medium text-gray-900 whitespace-nowrap dark:text-white">Mobile number</div>
-                <div className="flex justify-center items-center w-2.5">:</div>
-                <div className="flex-grow py-4 text-left">01789085098</div>
-              </div>
-              <div className="w-full justify-start items-center flex  border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark dark:bg-gray-800 border-b border-b-gray border-b-1">
-                <div className="capitalize py-2 w-32 font-medium text-gray-900 whitespace-nowrap dark:text-white">Email</div>
-                <div className="flex justify-center items-center w-2.5">:</div>
-                <div className="flex-grow py-4 text-left">Suparan Sharma </div>
-              </div>
-              <div className="w-full justify-start items-center flex  border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark dark:bg-gray-800 border-b border-b-gray border-b-1">
-                <div className="capitalize py-2 w-32 font-medium text-gray-900 whitespace-nowrap dark:text-white">Admin</div>
-                <div className="flex justify-center items-center w-2.5">:</div>
-                <div className="flex-grow py-4 text-left">Admin 123 </div>
-              </div>
-              <div className="w-full justify-start items-center flex  border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark dark:bg-gray-800 border-b border-b-gray border-b-1">
-                <div className="capitalize py-2 w-32 font-medium text-gray-900 whitespace-nowrap dark:text-white">DOB</div>
-                <div className="flex justify-center items-center w-2.5">:</div>
-                <div className="flex-grow py-4 text-left">31/08/1999</div>
-              </div>
-              <div className="w-full justify-start items-center flex  border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark dark:bg-gray-800 border-b border-b-gray border-b-1">
-                <div className="capitalize py-2 w-32 font-medium text-gray-900 whitespace-nowrap dark:text-white">Gender</div>
-                <div className="flex justify-center items-center w-2.5">:</div>
-                <div className="flex-grow py-4 text-left">Male</div>
-              </div>
-              <div className="w-full justify-start items-center flex  border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark dark:bg-gray-800 border-b border-b-gray border-b-1">
-                <div className="capitalize py-2 w-32 font-medium text-gray-900 whitespace-nowrap dark:text-white">Join Date</div>
-                <div className="flex justify-center items-center w-2.5">:</div>
-                <div className="flex-grow py-4 text-left">12/12/2023</div>
-              </div>
-            </div>
+        <div className="w-full lg:w-9/12 m-auto text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-10">
 
             <div>
-              <div className="w-full justify-start items-center flex  border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark dark:bg-gray-800 border-b border-b-gray border-b-1">
-                <div className="capitalize py-2 w-32 font-medium text-gray-900 whitespace-nowrap dark:text-white">Nationality</div>
-                <div className="flex justify-center items-center w-2.5">:</div>
-                <div className="flex-grow py-4 text-left">Bangladeshi</div>
-              </div>
-              <div className="w-full justify-start items-center flex  border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark dark:bg-gray-800 border-b border-b-gray border-b-1">
-                <div className="capitalize py-2 w-32 font-medium text-gray-900 whitespace-nowrap dark:text-white">Country</div>
-                <div className="flex justify-center items-center w-2.5">:</div>
-                <div className="flex-grow py-4 text-left">Bangladesh</div>
-              </div>
-              <div className="w-full justify-start items-center flex  border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark dark:bg-gray-800 border-b border-b-gray border-b-1">
-                <div className="capitalize py-2 w-32 font-medium text-gray-900 whitespace-nowrap dark:text-white">State</div>
-                <div className="flex justify-center items-center w-2.5">:</div>
-                <div className="flex-grow py-4 text-left">Dhaka</div>
-              </div>
-              <div className="w-full justify-start items-center flex  border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark dark:bg-gray-800 border-b border-b-gray border-b-1">
-                <div className="capitalize py-2 w-32 font-medium text-gray-900 whitespace-nowrap dark:text-white">City</div>
-                <div className="flex justify-center items-center w-2.5">:</div>
-                <div className="flex-grow py-4 text-left">Dhaka</div>
+              <div className="flex justify-between items-center border-b border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark dark:bg-gray-800">
+                <div className="capitalize py-2 w-24 sm:w-32 font-medium text-gray-900 whitespace-nowrap dark:text-white">Mobile number</div>
+                <div className="flex-grow text-right lg:text-left py-4">01789085098</div>
               </div>
 
-
-              <div className="w-full justify-start items-center flex  border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark dark:bg-gray-800 border-b border-b-gray border-b-1">
-                <div className="capitalize py-2 w-32 font-medium text-gray-900 whitespace-nowrap dark:text-white">Zip Code</div>
-                <div className="flex justify-center items-center w-2.5">:</div>
-                <div className="flex-grow py-4 text-left">1229</div>
-              </div>
-              <div className="w-full justify-start items-center flex  border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark dark:bg-gray-800 border-b border-b-gray border-b-1">
-                <div className="capitalize py-2 w-32 font-medium text-gray-900 whitespace-nowrap dark:text-white">Address</div>
-                <div className="flex justify-center items-center w-2.5">:</div>
-                <div className="flex-grow py-4 text-left">Nikunjja-2,Dhaka,Bangladesh</div>
+              <div className="flex justify-between items-center border-b border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark dark:bg-gray-800">
+                <div className="capitalize py-2 w-24 sm:w-32 font-medium text-gray-900 whitespace-nowrap dark:text-white">Email</div>
+                <div className="flex-grow text-right lg:text-left py-4">Suparan Sharma</div>
               </div>
 
+              <div className="flex justify-between items-center border-b border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark dark:bg-gray-800">
+                <div className="capitalize py-2 w-24 sm:w-32 font-medium text-gray-900 whitespace-nowrap dark:text-white">Admin</div>
+                <div className="flex-grow text-right lg:text-left py-4">Admin 123</div>
+              </div>
+
+              <div className="flex justify-between items-center border-b border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark dark:bg-gray-800">
+                <div className="capitalize py-2 w-24 sm:w-32 font-medium text-gray-900 whitespace-nowrap dark:text-white">DOB</div>
+                <div className="flex-grow text-right lg:text-left py-4">31/08/1999</div>
+              </div>
+
+              <div className="flex justify-between items-center border-b border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark dark:bg-gray-800">
+                <div className="capitalize py-2 w-24 sm:w-32 font-medium text-gray-900 whitespace-nowrap dark:text-white">Gender</div>
+                <div className="flex-grow text-right lg:text-left py-4">Male</div>
+              </div>
+
+              <div className="flex justify-between items-center border-b border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark dark:bg-gray-800">
+                <div className="capitalize py-2 w-24 sm:w-32 font-medium text-gray-900 whitespace-nowrap dark:text-white">Join Date</div>
+                <div className="flex-grow text-right lg:text-left py-4">12/12/2023</div>
+              </div>
             </div>
+
+
+            <div>
+              <div className="flex justify-between items-center border-b border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark dark:bg-gray-800">
+                <div className="capitalize py-2 w-24 sm:w-32 font-medium text-gray-900 whitespace-nowrap dark:text-white">Nationality</div>
+                <div className="flex-grow text-right lg:text-left py-4">Bangladeshi</div>
+              </div>
+
+              <div className="flex justify-between items-center border-b border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark dark:bg-gray-800">
+                <div className="capitalize py-2 w-24 sm:w-32 font-medium text-gray-900 whitespace-nowrap dark:text-white">Country</div>
+                <div className="flex-grow text-right lg:text-left py-4">Bangladesh</div>
+              </div>
+
+              <div className="flex justify-between items-center border-b border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark dark:bg-gray-800">
+                <div className="capitalize py-2 w-24 sm:w-32 font-medium text-gray-900 whitespace-nowrap dark:text-white">State</div>
+                <div className="flex-grow text-right lg:text-left py-4">Dhaka</div>
+              </div>
+
+              <div className="flex justify-between items-center border-b border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark dark:bg-gray-800">
+                <div className="capitalize py-2 w-24 sm:w-32 font-medium text-gray-900 whitespace-nowrap dark:text-white">City</div>
+                <div className="flex-grow text-right lg:text-left py-4">Dhaka</div>
+              </div>
+
+              <div className="flex justify-between items-center border-b border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark dark:bg-gray-800">
+                <div className="capitalize py-2 w-24 sm:w-32 font-medium text-gray-900 whitespace-nowrap dark:text-white">Zip Code</div>
+                <div className="flex-grow text-right lg:text-left py-4">1229</div>
+              </div>
+
+              <div className="flex justify-between items-center border-b border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark dark:bg-gray-800">
+                <div className="capitalize py-2 w-24 sm:w-32 font-medium text-gray-900 whitespace-nowrap dark:text-white">Address</div>
+                <div className="flex-grow text-right lg:text-left py-4">Nikunjja-2, Dhaka, Bangladesh</div>
+              </div>
+            </div>
+
 
           </div>
         </div>
+
 
         <div className="my-6.5 ">
           <h4 className="mb-3.5 font-medium text-black dark:text-white text-center">
@@ -301,4 +300,4 @@ const Profile = () => {
   )
 }
 
-export default Profile
+export default withAuth(Profile)

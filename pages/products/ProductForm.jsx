@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { PRODUCT_END_POINT } from "@/constants/api_endpoints/productEndPoints";
+import withAuth from "@/components/withAuth";
 
 const ProductForm = () => {
     const { http } = Axios();
@@ -770,4 +771,4 @@ const ProductForm = () => {
     )
 }
 
-export default ProductForm
+export default withAuth(ProductForm)
