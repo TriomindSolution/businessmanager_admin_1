@@ -1,5 +1,5 @@
 'use clie'
-import React, { useEffect, useState ,useContext} from "react"
+import React, { useEffect, useState, useContext } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { useRouter } from "next/router";
@@ -9,6 +9,7 @@ import ToastMessage from "@/components/Toast";
 import { SECURITY_END_POINT } from "@/constants";
 import { post } from "@/helpers/api_helper";
 import themeContext from "@/components/context/themeContext";
+import SignUpFirstComponent from "@/components/Register/SignUpFirstComponent";
 
 
 const LogIn = () => {
@@ -20,7 +21,16 @@ const LogIn = () => {
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [signup, setSignup] = useState(false);
 
+
+  const [postEmailOtp, setPostEmailOtp] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    password: "",
+    type:"user"
+  })
 
   const submitForm = async (event) => {
 
@@ -28,15 +38,15 @@ const LogIn = () => {
     event.preventDefault();
     try {
       const login = await post(SECURITY_END_POINT.login(), { email: email, password: password });
-      const user={
-        id:login?.data?.user?.id,
-        name:login?.data?.user?.name,
-        email:login?.data?.user?.email,
+      const user = {
+        id: login?.data?.user?.id,
+        name: login?.data?.user?.name,
+        email: login?.data?.user?.email,
         phone: login?.data?.user?.phone
       }
       console.log(login?.data?.user);
       // return; 
-      setToken(user,login.data.access_token);
+      setToken(user, login.data.access_token);
       notify("success", "successfully Login!");
 
     } catch (error) {
@@ -68,6 +78,63 @@ const LogIn = () => {
     // console.log("{ phone: phone, password: password }",{ phone: phone, password: password });
 
   }
+
+
+  const otpSent = async (event) => {
+    event.preventDefault();
+    console.log("yes it call", postEmailOtp);
+
+    try {
+      const register = await post(SECURITY_END_POINT.register(), {name:postEmailOtp?.name, email: postEmailOtp?.email, password: postEmailOtp?.password, phone:postEmailOtp?.phone,type:"user" });
+      // const user = {
+      //   id: login?.data?.user?.id,
+      //   name: login?.data?.user?.name,
+      //   email: login?.data?.user?.email,
+      //   phone: login?.data?.user?.phone
+      // }
+      // console.log(login?.data?.user);
+      // // return; 
+      // setToken(user, login.data.access_token);
+      // console.log(register)
+      if (register?.status_code === 200) {
+        
+        notify("success", "successfully Register!");
+        setSignup(!signup);
+      }
+
+    } catch (error) {
+      let message;
+      const errorStatus = error?.response?.status;
+      if (errorStatus) {
+        switch (error.response.status) {
+          case 404:
+            message = 'Sorry! the page you are looking for could not be found';
+            break;
+          case 500:
+            message = 'Sorry! something went wrong, please contact our support team';
+            break;
+          case 401:
+            message = 'Invalid credentials';
+            break;
+          default:
+            message = error[1];
+            break;
+        }
+      }
+
+
+      if (!errorStatus && error.code === 'ERR_NETWORK') {
+        message = 'Netword Error!';
+      }
+      notify("error", message);
+    }
+
+
+  }
+
+  const handleSignupClick = () => {
+    setSignup(!signup);
+  };
 
 
   return (
@@ -236,29 +303,49 @@ const LogIn = () => {
 
           <div className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
             <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
+              {
 
+                signup === false ?
+                  <>
+                    <SignInComponent
+                      submitForm={submitForm}
+                      setEmail={setEmail}
+                      setPassword={setPassword}
+                      setLoading={setLoading}
+                      loading={loading}
+                    />
 
+                  </> :
+                  <>
+                    <SignUpFirstComponent
+                      otpSent={otpSent}
+                      setPostEmailOtp={setPostEmailOtp}
+                      postEmailOtp={postEmailOtp}
 
-              <SignInComponent
-                submitForm={submitForm}
-                setEmail={setEmail}
-                setPassword={setPassword}
-                setLoading={setLoading}
-                loading={loading}
-              />
+                    />
+                  </>
+              }
 
-              <div className="mt-6 text-center">
+              <div className="mt-6 text-left">
                 <p>
+                  {
+                    signup === false ? "Don’t have any account?" : "Already have an account"
+                  }
 
-
-                  <dev className="text-primary" >
-                    Sign Up
-
+                  <dev
+                    className=" ml-4 text-primary hover:underline cursor-pointer"
+                    onClick={handleSignupClick}>
+                    {
+                      signup === false ? "Sign Up" : "Sign In"
+                    }
 
                   </dev>
                 </p>
               </div>
             </div>
+
+
+
           </div>
 
 

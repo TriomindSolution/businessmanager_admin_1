@@ -6,86 +6,86 @@ import Axios from '@/utils/axios';
 import React, { useCallback, useEffect, useState } from 'react'
 
 const SellerForm = ({ isOpen, onClose, setEditData, isParentRender }) => {
-    const { http } = Axios();
-    const notify = useCallback((type, message) => {
-        ToastMessage({ type, message });
-    }, []);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
-    const [seller, setSeller] = useState({
-        name: "",
-        address: "",
-        phone: "",
-        email: "",
-        description: "",
-        status: "",
-    });
+  const { http } = Axios();
+  const notify = useCallback((type, message) => {
+    ToastMessage({ type, message });
+  }, []);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [seller, setSeller] = useState({
+    name: "",
+    address: "",
+    phone: "",
+    email: "",
+    description: "",
+    status: "",
+  });
 
 
-    useEffect(() => {
-        if (setEditData === null) {
-            setSeller({ name: "", address: "", phone: "", email: "", description: "", status: null, });
+  useEffect(() => {
+    if (setEditData === null) {
+      setSeller({ name: "", address: "", phone: "", email: "", description: "", status: null, });
+    } else {
+      setSeller({
+        id: setEditData.id || "",
+        name: setEditData.name || "",
+        address: setEditData.address || "",
+        phone: setEditData.phone || "",
+        email: setEditData.email || "",
+        description: setEditData.description || "",
+        status: setEditData.status || "",
+      });
+    }
+  }, [setEditData?._id, setEditData]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setSeller((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+
+
+      if (setEditData?.id) {
+        const response = await http.put(SELLER_END_POINT.update(setEditData.id), seller);
+        if (response.data.status === true) {
+          notify('success', response.data.message);
+          if (isParentRender) {
+            isParentRender(true);
+          }
+          setSeller({});
+          onClose();
         } else {
-            setSeller({
-                id: setEditData.id || "",
-                name: setEditData.name || "",
-                address: setEditData.address || "",
-                phone: setEditData.phone || "",
-                email: setEditData.email || "",
-                description: setEditData.description || "",
-                status: setEditData.status || "",
-            });
+          notify('error', response.data.message);
         }
-    }, [setEditData?._id, setEditData]);
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setSeller((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
-    };
-
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-
-        try {
-
-
-            if (setEditData?.id) {
-                const response = await http.put(SELLER_END_POINT.update(setEditData.id), seller);
-                if (response.data.status === true) {
-                    notify('success', response.data.message);
-                    if (isParentRender) {
-                        isParentRender(true);
-                    }
-                    setSeller({});
-                    onClose();
-                } else {
-                    notify('error', response.data.message);
-                }
-            } else {
-                const response = await http.post(SELLER_END_POINT.create(), seller);
-                if (response.data.status === true) {
-                    notify('success', response.data.message);
-                    if (isParentRender) {
-                        isParentRender(true);
-                    }
-                    setSeller({});
-                    onClose();
-                } else {
-                    notify('error', response.data.message);
-                }
-            }
-        } catch (error) {
-            console.error(error);
-            notify('error', error.message);
-        } finally {
-            setLoading(false);
+      } else {
+        const response = await http.post(SELLER_END_POINT.create(), seller);
+        if (response.data.status === true) {
+          notify('success', response.data.message);
+          if (isParentRender) {
+            isParentRender(true);
+          }
+          setSeller({});
+          onClose();
+        } else {
+          notify('error', response.data.message);
         }
-    };
+      }
+    } catch (error) {
+      console.error(error);
+      notify('error', error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
 
 
@@ -129,7 +129,7 @@ const SellerForm = ({ isOpen, onClose, setEditData, isParentRender }) => {
                   <span className="sr-only">Close modal</span>
                 </button>
               </div>
-             
+
               <form onSubmit={handleSubmit} className="p-4 md:p-5">
                 <div className="grid gap-4 mb-4 grid-cols-2">
                   <div className="col-span-2">
@@ -153,12 +153,12 @@ const SellerForm = ({ isOpen, onClose, setEditData, isParentRender }) => {
                       <p className="text-red-500 text-xs mt-1"> {error} </p>
                     )}
                   </div>
- <div className="col-span-2">
+                  <div className="col-span-2">
                     <label
                       htmlFor="name"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
-                     Address
+                      Address
                     </label>
                     <input
                       type="text"
@@ -204,7 +204,7 @@ const SellerForm = ({ isOpen, onClose, setEditData, isParentRender }) => {
                       htmlFor="name"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
-                     Email
+                      Email
                     </label>
                     <input
                       type="text"
@@ -245,19 +245,19 @@ const SellerForm = ({ isOpen, onClose, setEditData, isParentRender }) => {
                   </div>
 
 
-                
-                  <select
-                      name='status'
-                      id="status"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500  dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                      onChange={handleChange}
-                      defaultValue={seller?.status}
-                    >
-                      <option selected="">Select Status</option>
-                      <option value="1" >Active</option>
-                      <option value="2" >Inactive</option>
 
-                    </select>
+                  <select
+                    name='status'
+                    id="status"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500  dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                    onChange={handleChange}
+                    defaultValue={seller?.status}
+                  >
+                    <option selected="">Select Status</option>
+                    <option value="1" >Active</option>
+                    <option value="2" >Inactive</option>
+
+                  </select>
 
                 </div>
                 <div className="ml-auto">

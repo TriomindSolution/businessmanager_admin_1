@@ -2,6 +2,7 @@ import ToastMessage from '@/components/Toast';
 import withAuth from '@/components/withAuth';
 import { EXPENSE_END_POINT, EXPENSECATEGORY_END_POINT } from "@/constants";
 import { post, put } from '@/helpers/api_helper';
+import { mapArrayToDropdown } from '@/helpers/common_Helper';
 import Axios from '@/utils/axios';
 import React, { useCallback, useEffect, useState } from 'react'
 
@@ -21,7 +22,7 @@ const ExpenseForm = ({ isOpen, onClose, setEditData, isParentRender }) => {
     amount: "",
   });
   console.log("expense", expense)
-
+   console.log("expenseCategory",expenseCtgryOption)
 
   /***Fetching ExpenseCategory Data Start */
   const fetchExpenseCategoryList = async () => {
