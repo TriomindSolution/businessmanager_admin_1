@@ -163,10 +163,7 @@ const Expensecategory = () => {
             dataIndex: 'name',
             // fixed: 'left',
         },
-        {
-            title: 'Created By',
-            dataIndex: 'created_by',
-        },
+      
         {
             title: 'Action',
             key: 'action',
@@ -182,9 +179,7 @@ const Expensecategory = () => {
         return (
             <>
                 <Row justify="space-between" style={{ display: 'flex', alignItems: 'center' }}>
-                    <a onClick={() => handleViewOpen(row)} style={{ color: 'green' }}>
-                        <EyeOutlined style={{ fontSize: '22px' }} />
-                    </a>
+                  
 
                     <a onClick={() => handleEdit(row)} className="text-primary" >
                         <EditOutlined style={{ fontSize: '22px' }} />

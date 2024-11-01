@@ -43,6 +43,7 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
     const [itemList, setItemList] = useState([]);
     const [searchResults, setSearchResults] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
+    const [filteredItemList, setFilteredItemList] = useState([]);
     const [itemOption, setItemOption] = useState([]);
     const [loading, setLoading] = useState(false);
     const [order, setOrder] = useState({
@@ -240,6 +241,22 @@ console.log("itemList",itemList)
         }
     };
 
+
+    const handleSearchItem = async (e) => {
+        setSearchQuery(e.target.value);
+        if (e.target.value.length > 0) {
+            try {
+                const response = await http.get(
+                    `${PRODUCT_END_POINT.search()}?query=${e.target.value}`
+                );
+                setSearchResults(response.data?.data);
+            } catch (error) {
+                console.error("Error fetching search results:", error);
+            }
+        } else {
+            setSearchResults([]);
+        }
+    };
 
 
     return (

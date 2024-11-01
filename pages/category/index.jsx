@@ -161,14 +161,11 @@ const Category = () => {
             render: (text, record, index) => index + 1
         },
         {
-            title: 'Name',
-            dataIndex: 'name',
+            title: 'Category Name',
+            dataIndex: 'category_name',
             // fixed: 'left',
         },
-        {
-            title: 'Created By',
-            dataIndex: 'created_by',
-        },
+    
         {
             title: 'Action',
             key: 'action',
@@ -184,9 +181,7 @@ const Category = () => {
         return (
             <>
                 <Row justify="space-between" style={{ display: 'flex', alignItems: 'center' }}>
-                    <a onClick={() => handleViewOpen(row)} style={{ color: 'green' }}>
-                        <EyeOutlined style={{ fontSize: '22px' }} />
-                    </a>
+                   
 
                     <a onClick={() => handleEdit(row)} className="text-primary" >
                         <EditOutlined style={{ fontSize: '22px' }} />

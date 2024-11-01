@@ -27,7 +27,7 @@ const ProdctList = () => {
     const [page, setPage] = useState(1);
     const [perPage, setPerPage] = useState(10);
     const [search, setSearch] = useState('');
-
+    const [filteredData, setFilteredData] = useState([]);
 
     /** Add start */
     const handleAdd = () => {
@@ -54,12 +54,32 @@ const ProdctList = () => {
         };
         /**Job edit end */
 
-    /***Fetching table Data Start */
+    /**Product view estart */
+        const handleViewOpen=(data)=>{
 
+            router.push(
+            {
+            
+                pathname:"../products/ProductDetails",
+                query: { data: JSON.stringify(data) },
+            
+            }
+            );
+            };
+
+               /**Product view Finsih */
+
+
+
+
+    /***Fetching table Data Start */
+    const data = filteredData?.data;
+    console.log(data);
     const fetchProductList = async () => {
         try {
             const response = await http.get(PRODUCT_END_POINT.list());
             setProductList(response.data?.data?.data);
+            setFilteredData(response?.data)
             setLoading(false);
         } catch (error) {
             console.error('Error fetching seller list:', error);
@@ -74,6 +94,30 @@ const ProdctList = () => {
     }, []);
 
 
+
+
+
+
+
+    
+   //----------------- search operation-----------------
+
+   //show error when i search _data.filter is not a function
+   useEffect(() => {
+    let controller = new AbortController();
+    const result = data?.filter((item) => {
+        return item.phone.toLowerCase()
+            .match(search.toLocaleLowerCase());
+    });
+
+    setProductList(result);
+    return () => controller.abort();
+}, [search]);
+
+
+
+//-----------------End search operation-----------------
+
     const columns = [
         {
             title: "SL",
@@ -84,10 +128,23 @@ const ProdctList = () => {
             title: 'Name',
             dataIndex: 'name',
         },
+
         {
-            title: 'Created By',
-            dataIndex: 'created_by',
-        }, {
+            title: 'Unit Price',
+            dataIndex: 'per_unit_product_price',
+        },
+
+        {
+            title: 'Stock',
+            dataIndex: 'product_unit',
+        },
+
+
+
+        
+
+
+      {
             title: 'Action',
             key: 'action',
             fixed: 'right',
@@ -100,9 +157,9 @@ const ProdctList = () => {
         return (
             <>
                 <Row justify="space-between" style={{ display: 'flex', alignItems: 'center' }}>
-                    <a onClick={() => handleViewOpen(row)} style={{ color: 'green' }}>
-                        <EyeOutlined style={{ fontSize: '22px' }} />
-                    </a>
+                <a onClick={() => handleViewOpen(row)} style={{ color: 'green' }}>
+                    <EyeOutlined style={{ fontSize: '22px' }} />
+                </a>
 
                     <a onClick={() => handleEdit(row)} className="text-primary" >
                         <EditOutlined style={{ fontSize: '22px' }} />
@@ -143,7 +200,7 @@ const ProdctList = () => {
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                 <div className="py-6 px-4 md:px-6 xl:px-7.5 flex justify-between items-center border-b border-stroke dark:border-strokedark">
                     <h4 className="text-xl font-semibold text-black dark:text-white">
-                        All Expensecategory
+                        All Product
                     </h4>
                     <button
                         href="#"
