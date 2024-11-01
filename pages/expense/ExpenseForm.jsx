@@ -21,6 +21,7 @@ const ExpenseForm = ({ isOpen, onClose, setEditData, isParentRender }) => {
     details: "",
     amount: "",
   });
+  console.log("expense",expense)
   // console.log("expense", expense)
   //  console.log("expenseCategory",expenseCtgryOption)
 
@@ -239,7 +240,7 @@ const ExpenseForm = ({ isOpen, onClose, setEditData, isParentRender }) => {
                     </label>
                     <input
                       type="text"
-                      name="name"
+                      name="amount"
                       id="name"
                       className="bg-gray border-stroke border-gray-300 text-black text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                       placeholder="Type Expense Category name"
