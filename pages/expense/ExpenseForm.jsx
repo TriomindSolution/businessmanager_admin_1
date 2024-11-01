@@ -7,6 +7,7 @@ import Axios from '@/utils/axios';
 import React, { useCallback, useEffect, useState } from 'react'
 
 const ExpenseForm = ({ isOpen, onClose, setEditData, isParentRender }) => {
+  console.log("setEditData", setEditData)
   const { http } = Axios();
   const notify = useCallback((type, message) => {
     ToastMessage({ type, message });
@@ -20,8 +21,9 @@ const ExpenseForm = ({ isOpen, onClose, setEditData, isParentRender }) => {
     date: "",
     details: "",
     amount: "",
+    // name:"",
   });
-  console.log("expense",expense)
+  console.log("expense", expense)
   // console.log("expense", expense)
   //  console.log("expenseCategory",expenseCtgryOption)
 
@@ -75,6 +77,7 @@ const ExpenseForm = ({ isOpen, onClose, setEditData, isParentRender }) => {
         details: setEditData.details || "",
         expensecategory_id: setEditData.expensecategory_id || "",
         status: setEditData.status || "",
+        // name: setEditData.name || "",
       });
     }
   }, [setEditData?.id, setEditData]);
@@ -208,27 +211,7 @@ const ExpenseForm = ({ isOpen, onClose, setEditData, isParentRender }) => {
                     </select>
                   </div>
 
-                  <div className="col-span-2">
-                    <label
-                      htmlFor="name"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      Name
-                    </label>
-                    <input
-                      type="text"
-                      name="name"
-                      id="name"
-                      className="bg-gray border-stroke border-gray-300 text-black text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                      placeholder="Type Expense Category name"
-                      required=""
-                      defaultValue={expense?.name}
-                      onChange={handleChange}
-                    />
-                    {error && (
-                      <p className="text-red-500 text-xs mt-1"> {error} </p>
-                    )}
-                  </div>
+
 
 
                   <div className="col-span-2">
@@ -272,6 +255,25 @@ const ExpenseForm = ({ isOpen, onClose, setEditData, isParentRender }) => {
                       <option value="2" >Inactive</option>
 
                     </select>
+                  </div>
+
+                  <div className="col-span-2">
+                    <label
+                      htmlFor="name"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Name
+                    </label>
+                    <textarea
+                      className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      id="bio"
+                      rows={3}
+                      placeholder="Write your details here"
+                      onChange={handleChange}
+                      value={expense?.details}
+                      name="details"
+                    />
+
                   </div>
 
                 </div>
