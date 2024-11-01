@@ -21,8 +21,8 @@ const ExpenseForm = ({ isOpen, onClose, setEditData, isParentRender }) => {
     details: "",
     amount: "",
   });
-  console.log("expense", expense)
-   console.log("expenseCategory",expenseCtgryOption)
+  // console.log("expense", expense)
+  //  console.log("expenseCategory",expenseCtgryOption)
 
   /***Fetching ExpenseCategory Data Start */
   const fetchExpenseCategoryList = async () => {
@@ -86,7 +86,7 @@ const ExpenseForm = ({ isOpen, onClose, setEditData, isParentRender }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setExpenseCategory((prev) => ({
+    setExpense((prev) => ({
       ...prev,
       [name]: value,
     }));
@@ -149,7 +149,7 @@ const ExpenseForm = ({ isOpen, onClose, setEditData, isParentRender }) => {
                 <button
                   onClick={() => {
                     onClose();
-                    setExpenseCategory({});
+                    setExpense({});
                   }}
                   type="button"
                   className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
