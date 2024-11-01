@@ -236,6 +236,27 @@ const ExpenseForm = ({ isOpen, onClose, setEditData, isParentRender }) => {
                     )}
                   </div>
 
+                
+
+                  <div className="col-span-2">
+                    <label
+                      htmlFor="name"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Details
+                    </label>
+                    <textarea
+                      className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      id="bio"
+                      rows={3}
+                      placeholder="Write your details here"
+                      onChange={handleChange}
+                      value={expense?.details}
+                      name="details"
+                    />
+
+                  </div>
+
                   <div className="col-span-2">
                     <label
                       htmlFor="status"
@@ -255,25 +276,6 @@ const ExpenseForm = ({ isOpen, onClose, setEditData, isParentRender }) => {
                       <option value="2" >Inactive</option>
 
                     </select>
-                  </div>
-
-                  <div className="col-span-2">
-                    <label
-                      htmlFor="name"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      Details
-                    </label>
-                    <textarea
-                      className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                      id="bio"
-                      rows={3}
-                      placeholder="Write your details here"
-                      onChange={handleChange}
-                      value={expense?.details}
-                      name="details"
-                    />
-
                   </div>
 
                 </div>
