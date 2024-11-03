@@ -80,7 +80,7 @@ const ProductForm = () => {
 
                 // Set variants state
                 const formattedVariants = parsedData?.product_variants.map(variant => ({
-                    id:variant.id,
+                    id: variant.id,
                     size: variant.size,
                     color: variant.color,
                     quantity: variant.quantity
@@ -195,7 +195,7 @@ const ProductForm = () => {
     const addVariant = () => {
         setVariants((prevVariants) => [...(prevVariants || []), { size: '', color: '', quantity: '' }]);
     };
-    
+
 
     const removeVariant = async (index, variant) => {
         // const updatedVariants = [...variants];
@@ -210,7 +210,7 @@ const ProductForm = () => {
 
             if (response.data.status === true) {
                 notify('success', response.data.message);
-                        const updatedVariants = [...variants];
+                const updatedVariants = [...variants];
                 updatedVariants.splice(index, 1);
                 setVariants(updatedVariants);
                 // onClose();
@@ -276,7 +276,7 @@ const ProductForm = () => {
                     <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                         <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
                             <h3 className="font-medium text-black dark:text-white">
-                               Product
+                                Product
                             </h3>
 
                         </div>
@@ -646,7 +646,7 @@ const ProductForm = () => {
                         <div className="grid items-center grid-cols-1 gap-3 border-b border-stroke py-4 px-7 dark:border-strokedark 2xl:grid-cols-12">
                             <div className="2xl:col-span-3">
                                 <h3 className="font-medium text-black dark:text-white">
-                                Variants
+                                    Variants
                                 </h3>
                             </div>
                             <div className="2xl:col-span-3 2xl:col-start-10">
@@ -733,9 +733,9 @@ const ProductForm = () => {
                                             )} */}
 
 
-<button onClick={() => removeVariant(index, variant)} className="flex items-center text-danger">
-    <FontAwesomeIcon icon={faTrashAlt} className="mr-2 text-xl" />
-</button>
+                                            <button onClick={() => removeVariant(index, variant)} className="flex items-center text-danger">
+                                                <FontAwesomeIcon icon={faTrashAlt} className="mr-2 text-xl" />
+                                            </button>
 
 
                                         </div>
@@ -749,7 +749,7 @@ const ProductForm = () => {
                     <div className="flex justify-end gap-2 mt-5.5 p-4 border-t border-slate-200 dark:border-zink-500">
                         <button
                             type="button"
-                            className="text-red-500 bg-white rounded border border-stroke hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100 dark:bg-zink-700 dark:hover:bg-red-500/10 dark:focus:bg-red-500/10 dark:active:bg-red-500/10"
+                            className="text-red-500 py-2 px-5  border border-stroke rounded-full bg-danger text-white focus:bg-red-100   dark:bg-zink-700 dark:hover:bg-red-500/10 dark:focus:bg-red-500/10 dark:active:bg-red-500/10"
                         >
                             <i data-lucide="x" className="inline-block size-4" />
                             <span className="align-middle">Cancel</span>
@@ -757,7 +757,7 @@ const ProductForm = () => {
                         <button
                             onClick={handleSubmit}
                             type="submit"
-                            className="text-white bg-custom-500 border border-custom-500 rounded hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20"
+                            className="text-white py-2 px-5 rounded-full border border-custom-500  hover:text-white bg-primary hover:border-custom-600 focus:text-white  focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20"
                         >
                             Submit
                         </button>
