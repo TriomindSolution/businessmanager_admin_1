@@ -96,7 +96,9 @@ const SellerForm = ({ isOpen, onClose, setEditData, isParentRender }) => {
         <div className="fixed inset-0 z-10 overflow-y-auto ">
           <div className="flex items-center justify-center min-h-screen">
             <div className="fixed inset-0 bg-black opacity-50"></div>
-            <div className="relative bg-white p-8 rounded-lg  dark:border-strokedark dark:bg-boxdark w-full max-w-md max-h-full">
+            {/* <div className="relative bg-white p-8 rounded-lg  dark:border-strokedark dark:bg-boxdark w-full max-w-md max-h-full"> */}
+            <div className="relative bg-white p-8 rounded-lg dark:border-strokedark dark:bg-boxdark w-full max-w-xl max-h-full">
+
               {/* Modal content */}
               <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
