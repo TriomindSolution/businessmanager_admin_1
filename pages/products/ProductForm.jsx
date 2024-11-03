@@ -345,7 +345,7 @@ const ProductForm = () => {
 
                                 <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
 
-                                    <div className="w-full sm:w-1/2">
+                                    {/* <div className="w-full sm:w-1/2">
                                         <label
                                             className="mb-3 block text-sm font-medium text-black dark:text-white"
                                             htmlFor="fullName"
@@ -365,7 +365,7 @@ const ProductForm = () => {
                                             />
                                         </div>
 
-                                    </div>
+                                    </div> */}
 
                                     <div className="w-full sm:w-1/2">
                                         <label
@@ -388,10 +388,6 @@ const ProductForm = () => {
                                         </div>
 
                                     </div>
-                                </div>
-
-
-                                <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
 
                                     <div className="w-full sm:w-1/2">
                                         <label
@@ -414,13 +410,19 @@ const ProductForm = () => {
                                         </div>
 
                                     </div>
+                                </div>
+
+
+                                <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+
+
 
                                     <div className="w-full sm:w-1/2">
                                         <label
                                             className="mb-3 block text-sm font-medium text-black dark:text-white"
                                             htmlFor="fullName"
                                         >
-                                            Product Quantity
+                                            Product Sku Code
                                         </label>
                                         <div className="relative">
 
@@ -436,9 +438,6 @@ const ProductForm = () => {
                                         </div>
 
                                     </div>
-                                </div>
-
-                                <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
 
                                     <div className="w-full sm:w-1/2">
                                         <label
@@ -461,6 +460,11 @@ const ProductForm = () => {
                                         </div>
 
                                     </div>
+                                </div>
+
+                                <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+
+
 
                                     <div className="w-full sm:w-1/2">
                                         <label
@@ -496,9 +500,6 @@ const ProductForm = () => {
                                         </div>
 
                                     </div>
-                                </div>
-
-                                <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
 
                                     <div className="w-full sm:w-1/2">
                                         <label
@@ -516,6 +517,31 @@ const ProductForm = () => {
                                                 placeholder="Enter the stock alert"
                                                 name="date"
                                                 defaultValue={product?.date}
+                                                onChange={handleChange}
+                                            />
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+
+                                    <div className="w-full sm:w-1/2">
+                                        <label
+                                            className="mb-3 block text-sm font-medium text-black dark:text-white"
+                                            htmlFor="fullName"
+                                        >
+                                            Total Price<span className="text-danger">*</span>
+                                        </label>
+                                        <div className="relative">
+
+                                            <input
+                                                className="w-full rounded border border-stroke bg-gray py-3 pl-5 pr-2 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                                                type="number"
+                                                id="fullName"
+                                                placeholder="Enter the stock alert"
+                                                name="total_price"
+                                                defaultValue={product?.total_price}
                                                 onChange={handleChange}
                                             />
                                         </div>
@@ -550,27 +576,7 @@ const ProductForm = () => {
 
                                 <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
 
-                                    <div className="w-full sm:w-1/2">
-                                        <label
-                                            className="mb-3 block text-sm font-medium text-black dark:text-white"
-                                            htmlFor="fullName"
-                                        >
-                                            Total Price<span className="text-danger">*</span>
-                                        </label>
-                                        <div className="relative">
 
-                                            <input
-                                                className="w-full rounded border border-stroke bg-gray py-3 pl-5 pr-2 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                                                type="number"
-                                                id="fullName"
-                                                placeholder="Enter the stock alert"
-                                                name="total_price"
-                                                defaultValue={product?.total_price}
-                                                onChange={handleChange}
-                                            />
-                                        </div>
-
-                                    </div>
 
 
                                 </div>
