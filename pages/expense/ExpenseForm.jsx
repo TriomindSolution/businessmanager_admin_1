@@ -144,7 +144,9 @@ const ExpenseForm = ({ isOpen, onClose, setEditData, isParentRender }) => {
         <div className="fixed inset-0 z-10 overflow-y-auto ">
           <div className="flex items-center justify-center min-h-screen">
             <div className="fixed inset-0 bg-black opacity-50"></div>
-            <div className="relative bg-white p-8 rounded-lg  dark:border-strokedark dark:bg-boxdark w-full max-w-md max-h-full">
+            {/* <div className="relative bg-white p-8 rounded-lg  dark:border-strokedark dark:bg-boxdark w-full max-w-md max-h-full"> */}
+            <div className="relative bg-white p-8 rounded-lg dark:border-strokedark dark:bg-boxdark w-full max-w-xl max-h-full">
+
               {/* Modal content */}
               <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
@@ -179,8 +181,8 @@ const ExpenseForm = ({ isOpen, onClose, setEditData, isParentRender }) => {
               </div>
               {/* Your modal content goes here */}
               <form onSubmit={handleSubmit} className="p-4 md:p-5">
-                <div className="grid gap-4 mb-4 grid-cols-2">
-                  <div className="col-span-2">
+                <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+                  <div className="w-full sm:w-1/2">
                     <label
                       htmlFor="name"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -210,11 +212,51 @@ const ExpenseForm = ({ isOpen, onClose, setEditData, isParentRender }) => {
 
                     </select>
                   </div>
+                  <div className="w-full sm:w-1/2">
+                    <label
+                      htmlFor="status"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Status
+                    </label>
+                    <select
+                      name='status'
+                      id="status"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500  dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      onChange={handleChange}
+                      value={expense?.status}
+                    >
+                      <option selected="">Select Status</option>
+                      <option value="1" >Active</option>
+                      <option value="2" >Inactive</option>
+
+                    </select>
+
+                  </div>
+
+                </div>
 
 
+                <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+                  <div className="w-full sm:w-1/2">
+                    <label
+                      htmlFor="name"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Details
+                    </label>
+                    <textarea
+                      className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      id="bio"
+                      rows={3}
+                      placeholder="Write your details here"
+                      onChange={handleChange}
+                      value={expense?.details}
+                      name="details"
+                    />
+                  </div>
 
-
-                  <div className="col-span-2">
+                  <div className="w-full sm:w-1/2">
                     <label
                       htmlFor="name"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -236,50 +278,10 @@ const ExpenseForm = ({ isOpen, onClose, setEditData, isParentRender }) => {
                     )}
                   </div>
 
-                
-
-                  <div className="col-span-2">
-                    <label
-                      htmlFor="name"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      Details
-                    </label>
-                    <textarea
-                      className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                      id="bio"
-                      rows={3}
-                      placeholder="Write your details here"
-                      onChange={handleChange}
-                      value={expense?.details}
-                      name="details"
-                    />
-
-                  </div>
-
-                  <div className="col-span-2">
-                    <label
-                      htmlFor="status"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      Status
-                    </label>
-                    <select
-                      name='status'
-                      id="status"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500  dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                      onChange={handleChange}
-                      value={expense?.status}
-                    >
-                      <option selected="">Select Status</option>
-                      <option value="1" >Active</option>
-                      <option value="2" >Inactive</option>
-
-                    </select>
-                  </div>
-
                 </div>
-                <div className="ml-auto">
+
+
+                <div className="flex justify-end">
                   <button
                     type="submit"
                     className="text-white inline-flex items-center bg-primary hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -296,10 +298,10 @@ const ExpenseForm = ({ isOpen, onClose, setEditData, isParentRender }) => {
                         clipRule="evenodd"
                       />
                     </svg>
-                    {setEditData?.id ? "Update" : "Create "}
-
+                    {setEditData?.id ? "Update" : "Create"}
                   </button>
                 </div>
+
 
 
               </form>
