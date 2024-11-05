@@ -9,6 +9,7 @@ import Axios from '@/utils/axios';
 import { EXPENSE_END_POINT } from "@/constants/api_endpoints/expenseEndPoints";
 import ToastMessage from "@/components/Toast";
 import ExpenseForm from "./ExpenseForm";
+import useThemeManager from "@/hooks/useThemeManager";
 
 
 const DeleteModal = ({ isOpen, onClose, data, isParentRender }) => {
@@ -80,6 +81,8 @@ const Expense = () => {
     const [isDeleteModalOpen, setDeleteIsModalOpen] = useState(false);
     const [search, setSearch] = useState('');
     const [filteredData, setFilteredData] = useState([]);
+    const [isDarkMode, toggleTheme] = useThemeManager();
+
     /*** Storing data end */
     
     
@@ -296,7 +299,10 @@ console.log(expenseList);
                     <ExpenseForm isOpen={isModalOpen} onClose={closeModal} setEditData={editData} isParentRender={reFetchHandler} />
    
                     <Table
-                        className="ant-table-wrapper border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark text-black dark:text-white"
+                    //    className={`ant-table-wrapper ${isDarkMode ? 'dark' : ''} border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark text-black dark:text-white`}
+                       className={`ant-table-wrapper ${isDarkMode ? "dark" : ""}`}
+
+                        // className="ant-table-wrapper border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark text-black dark:text-white"
                         columns={columns}
                         dataSource={expenseList}
                         scroll={{ x: 'max-content' }}
