@@ -94,7 +94,7 @@ const Order = () => {
 
         router.push({
             pathname: "../invoices/addInvoice",
-            query: { data: null },
+            // query: { data: null },
         });
     };
     /**Add function end */
@@ -163,7 +163,7 @@ const Order = () => {
 
             if (response.data.data) {
                 setOrderList(response.data.data.data);
-                console.log(response.data.data.data);
+                
             } else {
                 setOrderList([]);
             }
@@ -192,10 +192,7 @@ const Order = () => {
         if (isRender) fetchOderList();
     };
     /**Render Function end */
-    console.log(orderList);
-
-
-
+   
     const columns = [
         {
             title: 'SL',

@@ -46,7 +46,6 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
     const [filteredItemList, setFilteredItemList] = useState([]);
     const [itemOption, setItemOption] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [product_variants, setProduct_variants] = useState([])
     const [order, setOrder] = useState({
         invoice_no: "",
         delivery_date: "",
@@ -106,7 +105,8 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
             product_total: 0,
         },
     ]);
-
+    console.log('items',items)
+console.log("itemList",itemList)
     const calculateSubTotal = (items) => {
         return items.reduce((total, item) => total + item.product_total, 0);
     };
@@ -143,44 +143,28 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
         }));
     };
 
-    const handleChange = async (index, field, value) => {
+    const handleChange = (index, field, value) => {
         const newItems = [...items];
         newItems[index][field] = value || 0;
-    
-        try {
-            // Fetch variants specific to the selected product ID
-            const response = await http.get(PRODUCT_END_POINT.product_retrieve(value));
-    
-            // Check if the response is valid and has the expected data structure
-            if (response?.data?.data && Array.isArray(response.data.data)) {
-                newItems[index].variants = response.data.data[0]?.product_variants || [];
-            } else {
-                newItems[index].variants = [];
-            }
-    
-            // Update calculations
-            const { quantity, price, discount, tax } = newItems[index];
-            const discountAmount = (parseFloat(price || 0) * parseFloat(discount || 0)) / 100;
-            const productTotal = parseFloat(quantity || 0) * parseFloat(price || 0) - discountAmount + parseFloat(tax || 0);
-    
-            newItems[index].product_total = productTotal;
-            setItems(newItems);
-    
-            const newSubTotal = calculateSubTotal(newItems);
-            setOrder((prevOrder) => ({
-                ...prevOrder,
-                sub_total: newSubTotal,
-                total_amount: calculateTotalAmount(newSubTotal, prevOrder.shipping_charge),
-            }));
-        } catch (error) {
-            console.error('Error fetching product data:', error);
-            // Handle the error if needed, e.g., set an error state or log the error
-            newItems[index].variants = []; // Ensure variants are set to an empty array if the API fails
-            setItems(newItems);
-        }
-    };
-    
 
+        const { quantity, price, discount, tax } = newItems[index];
+        const discountAmount =
+            (parseFloat(price || 0) * parseFloat(discount || 0)) / 100;
+        const productTotal =
+            parseFloat(quantity || 0) * parseFloat(price || 0) -
+            discountAmount +
+            parseFloat(tax || 0);
+
+        newItems[index].product_total = productTotal;
+        setItems(newItems);
+
+        const newSubTotal = calculateSubTotal(newItems);
+        setOrder((prevOrder) => ({
+            ...prevOrder,
+            sub_total: newSubTotal,
+            total_amount: calculateTotalAmount(newSubTotal, prevOrder.shipping_charge),
+        }));
+    };
 
     const handleOrderChange = (field, value) => {
         setOrder((prevOrder) => ({
@@ -228,9 +212,9 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
 
         else {
             const response = await http.post(ORDER_END_POINT.create(), orderPayload);
+
             if (response.data.status === true) {
                 notify("success", response.data.message);
-                router.push('/invoices')
             }
 
             else {
@@ -479,33 +463,34 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
                                     <tr className="item" key={index}>
                                         <td className="border border-slate-200 dark:border-zinc-500">
                                             <select
+                                                id={`itemName-${index}`}
+                                                name="name"
+                                                className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                                                 value={item.id}
                                                 onChange={(e) => handleChange(index, "id", e.target.value)}
                                             >
-                                                <option value="" disabled>Choose an Item</option>
-                                                {itemList.map((option) => (
-                                                    <option key={option.id} value={option.id}>
-                                                        {option.name}
+                                                <option value="" disabled>
+                                                    Choose an Item
+                                                </option>
+                                                {itemList.map((item) => (
+                                                    <option key={item.id} value={item.id}>
+                                                        {item.name}
                                                     </option>
                                                 ))}
                                             </select>
-
-                                            {/* Variants dropdown specific to each item */}
-                                            {item.variants && item.variants.length > 0 && (
-                                                <select
-                                                    value={item.variant_id || ""}
-                                                    onChange={(e) => handleChange(index, "variant_id", e.target.value)}
-                                                >
-                                                    <option value="" disabled>Choose a Variant</option>
-                                                    {item.variants.map((variant) => (
-                                                        <option key={variant.id} value={variant.id}>
-                                                            {variant.color} - Size: {variant.size}
-                                                        </option>
-                                                    ))}
-                                                </select>
-                                            )}
+                                            {/* <div className="flex gap-2 mt-2">
+                                            <input
+                                                type="text"
+                                                placeholder="Enter Size"
+                                                className="w-1/2 p-2 border rounded"
+                                            />
+                                            <input
+                                                type="text"
+                                                placeholder="Enter Color"
+                                                className="w-1/2 p-2 border rounded"
+                                            />
+                                        </div> */}
                                         </td>
-
                                         <td className="w-40 border border-slate-200 dark:border-zinc-500">
                                             <div className="flex justify-center text-center input-step">
                                                 <input
@@ -577,22 +562,13 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
                                             />
                                         </td>
                                         <td className="border border-slate-200 dark:border-zinc-500 px-6 py-1.5">
-                                            {/* <button
+                                            <button
                                                 type="button"
                                                 className="product-removal text-red-500"
                                                 onClick={() => handleRemoveItem(index)}
                                             >
                                                 Delete
-                                            </button> */}
-
-
-                                            <a 
-                     onClick={() => handleRemoveItem(index)}
-                    className="text-danger" 
-                    aria-label="Delete"
-                >
-                    <DeleteOutlined style={{ fontSize: '22px' }} />
-                </a>
+                                            </button>
                                         </td>
                                     </tr>
                                 ))}
@@ -603,7 +579,7 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
                                         <button
                                             type="button"
                                             id="addItemButton"
-                                            className="bg-primary border-dashed text-black btn border-custom-500 mt-4 p-2"
+                                            className="bg-white border-dashed text-custom-500 btn border-custom-500 mt-4"
                                             onClick={handleAddItem}
                                         >
                                             Add Item
