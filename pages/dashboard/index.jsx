@@ -6,6 +6,7 @@ import { DASHBORD_END_POINT } from '@/constants/api_endpoints/dashbordEndPoints'
 import Axios from '@/utils/axios';
 import Loader from "@/components/common/Loader";
 import withAuth from "@/components/withAuth";
+import TableFour from "@/components/Tables/TableFour";
 
 
 const Dashbord = () => {
@@ -17,6 +18,7 @@ const Dashbord = () => {
   const fetchDashbord = async () => {
     try {
       const response = await http.get(DASHBORD_END_POINT.get());
+      console.log(response)
       setDashbordData(response.data?.data);
       setLoading(false);
     } catch (error) {
@@ -126,7 +128,9 @@ const Dashbord = () => {
       <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
         <ChartOne data={dashbord?.orderStatistics}/>
         {/* <ChartTwo /> */}
-
+        <div className="col-span-12 xl:col-span-8">
+          <TableFour    data={dashbord?.topSellingProducts}/>
+        </div>
       </div>
 
     </>
