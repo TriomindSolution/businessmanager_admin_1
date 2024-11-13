@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/router";
 import withAuth from '@/components/withAuth';
+import html2pdf from "html2pdf.js";
 
 
 const ViewInvoice = () => {
@@ -53,7 +54,7 @@ const ViewInvoice = () => {
                         <div className="flex flex-col gap-5 md:items-center md:flex-row">
                             <div className="flex items-center gap-2 shrink-0">
                                 <button
-                                    onClick={downloadInvoiceAsPDF} // Attach the download function to the button
+                                    onClick={downloadInvoiceAsPDF}
                                     className="bg-primary hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                                 >
                                     Download Invoice as PDF
