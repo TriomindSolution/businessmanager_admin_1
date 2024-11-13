@@ -220,7 +220,7 @@ const AddInformation = () => {
                                 </div>
 
                                 {/* Company Logo */}
-                                {/* <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                                 {/* <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                                     <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
                                         <h3 className="font-medium text-black dark:text-white">Company Logo</h3>
                                     </div>
@@ -233,13 +233,13 @@ const AddInformation = () => {
                                         <div className="flex flex-col items-center justify-center space-y-3">
                                             <span className="flex h-10 w-10 items-center justify-center rounded-full border border-stroke bg-white dark:border-strokedark dark:bg-boxdark">
                                                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    {/* SVG Icon Here */}
-                                                {/* </svg>
+                                                    
+                                                 </svg>
                                             </span>
                                             <p><span className="text-primary">Click to upload</span> or drag and drop</p>
                                         </div>
                                     </div>
-                                </div> */} 
+                                </div> * */}
 
                                 <div className="flex justify-end gap-4.5 mt-10">
                                     <button className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-95" type="submit">
