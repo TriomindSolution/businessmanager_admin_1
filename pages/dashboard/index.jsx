@@ -6,6 +6,7 @@ import { DASHBORD_END_POINT } from '@/constants/api_endpoints/dashbordEndPoints'
 import Axios from '@/utils/axios';
 import Loader from "@/components/common/Loader";
 import withAuth from "@/components/withAuth";
+import TableFour from "@/components/Tables/TableFour";
 
 
 const Dashbord = () => {
