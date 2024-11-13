@@ -3,6 +3,7 @@ import Axios from '@/utils/axios';
 import { useRouter } from 'next/router';
 import { ORDER_END_POINT } from "@/constants/api_endpoints/orderEndPoints";
 import { PRODUCT_END_POINT } from "@/constants/api_endpoints/productEndPoints";
+import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
 
 import ToastMessage from "@/components/Toast";
 const Invoice = () => {
@@ -43,6 +44,7 @@ const Invoice = () => {
     size: "",
     color: "",
     sub_total: 0,
+    name: ""
   });
 
 
@@ -59,6 +61,8 @@ const Invoice = () => {
       product_total: 0,
     },
   ]);
+
+  console.log("items", items)
 
   const handleAddItem = () => {
     setItems([
@@ -179,27 +183,66 @@ const Invoice = () => {
   };
 
 
-  const handleChange = (index, field, value) => {
+  // const handleChange = (index, field, value) => {
+  //   const newItems = [...items];
+  //   newItems[index][field] = value || 0;
+
+  //   const { quantity, price, discount, tax } = newItems[index];
+  //   const discountAmount =
+  //     (parseFloat(price || 0) * parseFloat(discount || 0)) / 100;
+  //   const productTotal =
+  //     parseFloat(quantity || 0) * parseFloat(price || 0) -
+  //     discountAmount +
+  //     parseFloat(tax || 0);
+
+  //   newItems[index].product_total = productTotal;
+  //   setItems(newItems);
+
+  //   const newSubTotal = calculateSubTotal(newItems);
+  //   setOrder((prevOrder) => ({
+  //     ...prevOrder,
+  //     sub_total: newSubTotal,
+  //     total_amount: calculateTotalAmount(newSubTotal, prevOrder.shipping_charge),
+  //   }));
+  // };
+
+
+
+  const handleChange = async (index, field, value) => {
     const newItems = [...items];
     newItems[index][field] = value || 0;
 
-    const { quantity, price, discount, tax } = newItems[index];
-    const discountAmount =
-      (parseFloat(price || 0) * parseFloat(discount || 0)) / 100;
-    const productTotal =
-      parseFloat(quantity || 0) * parseFloat(price || 0) -
-      discountAmount +
-      parseFloat(tax || 0);
+    try {
+      // Fetch variants specific to the selected product ID
+      const response = await http.get(PRODUCT_END_POINT.product_retrieve(value));
 
-    newItems[index].product_total = productTotal;
-    setItems(newItems);
+      // Check if the response is valid and has the expected data structure
+      if (response?.data?.data && Array.isArray(response.data.data)) {
+        newItems[index].variants = response.data.data[0]?.product_variants || [];
+      } else {
+        newItems[index].variants = [];
+      }
 
-    const newSubTotal = calculateSubTotal(newItems);
-    setOrder((prevOrder) => ({
-      ...prevOrder,
-      sub_total: newSubTotal,
-      total_amount: calculateTotalAmount(newSubTotal, prevOrder.shipping_charge),
-    }));
+      // Update calculations
+      const { quantity, price, discount, tax } = newItems[index];
+      const discountAmount = (parseFloat(price || 0) * parseFloat(discount || 0)) / 100;
+      const productTotal = parseFloat(quantity || 0) * parseFloat(price || 0) - discountAmount + parseFloat(tax || 0);
+
+      newItems[index].product_total = productTotal;
+      setItems(newItems);
+
+      const newSubTotal = calculateSubTotal(newItems);
+      setOrder((prevOrder) => ({
+        ...prevOrder,
+        sub_total: newSubTotal,
+        total_amount: calculateTotalAmount(newSubTotal, prevOrder.shipping_charge),
+      }));
+    } catch (error) {
+      console.error('Error fetching product data:', error);
+      // Handle the error if needed, e.g., set an error state or log the error
+      newItems[index].variants = []; // Ensure variants are set to an empty array if the API fails
+      setItems(newItems);
+    }
   };
 
   const handleOrderChange = (field, value) => {
@@ -221,7 +264,24 @@ const Invoice = () => {
   /***Fetching table Data end */
 
   const handleSubmit = async (event) => {
-    const response = await http.put(ORDER_END_POINT.update(id), order);
+    const orderPayload = {
+      ...order,
+      variants: items.map((item) => ({
+          id: item.id,
+          product_id:item?.product_id,
+          quantity: item.quantity,
+          price: item.price,
+          discount: item.discount,
+          tax: item.tax,
+          product_total: item.product_total,
+          size: item.size,
+          color: item.color,
+          sub_total: 0,
+      })),
+  };
+    // console.log("order", orderPayload);
+    // return;
+    const response = await http.put(ORDER_END_POINT.update(id), orderPayload);
     if (response.data.status === true) {
       notify('success', response.data.message);
       router.push('/invoices')
@@ -433,34 +493,33 @@ const Invoice = () => {
                   <tr className="item" key={index}>
                     <td className="border border-slate-200 dark:border-zinc-500">
                       <select
-                        id={`itemName-${index}`}
-                        name="name"
-                        className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         value={item.id}
                         onChange={(e) => handleChange(index, "id", e.target.value)}
                       >
-                        <option value="" disabled>
-                          Choose an Item
-                        </option>
-                        {itemList.map((item) => (
-                          <option key={item.id} value={item.id}>
-                            {item.name}
+                        <option value="" disabled>Choose an Item</option>
+                        {itemList.map((option) => (
+                          <option key={option.id} value={option.id}>
+                            {option.name}
                           </option>
                         ))}
                       </select>
-                      {/* <div className="flex gap-2 mt-2">
-                                    <input
-                                        type="text"
-                                        placeholder="Enter Size"
-                                        className="w-1/2 p-2 border rounded"
-                                    />
-                                    <input
-                                        type="text"
-                                        placeholder="Enter Color"
-                                        className="w-1/2 p-2 border rounded"
-                                    />
-                                </div> */}
+
+                      {/* Variants dropdown specific to each item */}
+                      {item.variants && item.variants.length > 0 && (
+                        <select
+                          value={item.variant_id || ""}
+                          onChange={(e) => handleChange(index, "variant_id", e.target.value)}
+                        >
+                          <option value="" disabled>Choose a Variant</option>
+                          {item.variants.map((variant) => (
+                            <option key={variant.id} value={variant.id}>
+                              {variant.color} - Size: {variant.size}
+                            </option>
+                          ))}
+                        </select>
+                      )}
                     </td>
+
                     <td className="w-40 border border-slate-200 dark:border-zinc-500">
                       <div className="flex justify-center text-center input-step">
                         <input
@@ -532,17 +591,26 @@ const Invoice = () => {
                       />
                     </td>
                     <td className="border border-slate-200 dark:border-zinc-500 px-6 py-1.5">
-                      <button
-                        type="button"
-                        className="product-removal text-red-500"
+                      {/* <button
+                                                type="button"
+                                                className="product-removal text-red-500"
+                                                onClick={() => handleRemoveItem(index)}
+                                            >
+                                                Delete
+                                            </button> */}
+
+
+                      <a
                         onClick={() => handleRemoveItem(index)}
+                        className="text-danger flex items-center justify-center"
+                        aria-label="Delete"
                       >
-                        Delete
-                      </button>
+                        <DeleteOutlined style={{ fontSize: '22px' }} />
+                      </a>
                     </td>
                   </tr>
                 ))}
-              </tbody>
+              </tbody>   
               <tbody>
                 <tr>
                   <td colSpan={6}>
@@ -559,7 +627,7 @@ const Invoice = () => {
               </tbody>
               <tbody id="totalAmount">
                 <tr>
-                  <td colSpan={4} />
+                  <td colSpan={5} />
                   <td className="border-b border-slate-200 px-3.5 py-2.5 text-slate-500 dark:text-zinc-200 dark:border-zinc-500">
                     Shipping Charge
                   </td>
@@ -573,7 +641,7 @@ const Invoice = () => {
                   </td>
                 </tr>
                 <tr>
-                  <td colSpan={4} />
+                  <td colSpan={5} />
                   <td className="border-b border-slate-200 px-3.5 py-2.5 text-slate-500 dark:text-zinc-200 dark:border-zinc-500">
                     Total Amount
                   </td>

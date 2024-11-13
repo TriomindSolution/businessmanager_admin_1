@@ -17,26 +17,7 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
     const router = useRouter();
     const { http } = Axios();
 
-    // const { data } = router.query;
-    // console.log(data);
     let parsedData;
-
-    // if (data) {
-    //     try {
-    //         parsedData = JSON.parse(data);
-    //         console.log( parsedData);
-    //     } catch (error) {
-    //         console.error('Failed to parse JSON:', error);
-    //         parsedData = null;
-    //     }
-    // } else {
-    //     parsedData = null;
-    // }
-
-
-
-
-
     const notify = useCallback((type, message) => {
         ToastMessage({ type, message });
     }, []);
@@ -68,6 +49,7 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
         size: "",
         color: "",
         sub_total: 0,
+        order_status: 1
     });
 
     /***Fetching Item Data Start */
@@ -106,7 +88,7 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
             product_total: 0,
         },
     ]);
-
+    console.log("items", items)
     const calculateSubTotal = (items) => {
         return items.reduce((total, item) => total + item.product_total, 0);
     };
@@ -146,26 +128,26 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
     const handleChange = async (index, field, value) => {
         const newItems = [...items];
         newItems[index][field] = value || 0;
-    
+
         try {
             // Fetch variants specific to the selected product ID
             const response = await http.get(PRODUCT_END_POINT.product_retrieve(value));
-    
+
             // Check if the response is valid and has the expected data structure
             if (response?.data?.data && Array.isArray(response.data.data)) {
                 newItems[index].variants = response.data.data[0]?.product_variants || [];
             } else {
                 newItems[index].variants = [];
             }
-    
+
             // Update calculations
             const { quantity, price, discount, tax } = newItems[index];
             const discountAmount = (parseFloat(price || 0) * parseFloat(discount || 0)) / 100;
             const productTotal = parseFloat(quantity || 0) * parseFloat(price || 0) - discountAmount + parseFloat(tax || 0);
-    
+
             newItems[index].product_total = productTotal;
             setItems(newItems);
-    
+
             const newSubTotal = calculateSubTotal(newItems);
             setOrder((prevOrder) => ({
                 ...prevOrder,
@@ -179,7 +161,7 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
             setItems(newItems);
         }
     };
-    
+
 
 
     const handleOrderChange = (field, value) => {
@@ -192,7 +174,6 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
                     : prevOrder.total_amount,
         }));
     };
-    console.log(order);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -278,12 +259,6 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
     return (
         <div className="flex flex-col gap-10">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                {/* <div className="py-6 px-4 md:px-6 xl:px-7.5 flex justify-between items-center border-b border-stroke dark:border-strokedark">
-                    <h4 className="text-xl font-semibold text-black dark:text-white">
-                        General Info
-                    </h4>
-                </div> */}
-
                 <div className="p-2 md:p-6 xl:p-7.5 flex flex-col ">
                     <h6 className="my-5 underline text-16"> General Info:</h6>
 
@@ -382,7 +357,7 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
 
                         <div className="w-full sm:w-1/4">
                             <label
-                                className="mb-2 block text-sm font-medium text-black dark:text-white"
+                                className="mb-3 block text-sm font-medium text-black dark:text-white"
                                 htmlFor='invoice_no'
                             >
                                 Address
@@ -407,23 +382,17 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
                                 className="mb-2 block text-sm font-medium text-black dark:text-white"
                                 htmlFor='invoice_no'
                             >
-                                Payment Status
+                                Order Status
 
                             </label>
                             <div className="relative">
-                                {/* <input
-                                    className="w-full rounded border border-black bg-gray-100 py-2 pl-5 pr-2 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                                    type="text"
-                                    name='invoice_no'
-                                    id='invoice_no'
-                                    placeholder="Enter the invoice number"
-                                /> */}
+
                                 <select
                                     className="w-full rounded border border-black bg-gray-100 py-2 pl-5 pr-2 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                                     data-choices=""
                                     data-choices-search-false=""
-                                    name="paymentStatus"
-                                    id="paymentStatus"
+                                    name="order_status"
+                                    id="order_status"
                                     value={order.payment}
                                     onChange={(e) =>
                                         handleOrderChange("payment", e.target.value)
@@ -433,13 +402,17 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
                                     <option value="" disabled>
                                         Select Status
                                     </option>
-                                    <option value="0">Paid</option>
-                                    <option value="1">Unpaid</option>
-                                    <option value="2">Cancel</option>
-                                    <option value="3">Refund</option>
+                                    <option value={1}>Pending</option>
+                                    <option value={2}>Processing</option>
+                                    <option value={3}>Shipped </option>
+                                    <option value={4}>Delivered</option>
+                                    <option value={5}>Cancelled </option>
+                                    <option value={6}>Returned </option>
                                 </select>
                             </div>
                         </div>
+
+
 
                     </div>
 
@@ -481,8 +454,9 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
                                             <select
                                                 value={item.id}
                                                 onChange={(e) => handleChange(index, "id", e.target.value)}
+                                                className="text-black dark:text-white"
                                             >
-                                                <option value="" disabled>Choose an Item</option>
+                                                <option value="" disabled >Choose an Item</option>
                                                 {itemList.map((option) => (
                                                     <option key={option.id} value={option.id}>
                                                         {option.name}
@@ -576,30 +550,22 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
                                                 value={item.product_total}
                                             />
                                         </td>
-                                        <td className="border border-slate-200 dark:border-zinc-500 px-6 py-1.5">
-                                            {/* <button
-                                                type="button"
-                                                className="product-removal text-red-500"
+                                        <td className="border border-slate-200 dark:border-zinc-500 px-6 py-1.5 text-center">
+                                            <a
                                                 onClick={() => handleRemoveItem(index)}
+                                                className="text-danger flex items-center justify-center"
+                                                aria-label="Delete"
                                             >
-                                                Delete
-                                            </button> */}
-
-
-                                            <a 
-                     onClick={() => handleRemoveItem(index)}
-                    className="text-danger" 
-                    aria-label="Delete"
-                >
-                    <DeleteOutlined style={{ fontSize: '22px' }} />
-                </a>
+                                                <DeleteOutlined style={{ fontSize: '22px' }} />
+                                            </a>
                                         </td>
+
                                     </tr>
                                 ))}
                             </tbody>
                             <tbody>
                                 <tr>
-                                    <td colSpan={6}>
+                                    <td colSpan={7}>
                                         <button
                                             type="button"
                                             id="addItemButton"
@@ -611,9 +577,9 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
                                     </td>
                                 </tr>
                             </tbody>
-                            <tbody id="totalAmount">
+                            <tbody id="totalAmount" className="justify-end">
                                 <tr>
-                                    <td colSpan={4} />
+                                    <td colSpan={5} />
                                     <td className="border-b border-slate-200 px-3.5 py-2.5 text-slate-500 dark:text-zinc-200 dark:border-zinc-500">
                                         Shipping Charge
                                     </td>
@@ -627,7 +593,7 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colSpan={4} />
+                                    <td colSpan={5} />
                                     <td className="border-b border-slate-200 px-3.5 py-2.5 text-slate-500 dark:text-zinc-200 dark:border-zinc-500">
                                         Total Amount
                                     </td>
@@ -690,6 +656,39 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
                                         )
                                     }
                                 />
+                            </div>
+                        </div>
+
+                        <div className="w-full sm:w-1/4">
+                            <label
+                                className="mb-2 block text-sm font-medium text-black dark:text-white"
+                                htmlFor='invoice_no'
+                            >
+                                Payment Status
+
+                            </label>
+                            <div className="relative">
+                                
+                                <select
+                                    className="w-full rounded border border-black bg-gray-100 py-2 pl-5 pr-2 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                                    data-choices=""
+                                    data-choices-search-false=""
+                                    name="paymentStatus"
+                                    id="paymentStatus"
+                                    value={order.payment}
+                                    onChange={(e) =>
+                                        handleOrderChange("payment", e.target.value)
+                                    }
+
+                                >
+                                    <option value="" disabled>
+                                        Select Status
+                                    </option>
+                                    <option value="0">Paid</option>
+                                    <option value="1">Unpaid</option>
+                                    <option value="2">Cancel</option>
+                                    <option value="3">Refund</option>
+                                </select>
                             </div>
                         </div>
 

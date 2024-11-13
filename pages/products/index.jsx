@@ -144,6 +144,7 @@ const ProdctList = () => {
         try {
             const response = await http.get(PRODUCT_END_POINT.list());
             setProductList(response.data?.data?.data);
+            // console.log(first)
             setFilteredData(response?.data)
             setLoading(false);
         } catch (error) {
@@ -204,8 +205,8 @@ const ProdctList = () => {
         },
 
         {
-            title: 'Stock',
-            dataIndex: 'product_unit',
+            title: 'Product Quantity',
+            dataIndex: 'product_quantity',
         },
 
 
