@@ -15,20 +15,21 @@ const Dashbord = () => {
   const [loading, setLoading] = useState(true);
 
   /*** Fetching dashboard data ***/
-  // const fetchDashbord = async () => {
-  //   try {
-  //     const response = await http.get(DASHBORD_END_POINT.get());
-  //     setDashbordData(response.data?.data);
-  //     setLoading(false);
-  //   } catch (error) {
-  //     console.error('Error fetching dashboard data:', error);
-  //     setLoading(false);
-  //   }
-  // };
+  const fetchDashbord = async () => {
+    try {
+      const response = await http.get(DASHBORD_END_POINT.get());
+      console.log(response)
+      setDashbordData(response.data?.data);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching dashboard data:', error);
+      setLoading(false);
+    }
+  };
 
-  // useEffect(() => {
-  //   fetchDashbord();
-  // }, []);
+  useEffect(() => {
+    fetchDashbord();
+  }, []);
 
   /*** Render loading state ***/
   if (loading) {
@@ -38,7 +39,7 @@ const Dashbord = () => {
   /***Fetching table Data end */
   return (
     <>
-      {/* <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
         <CardDataStats title="TOTAL ORDER" total={dashbord?.firstLayer[0]?.totalOrder} rate="" >
           <svg
             className="fill-primary dark:fill-white"
@@ -128,8 +129,12 @@ const Dashbord = () => {
         <ChartOne data={dashbord?.orderStatistics}/>
 
 
-      </div> */}
+      </div>
+      <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
+        <TableFour data={dashbord?.topSellingProducts}/>
 
+
+      </div>
     </>
 
 
