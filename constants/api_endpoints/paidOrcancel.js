@@ -1,3 +1,3 @@
 export const PAIDORCANCEL_END_POINT = {
-    get: () => `${process.env.NEXT_PUBLIC_API_URL}get-order-stats`,
+    get: (type) => `${process.env.NEXT_PUBLIC_API_URL}get-order-stats?type=${type}`,
 }
