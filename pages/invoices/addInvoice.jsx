@@ -71,10 +71,6 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
     }, []);
 
 
-
-
-
-
     const [items, setItems] = useState([
         {
             id: "",
@@ -88,7 +84,7 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
             product_total: 0,
         },
     ]);
-    console.log("items", items)
+    
     const calculateSubTotal = (items) => {
         return items.reduce((total, item) => total + item.product_total, 0);
     };
@@ -130,17 +126,14 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
         newItems[index][field] = value || 0;
 
         try {
-            // Fetch variants specific to the selected product ID
+            
             const response = await http.get(PRODUCT_END_POINT.product_retrieve(value));
 
-            // Check if the response is valid and has the expected data structure
             if (response?.data?.data && Array.isArray(response.data.data)) {
                 newItems[index].variants = response.data.data[0]?.product_variants || [];
             } else {
                 newItems[index].variants = [];
             }
-
-            // Update calculations
             const { quantity, price, discount, tax } = newItems[index];
             const discountAmount = (parseFloat(price || 0) * parseFloat(discount || 0)) / 100;
             const productTotal = parseFloat(quantity || 0) * parseFloat(price || 0) - discountAmount + parseFloat(tax || 0);
@@ -379,14 +372,23 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
 
                         <div className="w-full sm:w-1/4">
                             <label
-                                className="mb-2 block text-sm font-medium text-black dark:text-white"
+                                className="mb-3 block text-sm font-medium text-black dark:text-white"
                                 htmlFor='invoice_no'
                             >
                                 Order Status
-
                             </label>
                             <div className="relative">
+                                {/* <input
+                                    className="w-full rounded border border-black bg-gray-100 py-2 pl-5 pr-2 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                                    type="date"
 
+                                    name='delivery_date'
+                                    placeholder="Delivery Date"
+                                    value={order.delivery_date}
+                                    onChange={(e) =>
+                                        handleOrderChange("delivery_date", e.target.value)
+                                    }
+                                /> */}
                                 <select
                                     className="w-full rounded border border-black bg-gray-100 py-2 pl-5 pr-2 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                                     data-choices=""
@@ -395,7 +397,8 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
                                     id="order_status"
                                     value={order.payment}
                                     onChange={(e) =>
-                                        handleOrderChange("payment", e.target.value)
+                                        // handleOrderChange("payment", e.target.value)
+                                        handleOrderChange("order_status", e.target.value)
                                     }
 
                                 >
@@ -413,8 +416,17 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
                         </div>
 
 
+                        <div className="w-full sm:w-1/4">
+                            
+                        </div>
+
+                        <div className="w-full sm:w-1/4">
+                           
+                        </div>
 
                     </div>
+
+                  
 
 
                     {/* Products Info Table */}

@@ -24,7 +24,7 @@ const ChartOne = () => {
     try {
       // const response = await Axios.get(`${PAIDORCANCEL_END_POINT}?type=${2}`);
       // const response = await Axios.get(`${PAIDORCANCEL_END_POINT}?type=${2}`);
-      const response = await http.get(PAIDORCANCEL_END_POINT.get(2));
+      const response = await http.get(PAIDORCANCEL_END_POINT.get(timePeriod));
 
       const data = response.data;
       console.log("data calling",data)
