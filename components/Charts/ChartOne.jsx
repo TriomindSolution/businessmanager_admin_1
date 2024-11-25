@@ -8,7 +8,7 @@ import Axios from "@/utils/axios";
 const ReactApexChart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 const ChartOne = () => {
-  const [timePeriod, setTimePeriod] = useState(2); // Default to "Month"
+  const [timePeriod, setTimePeriod] = useState(2); 
   const [chartData, setChartData] = useState({
     month: [],
     paidOrder: [],
@@ -22,26 +22,28 @@ const ChartOne = () => {
 
   const fetchData = async (type) => {
     try {
-      // const response = await Axios.get(`${PAIDORCANCEL_END_POINT}?type=${2}`);
-      // const response = await Axios.get(`${PAIDORCANCEL_END_POINT}?type=${2}`);
       const response = await http.get(PAIDORCANCEL_END_POINT.get(timePeriod));
-
       const data = response.data;
+  
       console.log("Fetched Data:", data);
   
-      setChartData({
-        month: data.orderStatistics[0]?.month || [],
-        paidOrder: data.orderStatistics[0]?.paidOrder || [],
-        cancelOrder: data.orderStatistics[0]?.cancelOrder || [],
-      });
-      
+      // Check if data exists and extract the first set of statistics
+      if (data?.data?.orderStatistics?.length > 0) {
+        const stats = data.data.orderStatistics[0];
+          setChartData({
+          month: stats.month || [],
+          paidOrder: stats.paidOrder || [],
+          cancelOrder: stats.cancelOrder || [],
+        });
+      }
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
+  
 
 
-
+console.log("chartData",chartData)
 
   const handleButtonClick = (type) => {
     setTimePeriod(type); // Update state to trigger `useEffect` and fetch data
