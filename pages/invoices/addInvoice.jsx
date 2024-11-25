@@ -733,8 +733,8 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
                                     className="w-full rounded border border-black bg-gray-100 py-2 pl-5 pr-2 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                                     data-choices=""
                                     data-choices-search-false=""
-                                    name="paymentStatus"
-                                    id="paymentStatus"
+                                    name="payment"
+                                    id="payment"
                                     value={order.payment}
                                     onChange={(e) =>
                                         handleOrderChange("payment", e.target.value)
@@ -744,10 +744,10 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
                                     <option value="" disabled>
                                         Select Status
                                     </option>
-                                    <option value="0">Paid</option>
-                                    <option value="1">Unpaid</option>
-                                    <option value="2">Cancel</option>
-                                    <option value="3">Refund</option>
+                                    <option value={0}>Paid</option>
+                                    <option value={1}>Unpaid</option>
+                                    <option value={2}>Cancel</option>
+                                    <option value={3}>Refund</option>
                                 </select>
                             </div>
                         </div>
