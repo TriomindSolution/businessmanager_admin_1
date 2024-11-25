@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
-// import axios from "axios";
+
 import { PAIDORCANCEL_END_POINT } from "@/constants/api_endpoints/paidOrcancel";
 import Axios from "@/utils/axios";
 
@@ -22,21 +22,28 @@ const ChartOne = () => {
 
   const fetchData = async (type) => {
     try {
-      // const response = await Axios.get(`${PAIDORCANCEL_END_POINT}?type=${2}`);
-      // const response = await Axios.get(`${PAIDORCANCEL_END_POINT}?type=${2}`);
-      const response = await http.get(PAIDORCANCEL_END_POINT.get(2));
+      // Use the passed timePeriod dynamically in the endpoint
+      const response = await http.get(PAIDORCANCEL_END_POINT.get(type));
 
       const data = response.data;
-      console.log("data calling",data)
-
+      console.log("Fetched Data:", data);
+  
       setChartData({
-        month: data[0]?.month || [],
-        paidOrder: data[0]?.paidOrder || [],
-        cancelOrder: data[0]?.cancelOrder || [],
+        month: data.orderStatistics[0]?.month || [],
+        paidOrder: data.orderStatistics[0]?.paidOrder || [],
+        cancelOrder: data.orderStatistics[0]?.cancelOrder || [],
       });
+      
     } catch (error) {
       console.error("Error fetching data:", error);
     }
+  };
+
+
+
+
+  const handleButtonClick = (type) => {
+    setTimePeriod(type); // Update state to trigger `useEffect` and fetch data
   };
 
   const options = {
@@ -77,8 +84,9 @@ const ChartOne = () => {
     },
     yaxis: {
       min: 0,
-      max: 100,
+      max: Math.max(...chartData.paidOrder, ...chartData.cancelOrder, 10), // Add a buffer if data is sparse
     },
+    
   };
 
   const series = [
@@ -92,24 +100,26 @@ const ChartOne = () => {
     },
   ];
 
+  console.log("Chart Data:", chartData);
+
   return (
     <div className="col-span-12 rounded-sm border border-stroke bg-white px-5 pb-5 pt-7.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-8">
       <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
         <button
           className={`btn ${timePeriod === 1 ? "active" : ""}`}
-          onClick={() => setTimePeriod(1)}
+          onClick={() => handleButtonClick(1)}
         >
           Day
         </button>
         <button
           className={`btn ${timePeriod === 2 ? "active" : ""}`}
-          onClick={() => setTimePeriod(2)}
+          onClick={() => handleButtonClick(2)}
         >
           Month
         </button>
         <button
           className={`btn ${timePeriod === 3 ? "active" : ""}`}
-          onClick={() => setTimePeriod(3)}
+          onClick={() => handleButtonClick(3)}
         >
           Year
         </button>

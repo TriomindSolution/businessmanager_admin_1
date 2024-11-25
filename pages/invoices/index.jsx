@@ -162,6 +162,7 @@ const Order = () => {
             const response = await http.get(ORDER_END_POINT.list());
 
             if (response.data.data) {
+                console.log(response.data.data)
                 setOrderList(response.data.data.data);
                 
             } else {
