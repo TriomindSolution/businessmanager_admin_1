@@ -198,10 +198,18 @@ const ProductForm = () => {
 
 
     const removeVariant = async (index, variant) => {
-        // const updatedVariants = [...variants];
+        
         // updatedVariants.splice(index, 1);
         // setVariants(updatedVariants);
-        console.log(variant)
+        // console.log(variant)
+
+        if (variant.size === '' && variant.color === '' && variant.quantity === '') {
+            const updatedVariants = [...variants];
+            updatedVariants.splice(index, 1);
+            setVariants(updatedVariants);
+            notify('success', "Delete successfully");
+            return; // Skip the API call
+          }
 
 
         try {
