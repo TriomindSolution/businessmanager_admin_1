@@ -267,18 +267,18 @@ const Invoice = () => {
     const orderPayload = {
       ...order,
       variants: items.map((item) => ({
-          id: item.id,
-          product_id:item?.product_id,
-          quantity: item.quantity,
-          price: item.price,
-          discount: item.discount,
-          tax: item.tax,
-          product_total: item.product_total,
-          size: item.size,
-          color: item.color,
-          sub_total: 0,
+        id: item.id,
+        product_id: item?.product_id,
+        quantity: item.quantity,
+        price: item.price,
+        discount: item.discount,
+        tax: item.tax,
+        product_total: item.product_total,
+        size: item.size,
+        color: item.color,
+        sub_total: 0,
       })),
-  };
+    };
     // console.log("order", orderPayload);
     // return;
     const response = await http.put(ORDER_END_POINT.update(id), orderPayload);
@@ -421,23 +421,16 @@ const Invoice = () => {
                 className="mb-2 block text-sm font-medium text-black dark:text-white"
                 htmlFor='invoice_no'
               >
-                Payment Status
+                Order Status
 
               </label>
               <div className="relative">
-                {/* <input
-                            className="w-full rounded border border-black bg-gray-100 py-2 pl-5 pr-2 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                            type="text"
-                            name='invoice_no'
-                            id='invoice_no'
-                            placeholder="Enter the invoice number"
-                        /> */}
                 <select
                   className="w-full rounded border border-black bg-gray-100 py-2 pl-5 pr-2 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                   data-choices=""
                   data-choices-search-false=""
-                  name="paymentStatus"
-                  id="paymentStatus"
+                  name="order_status"
+                  id="order_status"
                   value={order.payment}
                   onChange={(e) =>
                     handleOrderChange("payment", e.target.value)
@@ -447,12 +440,20 @@ const Invoice = () => {
                   <option value="" disabled>
                     Select Status
                   </option>
-                  <option value="0">Paid</option>
-                  <option value="1">Unpaid</option>
-                  <option value="2">Cancel</option>
-                  <option value="3">Refund</option>
+                  <option value={1}>Pending</option>
+                  <option value={2}>Processing</option>
+                  <option value={3}>Shipped </option>
+                  <option value={4}>Delivered</option>
+                  <option value={5}>Cancelled </option>
+                  <option value={6}>Returned </option>
                 </select>
               </div>
+            </div>
+
+            <div className="w-full sm:w-1/4">
+            </div>
+
+            <div className="w-full sm:w-1/4">
             </div>
 
           </div>
@@ -591,15 +592,6 @@ const Invoice = () => {
                       />
                     </td>
                     <td className="border border-slate-200 dark:border-zinc-500 px-6 py-1.5">
-                      {/* <button
-                                                type="button"
-                                                className="product-removal text-red-500"
-                                                onClick={() => handleRemoveItem(index)}
-                                            >
-                                                Delete
-                                            </button> */}
-
-
                       <a
                         onClick={() => handleRemoveItem(index)}
                         className="text-danger flex items-center justify-center"
@@ -610,14 +602,14 @@ const Invoice = () => {
                     </td>
                   </tr>
                 ))}
-              </tbody>   
+              </tbody>
               <tbody>
                 <tr>
-                  <td colSpan={6}>
+                  <td colSpan={7}>
                     <button
                       type="button"
                       id="addItemButton"
-                      className="bg-white border-dashed text-custom-500 btn border-custom-500 mt-4"
+                      className="bg-primary border-dashed text-black btn border-custom-500 mt-4 p-2"
                       onClick={handleAddItem}
                     >
                       Add Item
@@ -706,6 +698,42 @@ const Invoice = () => {
                 />
               </div>
             </div>
+
+            <div className="w-full sm:w-1/4">
+              <label
+                className="mb-2 block text-sm font-medium text-black dark:text-white"
+                htmlFor='invoice_no'
+              >
+                Payment Status
+
+              </label>
+              <div className="relative">
+
+                <select
+                  className="w-full rounded border border-black bg-gray-100 py-2 pl-5 pr-2 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                  data-choices=""
+                  data-choices-search-false=""
+                  name="paymentStatus"
+                  id="paymentStatus"
+                  value={order.payment}
+                  onChange={(e) =>
+                    handleOrderChange("payment", e.target.value)
+                  }
+
+                >
+                  <option value="" disabled>
+                    Select Status
+                  </option>
+                  <option value="0">Paid</option>
+                  <option value="1">Unpaid</option>
+                  <option value="2">Cancel</option>
+                  <option value="3">Refund</option>
+                </select>
+              </div>
+            </div>
+
+
+
 
           </div>
           <div className="mb-3">

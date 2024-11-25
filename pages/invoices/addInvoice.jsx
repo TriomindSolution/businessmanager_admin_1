@@ -71,10 +71,6 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
     }, []);
 
 
-
-
-
-
     const [items, setItems] = useState([
         {
             id: "",
@@ -125,29 +121,67 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
         }));
     };
 
+    // const handleChange = async (index, field, value) => {
+    //     const newItems = [...items];
+    //     newItems[index][field] = value || 0;
+
+    //     try {
+
+    //         const response = await http.get(PRODUCT_END_POINT.product_retrieve(value));
+
+    //         if (response?.data?.data && Array.isArray(response.data.data)) {
+    //             newItems[index].variants = response.data.data[0]?.product_variants || [];
+    //         } else {
+    //             newItems[index].variants = [];
+    //         }
+    //         const { quantity, price, discount, tax } = newItems[index];
+    //         const discountAmount = (parseFloat(price || 0) * parseFloat(discount || 0)) / 100;
+    //         const productTotal = parseFloat(quantity || 0) * parseFloat(price || 0) - discountAmount + parseFloat(tax || 0);
+
+    //         newItems[index].product_total = productTotal;
+    //         setItems(newItems);
+
+    //         const newSubTotal = calculateSubTotal(newItems);
+    //         setOrder((prevOrder) => ({
+    //             ...prevOrder,
+    //             sub_total: newSubTotal,
+    //             total_amount: calculateTotalAmount(newSubTotal, prevOrder.shipping_charge),
+    //         }));
+    //     } catch (error) {
+    //         console.error('Error fetching product data:', error);
+    //         newItems[index].variants = []; 
+    //         setItems(newItems);
+    //     }
+    // };
+
     const handleChange = async (index, field, value) => {
         const newItems = [...items];
-        newItems[index][field] = value || 0;
+        newItems[index][field] = value || 0; // Update the specific field
 
         try {
-            // Fetch variants specific to the selected product ID
-            const response = await http.get(PRODUCT_END_POINT.product_retrieve(value));
-
-            // Check if the response is valid and has the expected data structure
-            if (response?.data?.data && Array.isArray(response.data.data)) {
-                newItems[index].variants = response.data.data[0]?.product_variants || [];
-            } else {
-                newItems[index].variants = [];
+            if (field === "id") {
+                // Fetch product data and update variants only if the product ID changes
+                const response = await http.get(PRODUCT_END_POINT.product_retrieve(value));
+                if (response?.data?.data && Array.isArray(response.data.data)) {
+                    newItems[index].variants = response.data.data[0]?.product_variants || [];
+                } else {
+                    newItems[index].variants = [];
+                }
+                // Reset variant_id if the product changes
+                newItems[index].variant_id = "";
             }
 
-            // Update calculations
+            // Recalculate product total
             const { quantity, price, discount, tax } = newItems[index];
             const discountAmount = (parseFloat(price || 0) * parseFloat(discount || 0)) / 100;
-            const productTotal = parseFloat(quantity || 0) * parseFloat(price || 0) - discountAmount + parseFloat(tax || 0);
+            const productTotal =
+                parseFloat(quantity || 0) * parseFloat(price || 0) - discountAmount + parseFloat(tax || 0);
 
             newItems[index].product_total = productTotal;
+
             setItems(newItems);
 
+            // Update order totals
             const newSubTotal = calculateSubTotal(newItems);
             setOrder((prevOrder) => ({
                 ...prevOrder,
@@ -155,12 +189,16 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
                 total_amount: calculateTotalAmount(newSubTotal, prevOrder.shipping_charge),
             }));
         } catch (error) {
-            console.error('Error fetching product data:', error);
-            // Handle the error if needed, e.g., set an error state or log the error
-            newItems[index].variants = []; // Ensure variants are set to an empty array if the API fails
+            console.error("Error fetching product data:", error);
+            // Set variants to an empty array if the API call fails
+            if (field === "id") {
+                newItems[index].variants = [];
+                newItems[index].variant_id = "";
+            }
             setItems(newItems);
         }
     };
+
 
 
 
@@ -379,11 +417,10 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
 
                         <div className="w-full sm:w-1/4">
                             <label
-                                className="mb-2 block text-sm font-medium text-black dark:text-white"
+                                className="mb-3 block text-sm font-medium text-black dark:text-white"
                                 htmlFor='invoice_no'
                             >
                                 Order Status
-
                             </label>
                             <div className="relative">
 
@@ -393,9 +430,10 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
                                     data-choices-search-false=""
                                     name="order_status"
                                     id="order_status"
-                                    value={order.payment}
+                                    value={order.order_status}
                                     onChange={(e) =>
-                                        handleOrderChange("payment", e.target.value)
+                                        // handleOrderChange("payment", e.target.value)
+                                        handleOrderChange("order_status", e.target.value)
                                     }
 
                                 >
@@ -413,8 +451,17 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
                         </div>
 
 
+                        <div className="w-full sm:w-1/4">
+
+                        </div>
+
+                        <div className="w-full sm:w-1/4">
+
+                        </div>
 
                     </div>
+
+
 
 
                     {/* Products Info Table */}
@@ -569,11 +616,24 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
                                         <button
                                             type="button"
                                             id="addItemButton"
-                                            className="bg-primary border-dashed text-black btn border-custom-500 mt-4 p-2"
+                                            className="flex items-center justify-center bg-primary hover:bg-primary-dark text-white font-medium rounded-lg border-2 mt-2 border-custom-500 p-3 shadow-md transition-all duration-300 ease-in-out"
                                             onClick={handleAddItem}
                                         >
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                className="h-5 w-5 mr-2"
+                                                viewBox="0 0 20 20"
+                                                fill="currentColor"
+                                            >
+                                                <path
+                                                    fillRule="evenodd"
+                                                    d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H5a1 1 0 110-2h3V6a1 1 0 011-1z"
+                                                    clipRule="evenodd"
+                                                />
+                                            </svg>
                                             Add Item
                                         </button>
+
                                     </td>
                                 </tr>
                             </tbody>
@@ -668,7 +728,7 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
 
                             </label>
                             <div className="relative">
-                                
+
                                 <select
                                     className="w-full rounded border border-black bg-gray-100 py-2 pl-5 pr-2 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                                     data-choices=""
@@ -734,22 +794,43 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
 
                         <button
                             type="button"
-                            className="h-10 w-32 text-black btn bg-primary border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20"
+                            className="
+        h-10 w-32 
+        text-black 
+        bg-primary 
+        border border-custom-500 
+        hover:text-white hover:bg-custom-600 hover:border-custom-600 
+        focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 
+        active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 
+        dark:ring-custom-400/20
+        transition duration-200 ease-in-out rounded
+    "
                             onClick={handleSubmit}
                         >
-
-                            <span className="align-middle">Save</span>
+                            <span className="align-middle font-medium">Save</span>
                         </button>
+
                         <button
                             type="button"
-                            className="h-10 w-32 text-black bg-success border-green btn hover:text-white hover:bg-green-600 hover:border-green-600 focus:text-white focus:bg-green-600 focus:border-green-600 focus:ring focus:ring-green-100 active:text-white active:bg-green-600 active:border-green-600 active:ring active:ring-green-100 dark:ring-green-400/10"
+                            className="
+        flex items-center justify-center
+        h-10 w-32
+        text-black font-medium
+        bg-success border border-green-500
+        hover:text-white hover:bg-green-600 hover:border-green-600 
+        focus:text-white focus:bg-green-600 focus:border-green-600 focus:ring focus:ring-green-100 
+        active:text-white active:bg-green-600 active:border-green-600 active:ring active:ring-green-100 
+        dark:ring-green-400/10
+        transition duration-200 ease-in-out rounded
+    "
                         >
                             <i
                                 data-lucide="download"
-                                className="inline-block mr-1 size-4"
-                            />{" "}
+                                className="inline-block mr-2 text-current size-4"
+                            />
                             <span className="align-middle">Download</span>
                         </button>
+
                     </div>
 
                 </div>

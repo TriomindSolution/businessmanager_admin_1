@@ -22,8 +22,9 @@ const ChartOne = () => {
 
   const fetchData = async (type) => {
     try {
-      // Use the passed timePeriod dynamically in the endpoint
-      const response = await http.get(PAIDORCANCEL_END_POINT.get(type));
+      // const response = await Axios.get(`${PAIDORCANCEL_END_POINT}?type=${2}`);
+      // const response = await Axios.get(`${PAIDORCANCEL_END_POINT}?type=${2}`);
+      const response = await http.get(PAIDORCANCEL_END_POINT.get(timePeriod));
 
       const data = response.data;
       console.log("Fetched Data:", data);
