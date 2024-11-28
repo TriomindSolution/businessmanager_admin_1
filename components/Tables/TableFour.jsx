@@ -15,40 +15,41 @@ const TableFour = ({ data }) => {
         </div>
 
         <div className="flex flex-col">
-          {/* Table Header */}
-          <div className="grid grid-cols-2 rounded-sm bg-gray-2 dark:bg-meta-4 sm:grid-cols-4">
-            <div className="p-2.5 xl:p-4">
-              <h5 className="text-sm font-medium uppercase xsm:text-base">
-                Product Name
-              </h5>
-            </div>
-            <div className="hidden p-2.5 text-center sm:block xl:p-4">
-              <h5 className="text-sm font-medium uppercase xsm:text-base">
-                Total Orders
-              </h5>
-            </div>
-          </div>
+  {/* Table Header */}
+  <div className="grid grid-cols-2 rounded-sm bg-gray-2 dark:bg-meta-4 ">
+    <div className="p-2.5 xl:p-4">
+      <h5 className="text-sm font-medium uppercase xsm:text-base text-left">
+        Product Name
+      </h5>
+    </div>
+    <div className="hidden p-2.5 sm:block xl:p-4 text-right">
+      <h5 className="text-sm font-medium uppercase xsm:text-base">
+        Total Orders
+      </h5>
+    </div>
+  </div>
 
-          {/* Table Body */}
-          {data?.map((product) => (
-            <div
-              key={product.id}
-              className="grid grid-cols-2 sm:grid-cols-4 border-b border-gray-200"
-            >
-              <div className="flex items-centers gap-3 p-2.5 xl:p-5">
-                <p className="font-medium text-black dark:text-white">
-                  {product.name}
-                </p>
-              </div>
+  {/* Table Body */}
+  {data?.map((product) => (
+    <div
+      key={product.id}
+      className="grid grid-cols-2  border-b border-gray-200"
+    >
+      <div className="flex items-center justify-start gap-3 p-2.5 xl:p-5">
+        <p className="font-medium text-black dark:text-white">
+          {product.name}
+        </p>
+      </div>
 
-              <div className="flex items-center justify-center p-2.5 xl:p-5">
-                <p className="font-medium text-black dark:text-white">
-                  {product.total_orders}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
+      <div className="flex items-center justify-end p-2.5 xl:p-5">
+        <p className="font-medium text-black dark:text-white">
+          {product.total_orders}
+        </p>
+      </div>
+    </div>
+  ))}
+</div>
+
       </div>
     </div>
   );
