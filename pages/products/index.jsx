@@ -142,7 +142,7 @@ const ProdctList = () => {
         try {
             const response = await http.get(PRODUCT_END_POINT.list());
             setProductList(response.data?.data?.data);
-            // console.log(first)
+            console.log(response.data?.data?.data)
             setFilteredData(response?.data)
             setLoading(false);
         } catch (error) {
@@ -186,40 +186,47 @@ const ProdctList = () => {
 
 //-----------------End search operation-----------------
 
-    const columns = [
-        {
-            title: "SL",
-            fixed: 'left',
-            render: (text, record, index) => index + 1
+const columns = [
+    {
+        title: "SL",
+        fixed: 'left',
+        render: (text, record, index) => index + 1
+    },
+    {
+        title: 'Name',
+        dataIndex: 'name',
+    },
+    {
+        title: 'Unit Price',
+        dataIndex: 'per_unit_product_price',
+    },
+    {
+        title: 'Product Quantity',
+        dataIndex: 'product_quantity',
+    },
+    {
+        title: 'Stock Status',
+        dataIndex: 'stock_alert',
+        render: (stock_alert, record) => {
+          const productQuantity = parseInt(record.product_quantity, 10);
+          const stockAlert = parseInt(stock_alert, 10);
+    
+          return productQuantity <= stockAlert ? (
+            <Tag color="red">Low Stock</Tag>
+          ) : (
+            <Tag color="green">In Stock</Tag>
+          );
         },
-        {
-            title: 'Name',
-            dataIndex: 'name',
-        },
+      },
+    {
+        title: 'Action',
+        key: 'action',
+        fixed: 'right',
+        width: 100,
+        render: (row) => actionButton(row),
+    }
+];
 
-        {
-            title: 'Unit Price',
-            dataIndex: 'per_unit_product_price',
-        },
-
-        {
-            title: 'Product Quantity',
-            dataIndex: 'product_quantity',
-        },
-
-
-
-        
-
-
-      {
-            title: 'Action',
-            key: 'action',
-            fixed: 'right',
-            width: 100,
-            render: (row) => actionButton(row),
-        }
-    ];
 
     const actionButton = (row) => {
         return (
