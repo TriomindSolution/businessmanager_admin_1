@@ -276,6 +276,22 @@ const ProductForm = () => {
             console.error("Error submitting data:", error);
         }
     };
+
+
+    const handeCancel=async(e)=>{
+
+        router.push('/products')
+
+    }
+
+    useEffect(() => {
+        const calculatedPrice =
+            (parseFloat(product.product_quantity) || 0) *
+            (parseFloat(product.per_unit_product_price) || 0);
+        setProduct(prev => ({ ...prev, total_price: calculatedPrice }));
+    }, [product.product_quantity, product.per_unit_product_price]);
+
+
     return (
         <div className="mx-auto max-w-250">
             <div className="grid grid-cols-6 gap-8">
@@ -387,10 +403,9 @@ const ProductForm = () => {
                                             <input
                                                 className="w-full rounded border border-stroke bg-gray py-3 pl-5 pr-2 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                                                 type="number"
+                                                placeholder="Enter product quantity"
                                                 name="product_quantity"
-                                                id="fullName"
-                                                placeholder="Enter the product quantity"
-                                                defaultValue={product?.product_quantity}
+                                                value={product.product_quantity}
                                                 onChange={handleChange}
                                             />
                                         </div>
@@ -409,10 +424,9 @@ const ProductForm = () => {
                                             <input
                                                 className="w-full rounded border border-stroke bg-gray py-3 pl-5 pr-2 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                                                 type="number"
-                                                id="fullName"
-                                                placeholder="Enter the per unit product price"
+                                                placeholder="Enter unit price"
                                                 name="per_unit_product_price"
-                                                defaultValue={product?.per_unit_product_price}
+                                                value={product.per_unit_product_price}
                                                 onChange={handleChange}
                                             />
                                         </div>
@@ -546,11 +560,9 @@ const ProductForm = () => {
                                             <input
                                                 className="w-full rounded border border-stroke bg-gray py-3 pl-5 pr-2 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                                                 type="number"
-                                                id="fullName"
-                                                placeholder="Enter the stock alert"
                                                 name="total_price"
-                                                defaultValue={product?.total_price}
-                                                onChange={handleChange}
+                                                value={product.total_price}
+                                                readOnly
                                             />
                                         </div>
 
@@ -595,7 +607,7 @@ const ProductForm = () => {
                                         className="mb-3 block text-sm font-medium text-black dark:text-white"
                                         htmlFor="address"
                                     >
-                                        Address
+                                      Details
                                     </label>
                                     <div className="relative">
                                         <span className="absolute left-4.5 top-4">
@@ -762,12 +774,14 @@ const ProductForm = () => {
 
                     <div className="flex justify-end gap-2 mt-5.5 p-4 border-t border-slate-200 dark:border-zink-500">
                         <button
+                           onClick={handeCancel}
                             type="button"
                             className="text-red-500 py-2 px-5  border border-stroke rounded-full bg-danger text-white focus:bg-red-100   dark:bg-zink-700 dark:hover:bg-red-500/10 dark:focus:bg-red-500/10 dark:active:bg-red-500/10"
                         >
                             <i data-lucide="x" className="inline-block size-4" />
                             <span className="align-middle">Cancel</span>
                         </button>
+                     
                         <button
                             onClick={handleSubmit}
                             type="submit"
