@@ -218,6 +218,7 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
     
             // Recalculate product total
             const { quantity, price, discount, tax } = newItems[index];
+            // const discountAmount = (parseFloat(price || 0) * parseFloat(discount || 0)) / 100;
             const discountAmount = (parseFloat(price || 0) * parseFloat(discount || 0)) / 100;
             const taxAmount = ((parseFloat(price || 0) - discountAmount) * parseFloat(tax || 0)) / 100;
             const productTotal =
