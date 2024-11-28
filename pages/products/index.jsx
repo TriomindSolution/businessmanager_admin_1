@@ -127,7 +127,6 @@ const ProdctList = () => {
 
     /** Delete function start */
     const handleDelete = (data) => {
-        console.log("clcik")
         setEditData(data);
         setDeleteIsModalOpen(true);
     };
@@ -138,8 +137,7 @@ const ProdctList = () => {
 
 
     /***Fetching table Data Start */
-    const data = filteredData?.data;
-    console.log(data);
+    const data = filteredData?.data?.data;
     const fetchProductList = async () => {
         try {
             const response = await http.get(PRODUCT_END_POINT.list());
@@ -265,6 +263,24 @@ const ProdctList = () => {
 
     /*** Pagination End  */
     /***Fetching table Data end */
+
+
+            //----------------- search operation-----------------
+
+            useEffect(() => {
+                let controller = new AbortController();
+                const result = data?.filter((item) => {
+                    return item.name.toLowerCase()
+                        .match(search.toLocaleLowerCase());
+                });
+        
+                setProductList(result);
+                return () => controller.abort();
+            }, [search]);
+        
+        
+        
+            //-----------------End search operation-----------------
     return (
         <div className="flex flex-col gap-10">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">

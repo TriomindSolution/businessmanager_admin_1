@@ -84,6 +84,8 @@ const Order = () => {
     const [isDeleteModalOpen, setDeleteIsModalOpen] = useState(false);
     const [search, setSearch] = useState('');
     const router = useRouter();
+    const [filteredData, setFilteredData] = useState([]);
+
     /*** Storing data end */
 
 
@@ -162,7 +164,7 @@ const Order = () => {
             const response = await http.get(ORDER_END_POINT.list());
 
             if (response.data.data) {
-                console.log(response.data.data)
+                setFilteredData(response.data.data)
                 setOrderList(response.data.data.data);
                 
             } else {
@@ -178,7 +180,7 @@ const Order = () => {
             setOrderList([]); // Set to empty array in case of error
         }
     };
-
+    const data = filteredData?.data;
 
 
 
@@ -284,6 +286,30 @@ const Order = () => {
         console.log("clicked");
         setIsModalOpen(!isModalOpen);
     };
+
+                //----------------- search operation-----------------
+
+                useEffect(() => {
+                    let controller = new AbortController();
+                
+                    const result = data?.filter((item) => {
+                        const searchTerm = search.toLowerCase();
+                        return (
+                            item.invoice_no.toLowerCase().includes(searchTerm) || // Search by invoice_no
+                            item.order_customer?.name?.toLowerCase().includes(searchTerm) || // Search by customer name
+                            item.customer_phone.includes(searchTerm) // Search by customer phone
+                        );
+                    });
+                
+                    setOrderList(result);
+                
+                    return () => controller.abort();
+                }, [search]);
+                
+            
+            
+            
+                //-----------------End search operation-----------------
 
     return (
         <div className="flex flex-col gap-10">

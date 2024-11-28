@@ -84,7 +84,6 @@ const Category = () => {
     const [filteredData, setFilteredData] = useState([]);
     /*** Storing data end */
 
-    console.log("categoryList",categoryList)
 
     /**Add function  start */
     const handleAdd = () => {
