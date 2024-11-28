@@ -70,19 +70,22 @@ const ViewInvoice = () => {
     console.log(comProfile?.email )
 
     return (
+        <div>
+
+<div className="flex items-center gap-2 shrink-0 pb-3">
+                                <button
+                                    onClick={downloadInvoiceAsPDF}
+                                    className="bg-primary hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                >
+                                    Download Invoice 
+                                </button>
+                            </div>
         <div className="flex flex-col gap-10">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                 <div className="p-2 md:p-6 xl:p-7.5 flex flex-col" ref={invoiceRef}>
                     <div className="card-body print:hidden">
                         <div className="flex flex-col gap-5 md:items-center md:flex-row">
-                            <div className="flex items-center gap-2 shrink-0">
-                                <button
-                                    onClick={downloadInvoiceAsPDF}
-                                    className="bg-primary hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                                >
-                                    Download Invoice as PDF
-                                </button>
-                            </div>
+                          
                         </div>
                     </div>
 
@@ -98,7 +101,7 @@ const ViewInvoice = () => {
                                 />
                             </div>
                             <div className="text-right">
-                                <p><span className="text-gray-500 font-bold text-sm" >Company Inforamtion</span></p>
+                                <p><span className="text-black-gray font-bold text-sm" >Company Inforamtion</span></p>
                                 <p className="text-gray-500 text-sm">{comProfile?.name || 'N/A'}</p>
                                 <p className="text-gray-500 text-sm">{comProfile?.email || 'N/A'}</p>
                                 <p className="text-gray-500 text-sm mt-1">Company Phone:{comProfile?.phone || 'N/A'}</p>
@@ -191,6 +194,8 @@ const ViewInvoice = () => {
                     </div>
                 </div>
             </div>
+        </div>
+
         </div>
     );
 };
