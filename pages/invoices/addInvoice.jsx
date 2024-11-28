@@ -154,10 +154,55 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
     //     }
     // };
 
+    // const handleChange = async (index, field, value) => {
+    //     const newItems = [...items];
+    //     newItems[index][field] = value || 0; // Update the specific field
+
+    //     try {
+    //         if (field === "id") {
+    //             // Fetch product data and update variants only if the product ID changes
+    //             const response = await http.get(PRODUCT_END_POINT.product_retrieve(value));
+    //             if (response?.data?.data && Array.isArray(response.data.data)) {
+    //                 newItems[index].variants = response.data.data[0]?.product_variants || [];
+    //             } else {
+    //                 newItems[index].variants = [];
+    //             }
+    //             // Reset variant_id if the product changes
+    //             newItems[index].variant_id = "";
+    //         }
+
+    //         // Recalculate product total
+    //         const { quantity, price, discount, tax } = newItems[index];
+    //         const discountAmount = (parseFloat(price || 0) * parseFloat(discount || 0)) / 100;
+    //         const productTotal = parseFloat(quantity || 0) * parseFloat(price || 0) - discountAmount + parseFloat(tax || 0);
+
+    //         newItems[index].product_total = productTotal;
+
+    //         setItems(newItems);
+
+    //         // Update order totals
+    //         const newSubTotal = calculateSubTotal(newItems);
+    //         setOrder((prevOrder) => ({
+    //             ...prevOrder,
+    //             sub_total: newSubTotal,
+    //             total_amount: calculateTotalAmount(newSubTotal, prevOrder.shipping_charge),
+    //         }));
+    //     } catch (error) {
+    //         console.error("Error fetching product data:", error);
+    //         // Set variants to an empty array if the API call fails
+    //         if (field === "id") {
+    //             newItems[index].variants = [];
+    //             newItems[index].variant_id = "";
+    //         }
+    //         setItems(newItems);
+    //     }
+    // };
+
+
     const handleChange = async (index, field, value) => {
         const newItems = [...items];
         newItems[index][field] = value || 0; // Update the specific field
-
+    
         try {
             if (field === "id") {
                 // Fetch product data and update variants only if the product ID changes
@@ -170,17 +215,18 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
                 // Reset variant_id if the product changes
                 newItems[index].variant_id = "";
             }
-
+    
             // Recalculate product total
             const { quantity, price, discount, tax } = newItems[index];
             const discountAmount = (parseFloat(price || 0) * parseFloat(discount || 0)) / 100;
+            const taxAmount = ((parseFloat(price || 0) - discountAmount) * parseFloat(tax || 0)) / 100;
             const productTotal =
-                parseFloat(quantity || 0) * parseFloat(price || 0) - discountAmount + parseFloat(tax || 0);
-
+                parseFloat(quantity || 0) * (parseFloat(price || 0) - discountAmount + taxAmount);
+    
             newItems[index].product_total = productTotal;
-
+    
             setItems(newItems);
-
+    
             // Update order totals
             const newSubTotal = calculateSubTotal(newItems);
             setOrder((prevOrder) => ({
@@ -198,6 +244,7 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
             setItems(newItems);
         }
     };
+    
 
 
 
