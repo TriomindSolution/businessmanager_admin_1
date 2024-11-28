@@ -2,14 +2,16 @@ import React, { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/router";
 import withAuth from '@/components/withAuth';
 import html2pdf from "html2pdf.js";
-
-
+import { COMPROFILE_END_POINT } from "@/constants/api_endpoints/comProfileEndPoints";
+import Axios from "@/utils/axios";
 const ViewInvoice = () => {
     const router = useRouter();
     const { data } = router.query; // Access the query parameter
     const [invoiceDetails, setInvoiceDetails] = useState(null);
     const invoiceRef = useRef(null); // Create a ref to target the invoice div for PDF conversion
-
+    const [loading, setLoading] = useState(true);
+    const [comProfile, setComProfile] = useState(null);
+    const { http } = Axios();
     useEffect(() => {
         if (data) {
             try {
@@ -20,6 +22,24 @@ const ViewInvoice = () => {
             }
         }
     }, [data]);
+
+      // Fetch company profile data on component mount
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const response = await http.get(COMPROFILE_END_POINT.list());
+        const profileData = response.data?.data[0];
+        console.log(profileData) // Access the first item in the array
+        setComProfile(profileData);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching company profile:", error);
+        setLoading(false);
+      }
+    };
+    
+    fetchProfile();
+  }, []);
 
     // Function to handle downloading the invoice as a PDF
     const downloadInvoiceAsPDF = () => {
@@ -45,6 +65,9 @@ const ViewInvoice = () => {
         shipping_charge,
         notes,
     } = invoiceDetails;
+
+
+    console.log(comProfile?.email )
 
     return (
         <div className="flex flex-col gap-10">
@@ -76,7 +99,7 @@ const ViewInvoice = () => {
                             </div>
                             <div className="text-right">
                                 <p>CompanyName:</p>
-                                <p className="text-gray-500 text-sm">companyEmail:</p>
+                                <p className="text-gray-500 text-sm">companyEmail: {comProfile?.email || 'N/A'}</p>
                                 <p className="text-gray-500 text-sm mt-1">companyPhone:</p>
                             </div>
                         </div>
