@@ -98,9 +98,10 @@ const ViewInvoice = () => {
                                 />
                             </div>
                             <div className="text-right">
-                                <p>CompanyName:</p>
-                                <p className="text-gray-500 text-sm">companyEmail: {comProfile?.email || 'N/A'}</p>
-                                <p className="text-gray-500 text-sm mt-1">companyPhone:</p>
+                                <p><span className="text-gray-500 font-bold text-sm" >Company Inforamtion</span></p>
+                                <p className="text-gray-500 text-sm">{comProfile?.name || 'N/A'}</p>
+                                <p className="text-gray-500 text-sm">{comProfile?.email || 'N/A'}</p>
+                                <p className="text-gray-500 text-sm mt-1">Company Phone:{comProfile?.phone || 'N/A'}</p>
                             </div>
                         </div>
 
