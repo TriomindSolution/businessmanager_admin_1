@@ -721,14 +721,12 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
 
                         <div className="w-full sm:w-1/4">
                             <label
-                                className="mb-2 block text-sm font-medium text-black dark:text-white"
-                                htmlFor='invoice_no'
+                                className="mb-3 block text-sm font-medium text-black dark:text-white"
+                                htmlFor="payment"
                             >
                                 Payment Status
-
                             </label>
                             <div className="relative">
-
                                 <select
                                     className="w-full rounded border border-black bg-gray-100 py-2 pl-5 pr-2 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                                     data-choices=""
@@ -739,7 +737,6 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
                                     onChange={(e) =>
                                         handleOrderChange("payment", e.target.value)
                                     }
-
                                 >
                                     <option value="" disabled>
                                         Select Status
@@ -751,6 +748,8 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
                                 </select>
                             </div>
                         </div>
+
+
 
                     </div>
                     <div className="mb-3">
