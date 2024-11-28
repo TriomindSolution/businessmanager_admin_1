@@ -51,6 +51,7 @@ const ProductForm = () => {
         date: '',
         status: "",
     });
+    console.log("product",product)
     const [variants, setVariants] = useState([
         { size: '', color: '', quantity: '' }
     ]);
@@ -351,7 +352,7 @@ const ProductForm = () => {
 
                                                 {categoryOption && (
                                                     <>
-                                                        <option value="" disabled>
+                                                        <option value="" >
                                                             Choose a Category
                                                         </option>
                                                         {categoryOption.map((category) => (
