@@ -480,8 +480,7 @@ const AddInvoice = ({ isOpen, onClose, setEditData, isParentRender }) => {
                                     id="order_status"
                                     value={order.order_status}
                                     onChange={(e) =>
-                                        // handleOrderChange("payment", e.target.value)
-                                        handleOrderChange("order_status", e.target.value)
+                                        handleOrderChange("order_status", parseInt(e.target.value, 10))
                                     }
 
                                 >
