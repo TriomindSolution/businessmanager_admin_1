@@ -74,17 +74,19 @@ console.log("user",user)
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-10">
 
             <div>
-              <div className="flex justify-between items-center border-b border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark dark:bg-gray-800">
-                <div className="capitalize py-2 w-24 sm:w-32 font-medium text-gray-900 whitespace-nowrap dark:text-white">Mobile number</div>
-                <div className="flex-grow text-right lg:text-left py-4">{user?.phone}</div>
-              </div>
+             
 
               <div className="flex justify-between items-center border-b border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark dark:bg-gray-800">
-                <div className="capitalize py-2 w-24 sm:w-32 font-medium text-gray-900 whitespace-nowrap dark:text-white">Email</div>
+                <div className="capitalize py-2 w-24 sm:w-32 font-medium text-gray-900 whitespace-nowrap dark:text-white">Name</div>
                 <div className="flex-grow text-right lg:text-left py-4">{user?.name}</div>
               </div>
 
               <div className="flex justify-between items-center border-b border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark dark:bg-gray-800">
+                <div className="capitalize py-2 w-24 sm:w-32 font-medium text-gray-900 whitespace-nowrap dark:text-white">Email</div>
+                <div className="flex-grow text-right lg:text-left py-4">{user?.email}</div>
+              </div>
+
+              {/* <div className="flex justify-between items-center border-b border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark dark:bg-gray-800">
                 <div className="capitalize py-2 w-24 sm:w-32 font-medium text-gray-900 whitespace-nowrap dark:text-white">Admin</div>
                 <div className="flex-grow text-right lg:text-left py-4">Admin 123</div>
               </div>
@@ -102,12 +104,16 @@ console.log("user",user)
               <div className="flex justify-between items-center border-b border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark dark:bg-gray-800">
                 <div className="capitalize py-2 w-24 sm:w-32 font-medium text-gray-900 whitespace-nowrap dark:text-white">Join Date</div>
                 <div className="flex-grow text-right lg:text-left py-4">12/12/2023</div>
-              </div>
+              </div> */}
             </div>
 
 
             <div>
-              <div className="flex justify-between items-center border-b border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark dark:bg-gray-800">
+            <div className="flex justify-between items-center border-b border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark dark:bg-gray-800">
+                <div className="capitalize py-2 w-24 sm:w-32 font-medium text-gray-900 whitespace-nowrap dark:text-white">Mobile number</div>
+                <div className="flex-grow text-right lg:text-left py-4">{user?.phone}</div>
+              </div>
+              {/* <div className="flex justify-between items-center border-b border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark dark:bg-gray-800">
                 <div className="capitalize py-2 w-24 sm:w-32 font-medium text-gray-900 whitespace-nowrap dark:text-white">Nationality</div>
                 <div className="flex-grow text-right lg:text-left py-4">Bangladeshi</div>
               </div>
@@ -135,7 +141,7 @@ console.log("user",user)
               <div className="flex justify-between items-center border-b border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark dark:bg-gray-800">
                 <div className="capitalize py-2 w-24 sm:w-32 font-medium text-gray-900 whitespace-nowrap dark:text-white">Address</div>
                 <div className="flex-grow text-right lg:text-left py-4">Nikunjja-2, Dhaka, Bangladesh</div>
-              </div>
+              </div> */}
             </div>
 
 
