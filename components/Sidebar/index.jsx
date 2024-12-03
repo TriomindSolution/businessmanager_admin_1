@@ -436,7 +436,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                             : setSidebarExpanded(true);
                         }}
                       >
-                        <FontAwesomeIcon icon={faStore  } style={{ fontSize: '24px' }} />
+                        <FontAwesomeIcon icon={faIndustry } style={{ fontSize: '24px' }} />
 
                      Company Settings
                         <svg
