@@ -166,6 +166,7 @@ const Order = () => {
             if (response.data.data) {
                 setFilteredData(response.data.data)
                 setOrderList(response.data.data.data);
+                console.log(response.data.data);
                 
             } else {
                 setOrderList([]);
