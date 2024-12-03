@@ -2,11 +2,13 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react"
 import Link from 'next/link';
 import withAuth from "@/components/withAuth";
+import Axios from "@/utils/axios";
 
 const Profile = () => {
   const [loading, setLoading] = useState(true);
 
-
+  const { token, logout,user} = Axios();
+console.log("user",user)
 
 
 
@@ -56,7 +58,7 @@ const Profile = () => {
           </div>
           <div className="mt-4">
             <h3 className="mb-1.5 text-2xl font-semibold text-black dark:text-white">
-              Suparan Sharma
+              {user?.name}
             </h3>
             <div className="mx-auto max-w-180">
               <p className="mt-4.5">
@@ -68,18 +70,18 @@ const Profile = () => {
           </div>
         </div>
 
-        <div className="w-full lg:w-9/12 m-auto text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <div className="w-full lg:w-9/12 m-auto text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 mb-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-10">
 
             <div>
               <div className="flex justify-between items-center border-b border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark dark:bg-gray-800">
                 <div className="capitalize py-2 w-24 sm:w-32 font-medium text-gray-900 whitespace-nowrap dark:text-white">Mobile number</div>
-                <div className="flex-grow text-right lg:text-left py-4">01789085098</div>
+                <div className="flex-grow text-right lg:text-left py-4">{user?.phone}</div>
               </div>
 
               <div className="flex justify-between items-center border-b border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark dark:bg-gray-800">
                 <div className="capitalize py-2 w-24 sm:w-32 font-medium text-gray-900 whitespace-nowrap dark:text-white">Email</div>
-                <div className="flex-grow text-right lg:text-left py-4">Suparan Sharma</div>
+                <div className="flex-grow text-right lg:text-left py-4">{user?.name}</div>
               </div>
 
               <div className="flex justify-between items-center border-b border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark dark:bg-gray-800">
@@ -141,7 +143,7 @@ const Profile = () => {
         </div>
 
 
-        <div className="my-6.5 ">
+        {/* <div className="my-6.5 ">
           <h4 className="mb-3.5 font-medium text-black dark:text-white text-center">
             Follow me on
           </h4>
@@ -292,7 +294,7 @@ const Profile = () => {
               </svg>
             </a>
           </div>
-        </div>
+        </div> */}
 
       </div>
 
