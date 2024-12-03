@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from "react"
 import SidebarLinkGroup from "./SidebarLinkGroup"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faList,faReceipt ,faIndustry,faStore   } from '@fortawesome/free-solid-svg-icons';
+import { faList,faReceipt ,faIndustry,faStore,faThLarge    } from '@fortawesome/free-solid-svg-icons';
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
 
@@ -137,7 +137,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                             : setSidebarExpanded(true);
                         }}
                       >
-                        <svg
+                        {/* <svg
                           className="fill-current"
                           width="18"
                           height="18"
@@ -161,7 +161,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                             d="M15.4689 9.92822H11.8971C10.9408 9.92822 10.1533 10.7157 10.1533 11.672V15.2438C10.1533 16.2001 10.9408 16.9876 11.8971 16.9876H15.4689C16.4252 16.9876 17.2127 16.2001 17.2127 15.2438V11.7001C17.2127 10.7157 16.4252 9.92822 15.4689 9.92822ZM15.9752 15.272C15.9752 15.5532 15.7502 15.7782 15.4689 15.7782H11.8971C11.6158 15.7782 11.3908 15.5532 11.3908 15.272V11.7001C11.3908 11.4188 11.6158 11.1938 11.8971 11.1938H15.4689C15.7502 11.1938 15.9752 11.4188 15.9752 11.7001V15.272Z"
                             fill=""
                           />
-                        </svg>
+                        </svg> */}
+                       <FontAwesomeIcon icon={faThLarge} style={{ fontSize: '18px' }} />
+
                         Dashboard
                         <svg
                           className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${open && "rotate-180"
@@ -228,7 +230,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                         }}
                       >
 
-                        <FontAwesomeIcon icon={faList} style={{ fontSize: '24px' }} />
+                        <FontAwesomeIcon icon={faList} style={{ fontSize: '18px' }} />
                         Catalog
                         <svg
                           className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${open && "rotate-180"
@@ -351,7 +353,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                             : setSidebarExpanded(true);
                         }}
                       >
-                        <FontAwesomeIcon icon={faReceipt} style={{ fontSize: '24px' }} />
+                        <FontAwesomeIcon icon={faReceipt} style={{ fontSize: '18px' }} />
 
                         Invoice
                         <svg
@@ -436,7 +438,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                             : setSidebarExpanded(true);
                         }}
                       >
-                        <FontAwesomeIcon icon={faStore  } style={{ fontSize: '24px' }} />
+                        <FontAwesomeIcon icon={faStore  } style={{ fontSize: '18px' }} />
 
                      Company Settings
                         <svg
