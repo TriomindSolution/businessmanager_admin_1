@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from "react"
 import SidebarLinkGroup from "./SidebarLinkGroup"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faList,faReceipt  } from '@fortawesome/free-solid-svg-icons';
+import { faList,faReceipt ,faIndustry,faStore   } from '@fortawesome/free-solid-svg-icons';
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
 
@@ -436,7 +436,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                             : setSidebarExpanded(true);
                         }}
                       >
-                        <FontAwesomeIcon icon={faReceipt} style={{ fontSize: '24px' }} />
+                        <FontAwesomeIcon icon={faStore  } style={{ fontSize: '24px' }} />
 
                      Company Settings
                         <svg

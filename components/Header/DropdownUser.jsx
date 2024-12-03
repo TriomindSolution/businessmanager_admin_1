@@ -9,10 +9,7 @@ const DropdownUser = () => {
 
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const [loading, setLoading] = useState(true);
-  const { token, logout } = Axios();
-
-
-
+  const { token, logout,user} = Axios();
   const trigger = useRef(null)
   const dropdown = useRef(null)
 
@@ -75,9 +72,9 @@ const DropdownUser = () => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            Suparan Sharma
+            {user?.name}
           </span>
-          <span className="block text-xs">Admin</span>
+          {/* <span className="block text-xs">Admin</span> */}
         </span>
 
         <span className="h-12 w-12 rounded-full">
@@ -145,7 +142,7 @@ const DropdownUser = () => {
               My Profile
             </Link>
           </li>
-          <li>
+          {/* <li>
             <Link
               href="#"
               className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
@@ -165,8 +162,8 @@ const DropdownUser = () => {
               </svg>
               My Contacts
             </Link>
-          </li>
-          <li>
+          </li> */}
+          {/* <li>
             <Link
               href="/settings"
               className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
@@ -190,7 +187,7 @@ const DropdownUser = () => {
               </svg>
               Account Settings
             </Link>
-          </li>
+          </li> */}
         </ul>
         <button className="flex items-center gap-3.5 py-4 px-6 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base" onClick={logoutHandle}>
           <svg
