@@ -250,7 +250,7 @@ const ProductForm = () => {
             status: product.status,
             date: product.date,
             product_sku_code: product.product_sku_code,
-            variants: variants.map(variant => ({
+            variants: variants?.map(variant => ({
                 id: variant.id,
                 size: variant.size,
                 color: variant.color,
